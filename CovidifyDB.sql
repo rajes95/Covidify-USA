@@ -31,7 +31,7 @@ DROP TABLE IF EXISTS `CovidifyUSA`.`State` ;
 -- Table `CovidifyUSA`.`State`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`State` (
-  `StateKey` INT NOT NULL,
+  `StateKey` INT NOT NULL AUTO_INCREMENT,
   `StateFIPS` VARCHAR(45) NULL,
   `StateName` VARCHAR(100) NULL,
   PRIMARY KEY (`StateKey`),
@@ -45,7 +45,7 @@ ENGINE = InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`County` (
-  `CountyKey` INT NOT NULL,
+  `CountyKey` INT NOT NULL AUTO_INCREMENT,
   `StateFKey` INT NOT NULL,
   `CountyFIPS` VARCHAR(45) NULL,
   `CountyName` VARCHAR(100) NULL,
@@ -68,7 +68,7 @@ ENGINE = InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidByDate` (
-  `CovidByDateKey` INT NOT NULL,
+  `CovidByDateKey` INT NOT NULL AUTO_INCREMENT,
   `CountyFKey` INT NOT NULL,
   `Date` DATE NULL,
   `CovidDeaths` INT NULL,
@@ -90,7 +90,7 @@ ENGINE = InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`PresidentialElectionVotePercentages` (
-  `PresidentialElectionVotePercentagesKey` INT NOT NULL,
+  `PresidentialElectionVotePercentagesKey` INT NOT NULL AUTO_INCREMENT,
   `CountyFKey` INT NOT NULL,
   `Year` YEAR NULL,
   `DemocratsPercent` DECIMAL(5,2) NULL,
@@ -112,7 +112,7 @@ ENGINE = InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateGovernor` (
-  `StateGovernorKey` INT NOT NULL,
+  `StateGovernorKey` INT NOT NULL AUTO_INCREMENT,
   `StateFKey` INT NOT NULL,
   `Year` YEAR NULL,
   `Governor` VARCHAR(45) NULL,
@@ -133,7 +133,7 @@ ENGINE = InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Demographics` (
-  `DemographicsKey` INT NOT NULL,
+  `DemographicsKey` INT NOT NULL AUTO_INCREMENT,
   `CountyFKey` INT NOT NULL,
   `Year` YEAR NULL,
   `White` DECIMAL(5,2) NULL,
@@ -160,7 +160,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Climate` (
-  `ClimateKey` INT NOT NULL,
+  `ClimateKey` INT NOT NULL AUTO_INCREMENT,
   `CountyFKey` INT NOT NULL,
   `Year` YEAR NULL,
   `Elevation` DECIMAL NULL,
@@ -188,7 +188,7 @@ ENGINE = InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateHospitalData` (
-  `StateHospitalDataKey` INT NOT NULL,
+  `StateHospitalDataKey` INT NOT NULL AUTO_INCREMENT,
   `StateFKey` INT NOT NULL,
   `Year` YEAR NULL,
   `NumberOfHospitals` VARCHAR(45) NULL,
@@ -209,7 +209,7 @@ ENGINE = InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CountyHospitalData` (
-  `CountyHospitalDataKey` INT NOT NULL,
+  `CountyHospitalDataKey` INT NOT NULL AUTO_INCREMENT,
   `CountyFKey` INT NOT NULL,
   `Year` YEAR NULL,
   `ICUBeds` INT NULL,
@@ -228,7 +228,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MortalityRates` (
-  `MortalityRatesKey` INT NOT NULL,
+  `MortalityRatesKey` INT NOT NULL AUTO_INCREMENT,
   `CountyFKey` INT NOT NULL,
   `Year` YEAR NULL,
   `NeonatalDisordersMortalityRate` DECIMAL NULL,
@@ -253,7 +253,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Population` (
-  `PopulationKey` INT NOT NULL,
+  `PopulationKey` INT NOT NULL AUTO_INCREMENT,
   `CountyFKey` INT NOT NULL,
   `Year` YEAR NULL,
   `TotalPopulation` INT NULL,
@@ -274,7 +274,7 @@ ENGINE = InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidByRace` (
-  `CovidByRaceKey` INT NOT NULL,
+  `CovidByRaceKey` INT NOT NULL AUTO_INCREMENT,
   `StateFKey` INT NOT NULL,
   `Race` ENUM('White', 'Black', 'Hispanic', 'Asian', 'Multiracial', 'NHPI', 'Multi', 'Other', 'Unknown') NULL,
   `Positive` INT NULL,
@@ -295,3 +295,11 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+USE `CovidifyUSA`;
+LOAD DATA INFILE './state_fips.csv' INTO TABLE `CovidifyUSA`.`State` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 ROWS
+(@StateName,@PostalCode, @Fips)
+set `StateName`=@StateName,`StateFIPS`=@Fips;
+
