@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidByDate` (
   `CovidCases` INT NULL,
   PRIMARY KEY (`CovidByDateKey`),
   INDEX `CountyFKey1_idx` (`CountyFKey` ASC) VISIBLE,
-  CONSTRAINT UNIQUE(`CountyFKey`, `Date`)
+  UNIQUE INDEX `CovUniq` (`CountyFKey` ASC, `Date` ASC),
   CONSTRAINT `CountyFKey1`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
@@ -286,7 +286,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidByRace` (
   `Date` DATE NULL,
   PRIMARY KEY (`CovidByRaceKey`),
   INDEX `fk_CovidByRace_State1_idx` (`StateFKey` ASC) VISIBLE,
-  ONSTRAINT UNIQUE(`StateFKey`, `Date`)
+  UNIQUE INDEX `RaceUniq` (`CountyFKey` ASC, `Date` ASC)
   CONSTRAINT `fk_CovidByRace_State1`
     FOREIGN KEY (`StateFKey`)
     REFERENCES `CovidifyUSA`.`State` (`StateKey`)
