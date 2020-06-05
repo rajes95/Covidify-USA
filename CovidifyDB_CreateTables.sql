@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`County` (
   `Longitude` VARCHAR(45) NULL,
   `Latitude` VARCHAR(45) NULL,
   PRIMARY KEY (`CountyKey`),
-  UNIQUE INDEX `CountyFIPS_UNIQUE` (`CountyFIPS` ASC) VISIBLE,
-  INDEX `StateFKey_idx` (`StateFKey` ASC) VISIBLE,
+  UNIQUE INDEX `CountyFIPS_UNIQUE` (`CountyFIPS` ASC),
+  INDEX `StateFKey_idx` (`StateFKey` ASC),
   CONSTRAINT `StateFKey`
     FOREIGN KEY (`StateFKey`)
     REFERENCES `CovidifyUSA`.`State` (`StateKey`)
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidByDate` (
   `CovidDeaths` INT NULL,
   `CovidCases` INT NULL,
   PRIMARY KEY (`CovidByDateKey`),
-  INDEX `CountyFKey1_idx` (`CountyFKey` ASC) VISIBLE,
+  INDEX `CountyFKey1_idx` (`CountyFKey` ASC),
   UNIQUE INDEX `CovUniq` (`CountyFKey` ASC, `Date` ASC),
   CONSTRAINT `CountyFKey1`
     FOREIGN KEY (`CountyFKey`)
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`PresidentialElectionVotePercentages` (
   `RepublicansPercent` DECIMAL(5,2) NULL,
   `OtherPercent` DECIMAL(5,2) NULL,
   PRIMARY KEY (`PresidentialElectionVotePercentagesKey`),
-  INDEX `CountyFKey2_idx` (`CountyFKey` ASC) VISIBLE,
+  INDEX `CountyFKey2_idx` (`CountyFKey` ASC),
   CONSTRAINT `CountyFKey2`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateGovernor` (
   `Governor` VARCHAR(45) NULL,
   `GovernorParty` ENUM('Democratic', 'Republican', 'Other') NULL,
   PRIMARY KEY (`StateGovernorKey`),
-  INDEX `StateFKey1_idx` (`StateFKey` ASC) VISIBLE,
+  INDEX `StateFKey1_idx` (`StateFKey` ASC),
   CONSTRAINT `StateFKey1`
     FOREIGN KEY (`StateFKey`)
     REFERENCES `CovidifyUSA`.`State` (`StateKey`)
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Demographics` (
   `MedianAge` DECIMAL NULL,
   `MedianEarnings` DECIMAL NULL,
   PRIMARY KEY (`DemographicsKey`),
-  INDEX `CountyFKey3_idx` (`CountyFKey` ASC) VISIBLE,
+  INDEX `CountyFKey3_idx` (`CountyFKey` ASC),
   CONSTRAINT `CountyFKey3`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Climate` (
   `SpringTavg` DECIMAL NULL,
   `AutumnTavg` DECIMAL NULL,
   PRIMARY KEY (`ClimateKey`),
-  INDEX `CountyFKey4_idx` (`CountyFKey` ASC) VISIBLE,
+  INDEX `CountyFKey4_idx` (`CountyFKey` ASC),
   CONSTRAINT `CountyFKey4`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
@@ -194,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateHospitalData` (
   `NumberOfHospitals` VARCHAR(45) NULL,
   `NumberOfHospitalEmployees` VARCHAR(45) NULL,
   PRIMARY KEY (`StateHospitalDataKey`),
-  INDEX `StateFKey2_idx` (`StateFKey` ASC) VISIBLE,
+  INDEX `StateFKey2_idx` (`StateFKey` ASC),
   CONSTRAINT `StateFKey2`
     FOREIGN KEY (`StateFKey`)
     REFERENCES `CovidifyUSA`.`State` (`StateKey`)
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CountyHospitalData` (
   `Year` YEAR NULL,
   `ICUBeds` INT NULL,
   PRIMARY KEY (`CountyHospitalDataKey`),
-  INDEX `CountyFKey5_idx` (`CountyFKey` ASC) VISIBLE,
+  INDEX `CountyFKey5_idx` (`CountyFKey` ASC),
   CONSTRAINT `CountyFKey5`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
@@ -239,7 +239,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MortalityRates` (
   `NutritionalDeficienciesMortalityRate` DECIMAL NULL,
   `CardiovascularDiseasesMortalityRate` DECIMAL NULL,
   PRIMARY KEY (`MortalityRatesKey`),
-  INDEX `CountyFKey6_idx` (`CountyFKey` ASC) VISIBLE,
+  INDEX `CountyFKey6_idx` (`CountyFKey` ASC),
   CONSTRAINT `CountyFKey6`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
@@ -259,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Population` (
   `TotalPopulation` INT NULL,
   `Population60Plus` INT NULL,
   PRIMARY KEY (`PopulationKey`),
-  INDEX `CountyFKey7_idx` (`CountyFKey` ASC) VISIBLE,
+  INDEX `CountyFKey7_idx` (`CountyFKey` ASC),
   CONSTRAINT `CountyFKey7`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
@@ -282,7 +282,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidByRace` (
   `Death` INT NULL,
   `Date` DATE NULL,
   PRIMARY KEY (`CovidByRaceKey`),
-  INDEX `fk_CovidByRace_State1_idx` (`StateFKey` ASC) VISIBLE,
+  INDEX `fk_CovidByRace_State1_idx` (`StateFKey` ASC),
   UNIQUE INDEX `RaceUniq` (`StateFKey` ASC, `Date` ASC),
   CONSTRAINT `fk_CovidByRace_State1`
     FOREIGN KEY (`StateFKey`)
@@ -295,11 +295,4 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-
-USE `CovidifyUSA`;
-LOAD DATA INFILE './state_fips.csv' INTO TABLE `CovidifyUSA`.`State` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-LINES TERMINATED BY '\n' IGNORE 1 ROWS
-(@StateName,@PostalCode, @Fips)
-set `StateName`=@StateName,`StateFIPS`=@Fips;
 
