@@ -7,6 +7,14 @@ LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@StateName,@PostalCode, @Fips)
 set `StateName`=@StateName,`StateFIPS`=@Fips;
 
+LOAD DATA INFILE './covid-us-counties.csv'
+IGNORE INTO TABLE `CovidifyUSA`.`County`
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' ESCAPED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 ROWS
+(@date,@county,@state,@fips,@cases,@deaths)
+set `StateFKey` = (SELECT `StateKey` FROM `CovidifyUSA`.`State` where `StateName`=@state), 
+`CountyFIPS`=@fips, `CountyName`=@county;
+
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`GovernorsDataStaging` (
   `State` TEXT,
   `Governor` TEXT,
