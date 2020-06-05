@@ -57,8 +57,8 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`County` (
   CONSTRAINT `StateFKey`
     FOREIGN KEY (`StateFKey`)
     REFERENCES `CovidifyUSA`.`State` (`StateKey`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidByDate` (
   CONSTRAINT `CountyFKey1`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
-    ON DELETE NO ACTION
+    ON DELETE RESTRICT
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
