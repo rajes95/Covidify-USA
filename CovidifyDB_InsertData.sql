@@ -28,6 +28,7 @@ SET SESSION sql_mode = '';
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MultiStaging`(
 	## PresElection table
 	`County` TEXT, # County - read in and get rid of comma, get rid of 'county'
+    `State` TEXT,
 	#`Year` INT, #08, 12, 16
 	`DemocratsPercent08` DECIMAL(5,2),
 	`DemocratsPercent12` DECIMAL(5,2),
@@ -96,7 +97,7 @@ IGNORE 1 ROWS
     @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @total16, @Other16Frac,
     @Rep16Frac, @Dem16Frac, @dummy, @dummy, @total08, @total12, @other08, @other12, @Other12Frac,
 	@Other08Frac, @Rep12Frac, @Rep08Frac, @Dem12Frac, @Dem08Frac)
-set `County`=@County, `DemocratsPercent08`=@Dem08Frac, `DemocratsPercent12`=@Dem12Frac, `DemocratsPercent16`=@Dem16Frac, 
+set `County`=@County, `State`=@State,`DemocratsPercent08`=@Dem08Frac, `DemocratsPercent12`=@Dem12Frac, `DemocratsPercent16`=@Dem16Frac, 
 `RepublicansPercent08`=@Rep08Frac, `RepublicansPercent12`=@Rep12Frac, `RepublicansPercent16`=@Rep16Frac, 
  `OtherPercent08`=@Other08Frac, `OtherPercent12`=@Other12Frac, `OtherPercent16`=@Other16Frac, 
  `White`=@White, `AfricanAmerican`=@AfricanAmerican, `Latino`=@Latino, `NativeAmerican`=@NativeAmerican, `AsianAmerican`=@AsianAmerican,
@@ -105,11 +106,43 @@ set `County`=@County, `DemocratsPercent08`=@Dem08Frac, `DemocratsPercent12`=@Dem
  `WinterTavg`=@WinterTavg, `SummerTavg`=@SummerTavg, `SpringTavg`=@SpringTavg, `AutumnTavg`=@AutumnTavg, `TotalPopulation`=@TotalPopulation,
  `Longitude`=@longitude, `Latitude`=@latitude;
 
-Select County from `CovidifyUSA`.`MultiStaging`;
--- SELECT DISTINCT County from MultiStaging;
-Select @countynew := SUBSTRING_INDEX(County, ',', 1) from MultiStaging;
-UPDATE MultiStaging SET `County`  = @countynew; # something wrong here
--- Select @countynew2 := SUBSTRING_INDEX(County, ' ', 1) from MultiStaging;
+UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ',', 1);
+UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ' ', 1);
+
+# Election table
+# find the county key based on county name and state name
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateCounty` (
+  `StateKey` INT,
+  `StateName` TEXT,
+  `CountyKey` INT,
+  `CountyName` TEXT
+  )
+ENGINE = InnoDB;
+INSERT StateCounty SELECT StateKey, StateName, CountyKey, CountyName from State 
+inner join `CovidifyUSA`.`County` on StateFKey=StateKey;
+
+SET @year08= 2008;
+INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages` 
+(`CountyFKey`,  `DemocratsPercent`, `RepublicansPercent`, `OtherPercent`, `Year`)
+SELECT `CountyKey`,`DemocratsPercent08`, `RepublicansPercent08`, `OtherPercent08`,@year08
+from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
+
+SET @year12= 2012;
+INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages` 
+(`CountyFKey`,  `DemocratsPercent`, `RepublicansPercent`, `OtherPercent`, `Year`)
+SELECT `CountyKey`,`DemocratsPercent12`, `RepublicansPercent12`, `OtherPercent12`,@year12
+from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
+
+SET @year16= 2016;
+INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages` 
+(`CountyFKey`,  `DemocratsPercent`, `RepublicansPercent`, `OtherPercent`, `Year`)
+SELECT `CountyKey`,`DemocratsPercent16`, `RepublicansPercent16`, `OtherPercent16`,@year16
+from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
+
+SELECT * from `CovidifyUSA`.`PresidentialElectionVotePercentages` where `Year`=2016;
+
+## Demographics table
+
 
 SET SQL_SAFE_UPDATES = 0;
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`GovernorsDataStaging` (
