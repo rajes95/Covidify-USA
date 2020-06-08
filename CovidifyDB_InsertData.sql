@@ -142,7 +142,75 @@ from MultiStaging inner join StateCounty on CountyName=County and StateName=Stat
 SELECT * from `CovidifyUSA`.`PresidentialElectionVotePercentages` where `Year`=2016;
 
 ## Demographics table
+INSERT INTO `CovidifyUSA`.`Demographics` 
+(`CountyFKey`, `Year`, `White`, `AfricanAmerican`, `Latino`, `NativeAmerican`,
+  `AsianAmerican`, `OtherEthnicity`, `PovertyRate`, `MedianAge`, `MedianEarnings`) 
+SELECT `CountyKey`, @year16,`White`, `AfricanAmerican`, `Latino`, `NativeAmerican`, 
+`AsianAmerican`, `OtherEthnicity`, `PovertyRate`, `MedianAge`, `MedianEarnings`
+from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
 
+## Climate Table
+INSERT INTO `CovidifyUSA`.`Climate` 
+(`CountyFKey`, `Year`, `Elevation`, `WinterPrcp`, `SummerPrcp`, `SpringPrcp`,
+  `AutumnPrcp`, `WinterTavg`, `SummerTavg`, `SpringTavg`, `AutumnTavg`)
+SELECT `CountyKey`, @year16, `Elevation`, `WinterPrcp`, `SummerPrcp`, `SpringPrcp`,
+  `AutumnPrcp`, `WinterTavg`, `SummerTavg`, `SpringTavg`, `AutumnTavg`
+from MultiStaging inner join StateCounty on CountyName=County and StateName=State; 
+;
+# Why is WinterTavg being read in as an INT?
+#SELECT `WinterTavg` from MultiStaging;
+
+## Population Table - Where is population 60+ information?
+INSERT INTO `CovidifyUSA`.`Population`
+(`CountyFKey`, `Year`, `TotalPopulation`)
+SELECT `CountyKey`, @year16, `TotalPopulation`
+from MultiStaging inner join StateCounty on CountyName=County and StateName=State; 
+
+## Update Latitude/Longitude in County table
+
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`LongLatCounty` (
+  `CountyFKey` INT,
+  `Longitude` VARCHAR(45),
+  `Latitude` VARCHAR(45)
+  )
+ENGINE = InnoDB;
+INSERT LongLatCounty SELECT `CountyKey`, `Longitude`, `Latitude` from MultiStaging 
+inner join StateCounty on CountyName=County and StateName=State;
+
+Update `CovidifyUSA`.`County` 
+Inner Join LongLatCounty on CountyKey=CountyFKey
+SET County.Longitude = LongLatCounty.Longitude, County.Latitude = LongLatCounty.Latitude; 
+
+## State Hospital Data
+# Do we need the short term acute care hospitals?
+-- `StateHospitalDataKey` INT NOT NULL AUTO_INCREMENT,
+--  `StateFKey` INT NOT NULL, ## peopleperhospitalperstate (2019)
+--   `Year` YEAR NULL,
+--   `NumberOfHospitals` VARCHAR(45) NULL, ## peopleperhospitalperstate (2019)
+--   `NumberOfHospitalEmployees` VARCHAR(45) NULL, ## peopleperhospitalperstate (2019)
+
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateHospitalStage` (
+  `StateName` TEXT,
+  `NumberOfHospitals` VARCHAR(45),
+  `NumberOfHospitalEmployees` VARCHAR(45)
+  )
+ENGINE = InnoDB;
+  
+LOAD DATA INFILE './PeoplePerHospitalPerState2019.csv' 
+INTO TABLE `CovidifyUSA`.`StateHospitalStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 2 ROWS
+(@StateName, @dummy, @numhospitals, @dummy, @numemployees, @dummy)
+set `StateName`=@StateName,`NumberOfHospitals`=@numhospitals, `NumberOfHospitalEmployees`=@numemployees;
+
+SET @year19 = 2019;
+INSERT INTO `CovidifyUSA`.`StateHospitalData` 
+(`StateFKey`,  `NumberOfHospitals`, `NumberOfHospitalEmployees`, `Year`)
+SELECT `StateKey`,`NumberOfHospitals`, `NumberOfHospitalEmployees` ,@year19
+from State Inner Join StateHospitalStage on State.StateName=StateHospitalStage.StateName;
+
+## County Hospital Data
+## Mortality Rates
+## Covid By Race
 
 SET SQL_SAFE_UPDATES = 0;
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`GovernorsDataStaging` (
