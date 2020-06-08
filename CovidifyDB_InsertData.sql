@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`LongLatCounty`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`StateHospitalStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`CountyHospitalStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
 
 LOAD DATA INFILE './state_fips.csv' 
 INTO TABLE `CovidifyUSA`.`State` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
@@ -20,13 +21,36 @@ LINES TERMINATED BY '\n' IGNORE 1 ROWS
 set `StateFKey` = (SELECT `StateKey` FROM `CovidifyUSA`.`State` where `StateName`=@state), 
 `CountyFIPS`=@fips, `CountyName`=@county;
 
-LOAD DATA INFILE './covid-us-counties.csv'
-IGNORE INTO TABLE `CovidifyUSA`.`CovidByDate`
-FIELDS TERMINATED BY ',' ENCLOSED BY '"' ESCAPED BY '"'
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidStage` (
+  `CountyName` VARCHAR(45),
+  `Date` VARCHAR(45),
+  `CovidDeaths` INT,
+  `CovidCases` INT
+  )
+ENGINE = InnoDB;
+LOAD DATA INFILE './covid-us-counties.csv' 
+INTO TABLE `CovidifyUSA`.`CovidStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@date,@county,@state,@fips,@cases,@deaths)
-set `CountyFKey`=@county, `Date`=@date, `CovidDeaths`=@deaths, `CovidCases`=@cases;
+set `CountyName`=@county,`Date`=@date, `CovidDeaths`=@deaths, `CovidCases`=@cases;
 
+SELECT * From CovidStage;
+
+INSERT INTO `CovidifyUSA`.`CovidByDate`
+(`CountyFKey`, `Date`, `CovidDeaths`, `CovidCases`)
+SELECT `CountyKey`, `Date`, `CovidDeaths`, `CovidCases`
+from CovidStage inner join County on CovidStage.CountyName=County.CountyName; 
+
+-- LOAD DATA INFILE './covid-us-counties.csv'
+-- IGNORE INTO TABLE `CovidifyUSA`.`CovidByDate`
+-- FIELDS TERMINATED BY ',' ENCLOSED BY '"' ESCAPED BY '"'
+-- LINES TERMINATED BY '\n' IGNORE 1 ROWS
+-- (@date,@county,@state,@fips,@cases,@deaths)
+-- set `CountyFKey`=@county, `Date`=@date, `CovidDeaths`=@deaths, `CovidCases`=@cases;
+
+SELECT COUNT(*) from County;
+SELECT * from CovidByDate;
+SELECT COUNT(*) FROM CountyHospitalData;
 
 SET SESSION sql_mode = '';
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MultiStaging`(
@@ -236,9 +260,6 @@ set `StateName`=@StateName, `CountyName`=@CountyName, `ICUBeds`=@ICUBeds,
 `PopulationTotal`=@totalPopulation, `Population60plus`=@population60, 
 `Population60percent`=@percpopulation60;
 
-
-#TODO: use total population here to fill out population table more since this is 2020
-#TODO: found population 60+
 SET @year20 = 2020;
 INSERT INTO `CovidifyUSA`.`CountyHospitalData` 
 (`CountyFKey`,  `ICUBeds`, `Year`)
@@ -250,8 +271,7 @@ and StateCounty.StateName=CountyHospitalStage.StateName;
 SELECT COUNT(*) FROM CountyHospitalData; #3143 in csv, 2960 here
 # Possible - check if new counties in each new read in csv file and add first!
 
-
-
+## Population update from stage. add 2020 totals, add 60+
 ## Mortality Rates
 ## Covid By Race
 
