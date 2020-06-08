@@ -1,6 +1,10 @@
 USE `CovidifyUSA`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`MultiStaging`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`LongLatCounty`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`StateHospitalStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CountyHospitalStage`;
 
 LOAD DATA INFILE './state_fips.csv' 
 INTO TABLE `CovidifyUSA`.`State` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
@@ -209,6 +213,45 @@ SELECT `StateKey`,`NumberOfHospitals`, `NumberOfHospitalEmployees` ,@year19
 from State Inner Join StateHospitalStage on State.StateName=StateHospitalStage.StateName;
 
 ## County Hospital Data
+-- `CountyFKey` INT NOT NULL,
+--   `Year` YEAR NULL, #2020
+--   `ICUBeds` INT NULL,
+# match by state and county like before
+
+# How do we reconcile different fields in StatevsCounty Hospital Data Tables
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CountyHospitalStage` (
+  `StateName` TEXT,
+  `CountyName` TEXT,
+  `ICUBeds` INT,
+  `PopulationTotal` INT,
+  `Population60plus` INT,
+  `Population60percent` DECIMAL
+  )
+ENGINE = InnoDB;
+LOAD DATA INFILE './ICUBedsByCounty2020.csv' 
+INTO TABLE `CovidifyUSA`.`CountyHospitalStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 ROWS
+(@StateName, @CountyName, @ICUBeds, @totalPopulation, @population60, @percpopulation60, @dummy)
+set `StateName`=@StateName, `CountyName`=@CountyName, `ICUBeds`=@ICUBeds, 
+`PopulationTotal`=@totalPopulation, `Population60plus`=@population60, 
+`Population60percent`=@percpopulation60;
+
+
+#TODO: use total population here to fill out population table more since this is 2020
+#TODO: found population 60+
+SET @year20 = 2020;
+INSERT INTO `CovidifyUSA`.`CountyHospitalData` 
+(`CountyFKey`,  `ICUBeds`, `Year`)
+SELECT `CountyKey`, `ICUBeds`,@year20
+from CountyHospitalStage inner join StateCounty 
+on StateCounty.CountyName=CountyHospitalStage.CountyName 
+and StateCounty.StateName=CountyHospitalStage.StateName;
+
+SELECT COUNT(*) FROM CountyHospitalData; #3143 in csv, 2960 here
+# Possible - check if new counties in each new read in csv file and add first!
+
+
+
 ## Mortality Rates
 ## Covid By Race
 
