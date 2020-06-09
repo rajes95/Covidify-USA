@@ -21,8 +21,20 @@ LINES TERMINATED BY '\n' IGNORE 1 ROWS
 set `StateFKey` = (SELECT `StateKey` FROM `CovidifyUSA`.`State` where `StateName`=@state), 
 `CountyFIPS`=@fips, `CountyName`=@county;
 
+# find the county key based on county name and state name
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateCounty` (
+  `StateKey` INT,
+  `StateName` TEXT,
+  `CountyKey` INT,
+  `CountyName` TEXT
+  )
+ENGINE = InnoDB;
+INSERT StateCounty SELECT StateKey, StateName, CountyKey, CountyName from State 
+inner join `CovidifyUSA`.`County` on StateFKey=StateKey;
+
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidStage` (
   `CountyName` VARCHAR(45),
+  `State` VARCHAR(45),
   `Date` VARCHAR(45),
   `CovidDeaths` INT,
   `CovidCases` INT
@@ -32,25 +44,15 @@ LOAD DATA INFILE './covid-us-counties.csv'
 INTO TABLE `CovidifyUSA`.`CovidStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@date,@county,@state,@fips,@cases,@deaths)
-set `CountyName`=@county,`Date`=@date, `CovidDeaths`=@deaths, `CovidCases`=@cases;
-
-SELECT * From CovidStage;
+set `CountyName`=@county,`State`=@state,`Date`=@date, `CovidDeaths`=@deaths, `CovidCases`=@cases;
 
 INSERT INTO `CovidifyUSA`.`CovidByDate`
 (`CountyFKey`, `Date`, `CovidDeaths`, `CovidCases`)
 SELECT `CountyKey`, `Date`, `CovidDeaths`, `CovidCases`
-from CovidStage inner join County on CovidStage.CountyName=County.CountyName; 
+#from CovidStage inner join County on CovidStage.CountyName=County.CountyName; 
+from CovidStage inner join StateCounty on StateCounty.CountyName=CovidStage.CountyName
+and StateCounty.StateName=CovidStage.State;
 
--- LOAD DATA INFILE './covid-us-counties.csv'
--- IGNORE INTO TABLE `CovidifyUSA`.`CovidByDate`
--- FIELDS TERMINATED BY ',' ENCLOSED BY '"' ESCAPED BY '"'
--- LINES TERMINATED BY '\n' IGNORE 1 ROWS
--- (@date,@county,@state,@fips,@cases,@deaths)
--- set `CountyFKey`=@county, `Date`=@date, `CovidDeaths`=@deaths, `CovidCases`=@cases;
-
-SELECT COUNT(*) from County;
-SELECT * from CovidByDate;
-SELECT COUNT(*) FROM CountyHospitalData;
 
 SET SESSION sql_mode = '';
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MultiStaging`(
@@ -138,16 +140,7 @@ UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ',', 1)
 UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ' ', 1);
 
 # Election table
-# find the county key based on county name and state name
-CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateCounty` (
-  `StateKey` INT,
-  `StateName` TEXT,
-  `CountyKey` INT,
-  `CountyName` TEXT
-  )
-ENGINE = InnoDB;
-INSERT StateCounty SELECT StateKey, StateName, CountyKey, CountyName from State 
-inner join `CovidifyUSA`.`County` on StateFKey=StateKey;
+
 
 SET @year08= 2008;
 INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages` 
