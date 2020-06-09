@@ -6,6 +6,8 @@ DROP TABLE IF EXISTS `CovidifyUSA`.`LongLatCounty`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`StateHospitalStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`CountyHospitalStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`MortalityStage`;
 
 LOAD DATA INFILE './state_fips.csv' 
 INTO TABLE `CovidifyUSA`.`State` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
@@ -392,5 +394,14 @@ DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
 
 Select * from State Inner Join StateGovernor on StateKey=StateFKey;
 
-
-
+SELECT COUNT(*) FROM State;
+SELECT COUNT(*) FROM County;
+SELECT COUNT(*) FROM StateGovernor;
+SELECT COUNT(*) FROM CovidByDate;
+SELECT COUNT(*) FROM PresidentialElectionVotePercentages;
+SELECT COUNT(*) FROM Demographics; 
+SELECT COUNT(*) FROM Climate; 
+SELECT COUNT(*) FROM Population; 
+SELECT COUNT(*) FROM StateHospital;
+SELECT COUNT(*) FROM CountyHospital;
+  
