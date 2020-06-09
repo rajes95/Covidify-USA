@@ -393,15 +393,16 @@ Insert Into StateGovernor Select StateGovernorKey, StateKey, `Year`, Governor, P
 DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
 
 Select * from State Inner Join StateGovernor on StateKey=StateFKey;
-
-SELECT COUNT(*) FROM State;
-SELECT COUNT(*) FROM County;
-SELECT COUNT(*) FROM StateGovernor;
-SELECT COUNT(*) FROM CovidByDate;
-SELECT COUNT(*) FROM PresidentialElectionVotePercentages;
-SELECT COUNT(*) FROM Demographics; 
-SELECT COUNT(*) FROM Climate; 
-SELECT COUNT(*) FROM Population; 
-SELECT COUNT(*) FROM StateHospital;
-SELECT COUNT(*) FROM CountyHospital;
   
+SELECT
+  (SELECT COUNT(*) FROM State) as N_State, 
+  (SELECT COUNT(*) FROM County) as N_County,
+  (SELECT COUNT(*) FROM StateGovernor) as N_Governor,
+  (SELECT COUNT(*) FROM CovidByDate) as N_Covid,
+  (SELECT COUNT(*) FROM PresidentialElectionVotePercentages) as N_Election,
+  (SELECT COUNT(*) FROM Demographics) as N_Demographic,
+  (SELECT COUNT(*) FROM Climate) as N_Climate,
+  (SELECT COUNT(*) FROM Population) as N_Population,
+  (SELECT COUNT(*) FROM StateHospitalData) as N_StHospital,
+  (SELECT COUNT(*) FROM CountyHospitalData) as N_CtHospital
+  ;
