@@ -265,9 +265,92 @@ SELECT COUNT(*) FROM CountyHospitalData; #3143 in csv, 2960 here
 # Possible - check if new counties in each new read in csv file and add first!
 
 ## Population update from stage. add 2020 totals, add 60+
-## Mortality Rates
-## Covid By Race
+#INSERT INTO `CovidifyUSA`.`Population`
+SELECT * from Population ;
 
+INSERT INTO `CovidifyUSA`.`Population`(`CountyFKey`, `TotalPopulation`, `Population60Plus`, `Year`)
+SELECT `CountyKey`, `PopulationTotal`, `Population60plus`,@year20
+from CountyHospitalStage inner join StateCounty 
+on StateCounty.CountyName=CountyHospitalStage.CountyName 
+and StateCounty.StateName=CountyHospitalStage.StateName;
+
+## Mortality Rates
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MortalityStage` (
+  `CountyName` TEXT,
+  `FIPS` INT,
+  `Category` TEXT,
+  `MRate80` DECIMAL(5, 2),
+  `MRate85` DECIMAL(5, 2),
+  `MRate90` DECIMAL(5, 2),
+  `MRate95` DECIMAL(5, 2),
+  `MRate00` DECIMAL(5, 2),
+  `MRate05` DECIMAL(5, 2),
+  `MRate10` DECIMAL(5, 2),
+  `MRate14` DECIMAL(5, 2)
+  );
+LOAD DATA INFILE './MortalityByCounty.csv' 
+INTO TABLE `CovidifyUSA`.`MortalityStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 2 ROWS
+(@Location,	@FIPS, @Category, @MRate80, @dummy, @dummy, @MRate85, @dummy, @dummy, @MRate90,	@dummy, @dummy,	
+@MRate95, @dummy, @dummy, @MRate00, @dummy, @dummy,	@MRate05, @dummy, @dummy, @MRate10, @dummy,	@dummy,
+@MRate14, @dummy, @dummy, @dummy, @dummy, @dummy)
+set `CountyName`=@Location, `FIPS`=@FIPS, `Category`=@Category, 
+`MRate80`=@MRate80, `MRate85`=@MRate85,`MRate90`=@MRate90, `MRate95`=@MRate95,
+`MRate00`=@MRate00, `MRate05`=@MRate05, `MRate10`=@MRate10, `MRate14`=@MRate85;
+
+# join based on FIPS
+# TODO: may want to use a for loop to to fill out our table else will have 9yrs*7categories select statements
+SELECT * from MortalityStage WHERE Category='Cardiovascular diseases';
+#SELECT * from County WHERE CountyFIPS=5137;
+#INSERT INTO `CovidifyUSA`.`MortalityRates`(`Year`)
+--   `NeonatalDisordersMortalityRate` DECIMAL NULL,
+--   `HIVAIDSandTBMortalityRate` DECIMAL NULL,
+--   `DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate` DECIMAL NULL,
+--   `ChronicRespiratoryDiseasesMortalityRate` DECIMAL NULL,
+--   `LiverDiseaseMortalityRate` DECIMAL NULL,
+--   `NutritionalDeficienciesMortalityRate` DECIMAL NULL,
+--   `CardiovascularDiseasesMortalityRate`
+  
+## Covid By Race
+-- `StateFKey` INT NOT NULL,
+--   `Race` ENUM('White', 'Black', 'Hispanic', 'Asian', 'Multiracial', 'NHPI', 'Multi', 'Other', 'Unknown') NULL,
+--   `Positive` INT NULL,
+--   `Negative` INT NULL,
+--   `Death` INT NULL,
+--   `Date` DATE NULL,
+
+# States in this csv use two letter format- is this in state csv? Will join on this
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidRaceStage` (
+  `State` VARCHAR(45), `Datetime` TEXT,
+  `PosWhite` INT, `PosBlack` INT, `PosHispanic` INT, `PosAsian` INT, 
+   `PosAIAN` INT,`PosNHPI` INT, `PosMulti` INT, `PosOther` INT, `PosUnknown` INT,
+  `NegWhite` INT, `NegBlack` INT, `NegHispanic` INT, `NegAsian` INT, 
+   `NegAIAN` INT, `NegNHPI` INT, `NegMulti` INT, `NegOther` INT, `NegUnknown` INT,
+  `DeathWhite` INT, `DeathBlack` INT, `DeathHispanic` INT, `DeathAsian` INT, 
+   `DeathAIAN` INT, `DeathNHPI` INT, `DeathMulti` INT, `DeathOther` INT, `DeathUnknown` INT
+  );
+LOAD DATA INFILE './Race Data Entry.csv' 
+INTO TABLE `CovidifyUSA`.`CovidRaceStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 3 ROWS
+(@dummy, @state, @dummy, @dummy, @datets, @dummy, @dummy,@dummy, @poswhite, @posblack, 
+@poshispanic, @posasian, @posAIAN, @posNHPI, @posmulti, @posother, @posunknown, @dummy, 
+@dummy, @dummy, @dummy, @dummy, @dummy, @deathwhite, @deathblack, 
+@deathhispanic, @deathasian, @deathAIAN, @deathNHPI, @deathmulti, @deathother, @deathunknown, @dummy, 
+@dummy, @dummy, @dummy, @dummy, @negwhite, @negblack, @neghispanic, @negasian, @negAIAN,
+@negNHPI, @negmulti, @negother, @negunknown, @dummy, @dummy, @dummy, @dummy, @dummy)
+set `State`=@state, `Datetime`=@datets, `PosWhite`=@poswhite, `PosBlack`=@posblack,
+ `PosHispanic`=@poshispanic, `PosAsian`=@posasian, `PosMulti`=@posmulti,
+   `PosAIAN`=@posAIAN,`PosNHPI`=@posNHPI, `PosMulti`=@posmulti, `PosOther`=@posother,
+   `PosUnknown`=@posunknown, `NegWhite`=@negwhite, `NegBlack`=@negblack, 
+   `NegHispanic`=@neghispanic, `NegAsian`=@negasian, `NegMulti`=@negmulti,
+   `NegAIAN`=@negaian, `NegNHPI`=@negnhpi, `NegOther`=@negother, `NegUnknown`=@negunknown,
+  `DeathWhite`=@deathwhite, `DeathBlack`=@deathblack, `DeathHispanic`=@deathhispanic,
+  `DeathAsian`=@deathasian, `DeathMulti`=@deathmulti, `DeathAIAN`=@deathAIAN, 
+  `DeathNHPI`=@deathNHPI, `DeathOther`=@deathother, `DeathUnknown`=@deathunknown;
+
+# TODO: may want to use a for loop to to fill out our table else will have too many select statements
+SELECT * from CovidRaceStage;
+																		
 SET SQL_SAFE_UPDATES = 0;
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`GovernorsDataStaging` (
   `State` TEXT,
