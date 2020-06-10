@@ -1,5 +1,6 @@
 USE `CovidifyUSA`;
 SET SQL_SAFE_UPDATES = 0;
+
 DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`MultiStaging`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
@@ -10,13 +11,13 @@ DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`MortalityStage`;
 
-LOAD DATA INFILE './state_fips.csv' 
+LOAD DATA INFILE '/var/lib/mysql-files/state_fips.csv' 
 INTO TABLE `CovidifyUSA`.`State` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@StateName,@PostalCode, @Fips)
 set `StateName`=@StateName,`StateFIPS`=@Fips;
 
-LOAD DATA INFILE './covid-us-counties.csv'
+LOAD DATA INFILE '/var/lib/mysql-files/covid-us-counties.csv'
 IGNORE INTO TABLE `CovidifyUSA`.`County`
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' ESCAPED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
@@ -43,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidStage` (
   `CovidCases` INT
   )
 ENGINE = InnoDB;
-LOAD DATA INFILE './covid-us-counties.csv' 
+LOAD DATA INFILE '/var/lib/mysql-files/covid-us-counties.csv' 
 INTO TABLE `CovidifyUSA`.`CovidStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@date,@county,@state,@fips,@cases,@deaths)
@@ -108,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MultiStaging`(
 	`Latitude` VARCHAR(45)
 )
 ENGINE = InnoDB;
-LOAD DATA INFILE './usa-2016-presidential-election-by-county.csv' 
+LOAD DATA INFILE '/var/lib/mysql-files/usa-2016-presidential-election-by-county.csv' 
 INTO TABLE MultiStaging
 CHARACTER SET utf8
 FIELDS TERMINATED BY ';' ENCLOSED BY '"' LINES TERMINATED BY '\n'
@@ -162,8 +163,6 @@ INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages`
 (`CountyFKey`,  `DemocratsPercent`, `RepublicansPercent`, `OtherPercent`, `Year`)
 SELECT `CountyKey`,`DemocratsPercent16`, `RepublicansPercent16`, `OtherPercent16`,@year16
 from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
-
-SELECT * from `CovidifyUSA`.`PresidentialElectionVotePercentages` where `Year`=2016;
 
 ## Demographics table
 INSERT INTO `CovidifyUSA`.`Demographics` 
@@ -220,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateHospitalStage` (
   )
 ENGINE = InnoDB;
   
-LOAD DATA INFILE './PeoplePerHospitalPerState2019.csv' 
+LOAD DATA INFILE '/var/lib/mysql-files/PeoplePerHospitalPerState2019.csv' 
 INTO TABLE `CovidifyUSA`.`StateHospitalStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 2 ROWS
 (@StateName, @dummy, @numhospitals, @dummy, @numemployees, @dummy)
@@ -248,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CountyHospitalStage` (
   `Population60percent` DECIMAL
   )
 ENGINE = InnoDB;
-LOAD DATA INFILE './ICUBedsByCounty2020.csv' 
+LOAD DATA INFILE '/var/lib/mysql-files/ICUBedsByCounty2020.csv' 
 INTO TABLE `CovidifyUSA`.`CountyHospitalStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@StateName, @CountyName, @ICUBeds, @totalPopulation, @population60, @percpopulation60, @dummy)
@@ -269,7 +268,7 @@ SELECT COUNT(*) FROM CountyHospitalData; #3143 in csv, 2960 here
 
 ## Population update from stage. add 2020 totals, add 60+
 #INSERT INTO `CovidifyUSA`.`Population`
-SELECT * from Population ;
+#SELECT * from Population ;
 
 INSERT INTO `CovidifyUSA`.`Population`(`CountyFKey`, `TotalPopulation`, `Population60Plus`, `Year`)
 SELECT `CountyKey`, `PopulationTotal`, `Population60plus`,@year20
@@ -291,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MortalityStage` (
   `MRate10` DECIMAL(5, 2),
   `MRate14` DECIMAL(5, 2)
   );
-LOAD DATA INFILE './MortalityByCounty.csv' 
+LOAD DATA INFILE '/var/lib/mysql-files/MortalityByCounty.csv' 
 INTO TABLE `CovidifyUSA`.`MortalityStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 2 ROWS
 (@Location,	@FIPS, @Category, @MRate80, @dummy, @dummy, @MRate85, @dummy, @dummy, @MRate90,	@dummy, @dummy,	
@@ -303,7 +302,7 @@ set `CountyName`=@Location, `FIPS`=@FIPS, `Category`=@Category,
 
 # join based on FIPS
 # TODO: may want to use a for loop to to fill out our table else will have 9yrs*7categories select statements
-SELECT * from MortalityStage WHERE Category='Cardiovascular diseases';
+#SELECT * from MortalityStage WHERE Category='Cardiovascular diseases';
 #SELECT * from County WHERE CountyFIPS=5137;
 #INSERT INTO `CovidifyUSA`.`MortalityRates`(`Year`)
 --   `NeonatalDisordersMortalityRate` DECIMAL NULL,
@@ -332,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidRaceStage` (
   `DeathWhite` INT, `DeathBlack` INT, `DeathHispanic` INT, `DeathAsian` INT, 
    `DeathAIAN` INT, `DeathNHPI` INT, `DeathMulti` INT, `DeathOther` INT, `DeathUnknown` INT
   );
-LOAD DATA INFILE './Race Data Entry.csv' 
+LOAD DATA INFILE '/var/lib/mysql-files/Race Data Entry.csv' 
 INTO TABLE `CovidifyUSA`.`CovidRaceStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 3 ROWS
 (@dummy, @state, @dummy, @dummy, @datets, @dummy, @dummy,@dummy, @poswhite, @posblack, 
@@ -365,7 +364,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`GovernorsDataStaging` (
   )
 ENGINE = InnoDB;
 
-LOAD DATA INFILE './StateGovernorsData.csv' 
+LOAD DATA INFILE '/var/lib/mysql-files/StateGovernorsData.csv' 
 INTO TABLE GovernorsDataStaging 
 CHARACTER SET utf8
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n'
@@ -392,8 +391,14 @@ WHERE State = 'United States Virgin Islands';
 Insert Into StateGovernor Select StateGovernorKey, StateKey, `Year`, Governor, Party From GovernorsDataStaging inner join State on StateName = State;
 
 DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
-
-Select * from State Inner Join StateGovernor on StateKey=StateFKey;
+DROP TABLE IF EXISTS `CovidifyUSA`.`MultiStaging`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`LongLatCounty`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`StateHospitalStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CountyHospitalStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`MortalityStage`;
   
 SELECT
   (SELECT COUNT(*) FROM State) as N_State, 
