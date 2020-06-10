@@ -263,7 +263,7 @@ from CountyHospitalStage inner join StateCounty
 on StateCounty.CountyName=CountyHospitalStage.CountyName 
 and StateCounty.StateName=CountyHospitalStage.StateName;
 
-SELECT COUNT(*) FROM CountyHospitalData; #3143 in csv, 2960 here
+#SELECT COUNT(*) FROM CountyHospitalData; #3143 in csv, 2960 here
 # Possible - check if new counties in each new read in csv file and add first!
 
 ## Population update from stage. add 2020 totals, add 60+
@@ -351,7 +351,7 @@ set `State`=@state, `Datetime`=@datets, `PosWhite`=@poswhite, `PosBlack`=@posbla
   `DeathNHPI`=@deathNHPI, `DeathOther`=@deathother, `DeathUnknown`=@deathunknown;
 
 # TODO: may want to use a for loop to to fill out our table else will have too many select statements
-SELECT * from CovidRaceStage;
+# SELECT * from CovidRaceStage;
 																		
 SET SQL_SAFE_UPDATES = 0;
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`GovernorsDataStaging` (
