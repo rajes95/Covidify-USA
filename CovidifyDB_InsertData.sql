@@ -1,4 +1,5 @@
 USE `CovidifyUSA`;
+SET SQL_SAFE_UPDATES = 0;
 DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`MultiStaging`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
@@ -406,3 +407,5 @@ SELECT
   (SELECT COUNT(*) FROM StateHospitalData) as N_StHospital,
   (SELECT COUNT(*) FROM CountyHospitalData) as N_CtHospital
   ;
+
+
