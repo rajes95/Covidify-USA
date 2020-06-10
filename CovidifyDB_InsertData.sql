@@ -1,4 +1,6 @@
 USE `CovidifyUSA`;
+SET SQL_SAFE_UPDATES = 0;
+
 DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`MultiStaging`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
@@ -139,7 +141,7 @@ set `County`=@County, `State`=@State,`DemocratsPercent08`=@Dem08Frac, `Democrats
  `Longitude`=@longitude, `Latitude`=@latitude;
 
 UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ',', 1);
-UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ' ', 1);
+UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ' County', 1);
 
 # Election table
 
@@ -161,8 +163,6 @@ INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages`
 (`CountyFKey`,  `DemocratsPercent`, `RepublicansPercent`, `OtherPercent`, `Year`)
 SELECT `CountyKey`,`DemocratsPercent16`, `RepublicansPercent16`, `OtherPercent16`,@year16
 from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
-
-SELECT * from `CovidifyUSA`.`PresidentialElectionVotePercentages` where `Year`=2016;
 
 ## Demographics table
 INSERT INTO `CovidifyUSA`.`Demographics` 
@@ -263,12 +263,12 @@ from CountyHospitalStage inner join StateCounty
 on StateCounty.CountyName=CountyHospitalStage.CountyName 
 and StateCounty.StateName=CountyHospitalStage.StateName;
 
-SELECT COUNT(*) FROM CountyHospitalData; #3143 in csv, 2960 here
+#SELECT COUNT(*) FROM CountyHospitalData; #3143 in csv, 2960 here
 # Possible - check if new counties in each new read in csv file and add first!
 
 ## Population update from stage. add 2020 totals, add 60+
 #INSERT INTO `CovidifyUSA`.`Population`
-SELECT * from Population ;
+#SELECT * from Population ;
 
 INSERT INTO `CovidifyUSA`.`Population`(`CountyFKey`, `TotalPopulation`, `Population60Plus`, `Year`)
 SELECT `CountyKey`, `PopulationTotal`, `Population60plus`,@year20
@@ -302,7 +302,7 @@ set `CountyName`=@Location, `FIPS`=@FIPS, `Category`=@Category,
 
 # join based on FIPS
 # TODO: may want to use a for loop to to fill out our table else will have 9yrs*7categories select statements
-SELECT * from MortalityStage WHERE Category='Cardiovascular diseases';
+#SELECT * from MortalityStage WHERE Category='Cardiovascular diseases';
 #SELECT * from County WHERE CountyFIPS=5137;
 #INSERT INTO `CovidifyUSA`.`MortalityRates`(`Year`)
 --   `NeonatalDisordersMortalityRate` DECIMAL NULL,
@@ -351,7 +351,7 @@ set `State`=@state, `Datetime`=@datets, `PosWhite`=@poswhite, `PosBlack`=@posbla
   `DeathNHPI`=@deathNHPI, `DeathOther`=@deathother, `DeathUnknown`=@deathunknown;
 
 # TODO: may want to use a for loop to to fill out our table else will have too many select statements
-SELECT * from CovidRaceStage;
+# SELECT * from CovidRaceStage;
 																		
 SET SQL_SAFE_UPDATES = 0;
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`GovernorsDataStaging` (
@@ -391,8 +391,14 @@ WHERE State = 'United States Virgin Islands';
 Insert Into StateGovernor Select StateGovernorKey, StateKey, `Year`, Governor, Party From GovernorsDataStaging inner join State on StateName = State;
 
 DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
-
-Select * from State Inner Join StateGovernor on StateKey=StateFKey;
+DROP TABLE IF EXISTS `CovidifyUSA`.`MultiStaging`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`LongLatCounty`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`StateHospitalStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CountyHospitalStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`MortalityStage`;
   
 SELECT
   (SELECT COUNT(*) FROM State) as N_State, 
@@ -406,3 +412,4 @@ SELECT
   (SELECT COUNT(*) FROM StateHospitalData) as N_StHospital,
   (SELECT COUNT(*) FROM CountyHospitalData) as N_CtHospital
   ;
+  
