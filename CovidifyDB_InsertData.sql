@@ -408,7 +408,3 @@ SELECT
   (SELECT COUNT(*) FROM CountyHospitalData) as N_CtHospital
   ;
   
-
-Select * from County;
-Select * from PresidentialElectionVotePercentages
-
