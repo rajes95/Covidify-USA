@@ -98,6 +98,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`PresidentialElectionVotePercentages` (
   `OtherPercent` DECIMAL(5,2) NULL,
   PRIMARY KEY (`PresidentialElectionVotePercentagesKey`),
   INDEX `CountyFKey2_idx` (`CountyFKey` ASC),
+  UNIQUE INDEX `Unique` (`CountyFKey` ASC, `Year` ASC) VISIBLE,
   CONSTRAINT `CountyFKey2`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
@@ -148,6 +149,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Demographics` (
   `MedianEarnings` DECIMAL NULL,
   PRIMARY KEY (`DemographicsKey`),
   INDEX `CountyFKey3_idx` (`CountyFKey` ASC),
+  UNIQUE INDEX `Unique` (`CountyFKey` ASC, `Year` ASC) VISIBLE,
   CONSTRAINT `CountyFKey3`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
@@ -175,6 +177,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Climate` (
   `AutumnTavg` DECIMAL NULL,
   PRIMARY KEY (`ClimateKey`),
   INDEX `CountyFKey4_idx` (`CountyFKey` ASC),
+  UNIQUE INDEX `Unique` (`CountyFKey` ASC, `Year` ASC) VISIBLE,
   CONSTRAINT `CountyFKey4`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
@@ -264,6 +267,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Population` (
   `Population60Plus` INT NULL,
   PRIMARY KEY (`PopulationKey`),
   INDEX `CountyFKey7_idx` (`CountyFKey` ASC),
+  UNIQUE INDEX `Unique` (`CountyFKey` ASC, `Year` ASC) VISIBLE,
   CONSTRAINT `CountyFKey7`
     FOREIGN KEY (`CountyFKey`)
     REFERENCES `CovidifyUSA`.`County` (`CountyKey`)

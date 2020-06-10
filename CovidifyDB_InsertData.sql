@@ -140,7 +140,7 @@ set `County`=@County, `State`=@State,`DemocratsPercent08`=@Dem08Frac, `Democrats
  `Longitude`=@longitude, `Latitude`=@latitude;
 
 UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ',', 1);
-UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ' ', 1);
+UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ' County', 1);
 
 # Election table
 
@@ -407,5 +407,8 @@ SELECT
   (SELECT COUNT(*) FROM StateHospitalData) as N_StHospital,
   (SELECT COUNT(*) FROM CountyHospitalData) as N_CtHospital
   ;
+  
 
+Select * from County;
+Select * from PresidentialElectionVotePercentages
 
