@@ -11,13 +11,13 @@ DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`MortalityStage`;
 
-LOAD DATA INFILE '/var/lib/mysql-files/state_fips.csv' 
+LOAD DATA INFILE './state_fips.csv' 
 INTO TABLE `CovidifyUSA`.`State` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@StateName,@PostalCode, @Fips)
 set `StateName`=@StateName,`StateFIPS`=@Fips;
 
-LOAD DATA INFILE '/var/lib/mysql-files/covid-us-counties.csv'
+LOAD DATA INFILE './covid-us-counties.csv'
 IGNORE INTO TABLE `CovidifyUSA`.`County`
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' ESCAPED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidStage` (
   `CovidCases` INT
   )
 ENGINE = InnoDB;
-LOAD DATA INFILE '/var/lib/mysql-files/covid-us-counties.csv' 
+LOAD DATA INFILE './covid-us-counties.csv' 
 INTO TABLE `CovidifyUSA`.`CovidStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@date,@county,@state,@fips,@cases,@deaths)
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MultiStaging`(
 	`Latitude` VARCHAR(45)
 )
 ENGINE = InnoDB;
-LOAD DATA INFILE '/var/lib/mysql-files/usa-2016-presidential-election-by-county.csv' 
+LOAD DATA INFILE './usa-2016-presidential-election-by-county.csv' 
 INTO TABLE MultiStaging
 CHARACTER SET utf8
 FIELDS TERMINATED BY ';' ENCLOSED BY '"' LINES TERMINATED BY '\n'
@@ -219,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateHospitalStage` (
   )
 ENGINE = InnoDB;
   
-LOAD DATA INFILE '/var/lib/mysql-files/PeoplePerHospitalPerState2019.csv' 
+LOAD DATA INFILE './PeoplePerHospitalPerState2019.csv' 
 INTO TABLE `CovidifyUSA`.`StateHospitalStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 2 ROWS
 (@StateName, @dummy, @numhospitals, @dummy, @numemployees, @dummy)
@@ -247,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CountyHospitalStage` (
   `Population60percent` DECIMAL
   )
 ENGINE = InnoDB;
-LOAD DATA INFILE '/var/lib/mysql-files/ICUBedsByCounty2020.csv' 
+LOAD DATA INFILE './ICUBedsByCounty2020.csv' 
 INTO TABLE `CovidifyUSA`.`CountyHospitalStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@StateName, @CountyName, @ICUBeds, @totalPopulation, @population60, @percpopulation60, @dummy)
@@ -290,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MortalityStage` (
   `MRate10` DECIMAL(5, 2),
   `MRate14` DECIMAL(5, 2)
   );
-LOAD DATA INFILE '/var/lib/mysql-files/MortalityByCounty.csv' 
+LOAD DATA INFILE './MortalityByCounty.csv' 
 INTO TABLE `CovidifyUSA`.`MortalityStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 2 ROWS
 (@Location,	@FIPS, @Category, @MRate80, @dummy, @dummy, @MRate85, @dummy, @dummy, @MRate90,	@dummy, @dummy,	
@@ -331,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidRaceStage` (
   `DeathWhite` INT, `DeathBlack` INT, `DeathHispanic` INT, `DeathAsian` INT, 
    `DeathAIAN` INT, `DeathNHPI` INT, `DeathMulti` INT, `DeathOther` INT, `DeathUnknown` INT
   );
-LOAD DATA INFILE '/var/lib/mysql-files/Race Data Entry.csv' 
+LOAD DATA INFILE './Race Data Entry.csv' 
 INTO TABLE `CovidifyUSA`.`CovidRaceStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 3 ROWS
 (@dummy, @state, @dummy, @dummy, @datets, @dummy, @dummy,@dummy, @poswhite, @posblack, 
@@ -364,7 +364,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`GovernorsDataStaging` (
   )
 ENGINE = InnoDB;
 
-LOAD DATA INFILE '/var/lib/mysql-files/StateGovernorsData.csv' 
+LOAD DATA INFILE './StateGovernorsData.csv' 
 INTO TABLE GovernorsDataStaging 
 CHARACTER SET utf8
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n'
