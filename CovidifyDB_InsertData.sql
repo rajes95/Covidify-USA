@@ -11,17 +11,18 @@ DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`MortalityStage`;
 
+# /var/lib/mysql-files/...
 LOAD DATA INFILE './state_fips.csv' 
 INTO TABLE `CovidifyUSA`.`State` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@StateName,@PostalCode, @Fips)
 set `StateName`=@StateName,`StateFIPS`=@Fips;
 
-LOAD DATA INFILE './covid-us-counties.csv'
+LOAD DATA INFILE './county_fips.csv'
 IGNORE INTO TABLE `CovidifyUSA`.`County`
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' ESCAPED BY '"'
-LINES TERMINATED BY '\n' IGNORE 1 ROWS
-(@date,@county,@state,@fips,@cases,@deaths)
+LINES TERMINATED BY '\n'
+(@fips,@county,@state)
 set `StateFKey` = (SELECT `StateKey` FROM `CovidifyUSA`.`State` where `StateName`=@state), 
 `CountyFIPS`=@fips, `CountyName`=@county;
 
@@ -30,16 +31,18 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateCounty` (
   `StateKey` INT,
   `StateName` TEXT,
   `CountyKey` INT,
-  `CountyName` TEXT
+  `CountyName` TEXT,
+  `CountyFIPS` VARCHAR(45)
   )
 ENGINE = InnoDB;
-INSERT StateCounty SELECT StateKey, StateName, CountyKey, CountyName from State 
+INSERT StateCounty SELECT StateKey, StateName, CountyKey, CountyName, CountyFIPS from State 
 inner join `CovidifyUSA`.`County` on StateFKey=StateKey;
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidStage` (
   `CountyName` VARCHAR(45),
   `State` VARCHAR(45),
   `Date` VARCHAR(45),
+  `FIPS` VARCHAR(45),
   `CovidDeaths` INT,
   `CovidCases` INT
   )
@@ -48,20 +51,19 @@ LOAD DATA INFILE './covid-us-counties.csv'
 INTO TABLE `CovidifyUSA`.`CovidStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@date,@county,@state,@fips,@cases,@deaths)
-set `CountyName`=@county,`State`=@state,`Date`=@date, `CovidDeaths`=@deaths, `CovidCases`=@cases;
+set `CountyName`=@county,`State`=@state,`Date`=@date, `FIPS`=@fips, `CovidDeaths`=@deaths, `CovidCases`=@cases;
 
 INSERT INTO `CovidifyUSA`.`CovidByDate`
 (`CountyFKey`, `Date`, `CovidDeaths`, `CovidCases`)
 SELECT `CountyKey`, `Date`, `CovidDeaths`, `CovidCases`
 #from CovidStage inner join County on CovidStage.CountyName=County.CountyName; 
-from CovidStage inner join StateCounty on StateCounty.CountyName=CovidStage.CountyName
-and StateCounty.StateName=CovidStage.State;
-
+from CovidStage inner join StateCounty on StateCounty.CountyFIPS=CovidStage.FIPS;
 
 SET SESSION sql_mode = '';
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MultiStaging`(
 	## PresElection table
 	`County` TEXT, # County - read in and get rid of comma, get rid of 'county'
+    `FIPS` VARCHAR(45),
     `State` TEXT,
 	#`Year` INT, #08, 12, 16
 	`DemocratsPercent08` DECIMAL(5,2),
@@ -131,7 +133,7 @@ IGNORE 1 ROWS
     @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @total16, @Other16Frac,
     @Rep16Frac, @Dem16Frac, @dummy, @dummy, @total08, @total12, @other08, @other12, @Other12Frac,
 	@Other08Frac, @Rep12Frac, @Rep08Frac, @Dem12Frac, @Dem08Frac)
-set `County`=@County, `State`=@State,`DemocratsPercent08`=@Dem08Frac, `DemocratsPercent12`=@Dem12Frac, `DemocratsPercent16`=@Dem16Frac, 
+set `County`=@County, `FIPS`=@Fips, `State`=@State,`DemocratsPercent08`=@Dem08Frac, `DemocratsPercent12`=@Dem12Frac, `DemocratsPercent16`=@Dem16Frac, 
 `RepublicansPercent08`=@Rep08Frac, `RepublicansPercent12`=@Rep12Frac, `RepublicansPercent16`=@Rep16Frac, 
  `OtherPercent08`=@Other08Frac, `OtherPercent12`=@Other12Frac, `OtherPercent16`=@Other16Frac, 
  `White`=@White, `AfricanAmerican`=@AfricanAmerican, `Latino`=@Latino, `NativeAmerican`=@NativeAmerican, `AsianAmerican`=@AsianAmerican,
@@ -145,24 +147,23 @@ UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ' Count
 
 # Election table
 
-
 SET @year08= 2008;
 INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages` 
 (`CountyFKey`,  `DemocratsPercent`, `RepublicansPercent`, `OtherPercent`, `Year`)
 SELECT `CountyKey`,`DemocratsPercent08`, `RepublicansPercent08`, `OtherPercent08`,@year08
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS;
 
 SET @year12= 2012;
 INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages` 
 (`CountyFKey`,  `DemocratsPercent`, `RepublicansPercent`, `OtherPercent`, `Year`)
 SELECT `CountyKey`,`DemocratsPercent12`, `RepublicansPercent12`, `OtherPercent12`,@year12
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS;
 
 SET @year16= 2016;
 INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages` 
 (`CountyFKey`,  `DemocratsPercent`, `RepublicansPercent`, `OtherPercent`, `Year`)
 SELECT `CountyKey`,`DemocratsPercent16`, `RepublicansPercent16`, `OtherPercent16`,@year16
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS;
 
 ## Demographics table
 INSERT INTO `CovidifyUSA`.`Demographics` 
@@ -170,7 +171,7 @@ INSERT INTO `CovidifyUSA`.`Demographics`
   `AsianAmerican`, `OtherEthnicity`, `PovertyRate`, `MedianAge`, `MedianEarnings`) 
 SELECT `CountyKey`, @year16,`White`, `AfricanAmerican`, `Latino`, `NativeAmerican`, 
 `AsianAmerican`, `OtherEthnicity`, `PovertyRate`, `MedianAge`, `MedianEarnings`
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS;
 
 ## Climate Table
 INSERT INTO `CovidifyUSA`.`Climate` 
@@ -178,7 +179,7 @@ INSERT INTO `CovidifyUSA`.`Climate`
   `AutumnPrcp`, `WinterTavg`, `SummerTavg`, `SpringTavg`, `AutumnTavg`)
 SELECT `CountyKey`, @year16, `Elevation`, `WinterPrcp`, `SummerPrcp`, `SpringPrcp`,
   `AutumnPrcp`, `WinterTavg`, `SummerTavg`, `SpringTavg`, `AutumnTavg`
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State; 
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS; 
 ;
 # Why is WinterTavg being read in as an INT?
 #SELECT `WinterTavg` from MultiStaging;
@@ -187,7 +188,7 @@ from MultiStaging inner join StateCounty on CountyName=County and StateName=Stat
 INSERT INTO `CovidifyUSA`.`Population`
 (`CountyFKey`, `Year`, `TotalPopulation`)
 SELECT `CountyKey`, @year16, `TotalPopulation`
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State; 
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS; 
 
 ## Update Latitude/Longitude in County table
 
@@ -198,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`LongLatCounty` (
   )
 ENGINE = InnoDB;
 INSERT LongLatCounty SELECT `CountyKey`, `Longitude`, `Latitude` from MultiStaging 
-inner join StateCounty on CountyName=County and StateName=State;
+inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS;
 
 Update `CovidifyUSA`.`County` 
 Inner Join LongLatCounty on CountyKey=CountyFKey
@@ -241,17 +242,18 @@ from State Inner Join StateHospitalStage on State.StateName=StateHospitalStage.S
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CountyHospitalStage` (
   `StateName` TEXT,
   `CountyName` TEXT,
+  `FIPS` VARCHAR(45),
   `ICUBeds` INT,
   `PopulationTotal` INT,
   `Population60plus` INT,
   `Population60percent` DECIMAL
   )
 ENGINE = InnoDB;
-LOAD DATA INFILE './ICUBedsByCounty2020.csv' 
+LOAD DATA INFILE './ICUBedsByCounty2020.csv'
 INTO TABLE `CovidifyUSA`.`CountyHospitalStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
-(@StateName, @CountyName, @ICUBeds, @totalPopulation, @population60, @percpopulation60, @dummy)
-set `StateName`=@StateName, `CountyName`=@CountyName, `ICUBeds`=@ICUBeds, 
+(@StateName, @CountyName,@fips, @ICUBeds, @totalPopulation, @population60, @percpopulation60, @dummy)
+set `StateName`=@StateName, `CountyName`=@CountyName,`FIPS`=@fips, `ICUBeds`=@ICUBeds, 
 `PopulationTotal`=@totalPopulation, `Population60plus`=@population60, 
 `Population60percent`=@percpopulation60;
 
@@ -260,8 +262,7 @@ INSERT INTO `CovidifyUSA`.`CountyHospitalData`
 (`CountyFKey`,  `ICUBeds`, `Year`)
 SELECT `CountyKey`, `ICUBeds`,@year20
 from CountyHospitalStage inner join StateCounty 
-on StateCounty.CountyName=CountyHospitalStage.CountyName 
-and StateCounty.StateName=CountyHospitalStage.StateName;
+on StateCounty.CountyFIPS=CountyHospitalStage.FIPS; 
 
 #SELECT COUNT(*) FROM CountyHospitalData; #3143 in csv, 2960 here
 # Possible - check if new counties in each new read in csv file and add first!
@@ -273,13 +274,12 @@ and StateCounty.StateName=CountyHospitalStage.StateName;
 INSERT INTO `CovidifyUSA`.`Population`(`CountyFKey`, `TotalPopulation`, `Population60Plus`, `Year`)
 SELECT `CountyKey`, `PopulationTotal`, `Population60plus`,@year20
 from CountyHospitalStage inner join StateCounty 
-on StateCounty.CountyName=CountyHospitalStage.CountyName 
-and StateCounty.StateName=CountyHospitalStage.StateName;
+on StateCounty.CountyFIPS=CountyHospitalStage.FIPS;
 
 ## Mortality Rates
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MortalityStage` (
   `CountyName` TEXT,
-  `FIPS` INT,
+  `FIPS` VARCHAR(45),
   `Category` TEXT,
   `MRate80` DECIMAL(5, 2),
   `MRate85` DECIMAL(5, 2),
@@ -300,19 +300,179 @@ set `CountyName`=@Location, `FIPS`=@FIPS, `Category`=@Category,
 `MRate80`=@MRate80, `MRate85`=@MRate85,`MRate90`=@MRate90, `MRate95`=@MRate95,
 `MRate00`=@MRate00, `MRate05`=@MRate05, `MRate10`=@MRate10, `MRate14`=@MRate85;
 
+#ALTER TABLE `MortalityStage` CHANGE `FIPS` `FIPS` VARCHAR(45); #changes type
+UPDATE MortalityStage SET `FIPS`=LPAD(`FIPS`, 5, '0'); #pads everything
+UPDATE State SET StateFIPS=LPAD(StateFIPS,2,0);
+
+-- select MortalityStage.CountyName, CountyKey, MortalityStage.FIPS,Category,MRate80,MRate85,MRate90,MRate95,MRate00,MRate05,MRate10,MRate14
+
+SET @year80 = 1980;
+SET @year85 = 1985;
+SET @year90 = 1990;
+SET @year95 = 1995;
+SET @year00 = 2000;
+SET @year05 = 2005;
+SET @year10 = 2010;
+SET @year14 = 2014;
+
 # join based on FIPS
 # TODO: may want to use a for loop to to fill out our table else will have 9yrs*7categories select statements
 #SELECT * from MortalityStage WHERE Category='Cardiovascular diseases';
 #SELECT * from County WHERE CountyFIPS=5137;
-#INSERT INTO `CovidifyUSA`.`MortalityRates`(`Year`)
---   `NeonatalDisordersMortalityRate` DECIMAL NULL,
---   `HIVAIDSandTBMortalityRate` DECIMAL NULL,
---   `DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate` DECIMAL NULL,
---   `ChronicRespiratoryDiseasesMortalityRate` DECIMAL NULL,
---   `LiverDiseaseMortalityRate` DECIMAL NULL,
---   `NutritionalDeficienciesMortalityRate` DECIMAL NULL,
---   `CardiovascularDiseasesMortalityRate`
-  
+INSERT INTO `CovidifyUSA`.`MortalityRates`(`CountyFKey`,`Year`,`NeonatalDisordersMortalityRate`,
+`HIVAIDSandTBMortalityRate`,`DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,`ChronicRespiratoryDiseasesMortalityRate`,
+`LiverDiseaseMortalityRate`,`NutritionalDeficienciesMortalityRate`,`CardiovascularDiseasesMortalityRate`)
+SELECT
+	CountyKey as CountyFKey, @year80 as `Year`,
+	SUM(CASE WHEN Category="Neonatal disorders" THEN MRate80 END) as `NeonatalDisordersMortalityRate`,
+	SUM(CASE WHEN Category="HIV/AIDS and tuberculosis" THEN MRate80 END) as `HIVAIDSandTBMortalityRate`,
+    SUM(CASE WHEN Category="Diabetes, urogenital, blood, and endocrine diseases" THEN MRate80 END) as `DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Chronic respiratory diseases" THEN MRate80 END) as `ChronicRespiratoryDiseasesMortalityRate`,
+	SUM(CASE WHEN Category="Cirrhosis and other chronic liver diseases" THEN MRate80 END) as `LiverDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Nutritional deficiencies" THEN MRate80 END) as `NutritionalDeficienciesMortalityRate`,
+    SUM(CASE WHEN Category="Cardiovascular diseases" THEN MRate80 END) as `CardiovascularDiseasesMortalityRate`
+from MortalityStage inner join StateCounty on CountyFIPS = FIPS
+where Category="Neonatal disorders" or Category="HIV/AIDS and tuberculosis" or Category="Diabetes, urogenital, blood, and endocrine diseases"
+		or Category="Chronic respiratory diseases" or Category="Cirrhosis and other chronic liver diseases" or Category="Nutritional deficiencies"
+		or Category="Cardiovascular diseases"
+group by FIPS
+order by FIPS;
+
+INSERT INTO `CovidifyUSA`.`MortalityRates`(`CountyFKey`,`Year`,`NeonatalDisordersMortalityRate`,
+`HIVAIDSandTBMortalityRate`,`DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,`ChronicRespiratoryDiseasesMortalityRate`,
+`LiverDiseaseMortalityRate`,`NutritionalDeficienciesMortalityRate`,`CardiovascularDiseasesMortalityRate`)
+SELECT
+	CountyKey as CountyFKey, @year85 as `Year`,
+	SUM(CASE WHEN Category="Neonatal disorders" THEN MRate85 END) as `NeonatalDisordersMortalityRate`,
+	SUM(CASE WHEN Category="HIV/AIDS and tuberculosis" THEN MRate85 END) as `HIVAIDSandTBMortalityRate`,
+    SUM(CASE WHEN Category="Diabetes, urogenital, blood, and endocrine diseases" THEN MRate85 END) as `DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Chronic respiratory diseases" THEN MRate85 END) as `ChronicRespiratoryDiseasesMortalityRate`,
+	SUM(CASE WHEN Category="Cirrhosis and other chronic liver diseases" THEN MRate85 END) as `LiverDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Nutritional deficiencies" THEN MRate85 END) as `NutritionalDeficienciesMortalityRate`,
+    SUM(CASE WHEN Category="Cardiovascular diseases" THEN MRate85 END) as `CardiovascularDiseasesMortalityRate`
+from MortalityStage inner join StateCounty on CountyFIPS = FIPS
+where Category="Neonatal disorders" or Category="HIV/AIDS and tuberculosis" or Category="Diabetes, urogenital, blood, and endocrine diseases"
+		or Category="Chronic respiratory diseases" or Category="Cirrhosis and other chronic liver diseases" or Category="Nutritional deficiencies"
+		or Category="Cardiovascular diseases"
+group by FIPS
+order by FIPS;
+
+INSERT INTO `CovidifyUSA`.`MortalityRates`(`CountyFKey`,`Year`,`NeonatalDisordersMortalityRate`,
+`HIVAIDSandTBMortalityRate`,`DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,`ChronicRespiratoryDiseasesMortalityRate`,
+`LiverDiseaseMortalityRate`,`NutritionalDeficienciesMortalityRate`,`CardiovascularDiseasesMortalityRate`)
+SELECT
+	CountyKey as CountyFKey, @year90 as `Year`,
+	SUM(CASE WHEN Category="Neonatal disorders" THEN MRate90 END) as `NeonatalDisordersMortalityRate`,
+	SUM(CASE WHEN Category="HIV/AIDS and tuberculosis" THEN MRate90 END) as `HIVAIDSandTBMortalityRate`,
+    SUM(CASE WHEN Category="Diabetes, urogenital, blood, and endocrine diseases" THEN MRate90 END) as `DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Chronic respiratory diseases" THEN MRate90 END) as `ChronicRespiratoryDiseasesMortalityRate`,
+	SUM(CASE WHEN Category="Cirrhosis and other chronic liver diseases" THEN MRate90 END) as `LiverDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Nutritional deficiencies" THEN MRate90 END) as `NutritionalDeficienciesMortalityRate`,
+    SUM(CASE WHEN Category="Cardiovascular diseases" THEN MRate90 END) as `CardiovascularDiseasesMortalityRate`
+from MortalityStage inner join StateCounty on CountyFIPS = FIPS
+where Category="Neonatal disorders" or Category="HIV/AIDS and tuberculosis" or Category="Diabetes, urogenital, blood, and endocrine diseases"
+		or Category="Chronic respiratory diseases" or Category="Cirrhosis and other chronic liver diseases" or Category="Nutritional deficiencies"
+		or Category="Cardiovascular diseases"
+group by FIPS
+order by FIPS;
+
+INSERT INTO `CovidifyUSA`.`MortalityRates`(`CountyFKey`,`Year`,`NeonatalDisordersMortalityRate`,
+`HIVAIDSandTBMortalityRate`,`DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,`ChronicRespiratoryDiseasesMortalityRate`,
+`LiverDiseaseMortalityRate`,`NutritionalDeficienciesMortalityRate`,`CardiovascularDiseasesMortalityRate`)
+SELECT
+	CountyKey as CountyFKey, @year95 as `Year`,
+	SUM(CASE WHEN Category="Neonatal disorders" THEN MRate95 END) as `NeonatalDisordersMortalityRate`,
+	SUM(CASE WHEN Category="HIV/AIDS and tuberculosis" THEN MRate95 END) as `HIVAIDSandTBMortalityRate`,
+    SUM(CASE WHEN Category="Diabetes, urogenital, blood, and endocrine diseases" THEN MRate95 END) as `DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Chronic respiratory diseases" THEN MRate95 END) as `ChronicRespiratoryDiseasesMortalityRate`,
+	SUM(CASE WHEN Category="Cirrhosis and other chronic liver diseases" THEN MRate95 END) as `LiverDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Nutritional deficiencies" THEN MRate95 END) as `NutritionalDeficienciesMortalityRate`,
+    SUM(CASE WHEN Category="Cardiovascular diseases" THEN MRate95 END) as `CardiovascularDiseasesMortalityRate`
+from MortalityStage inner join StateCounty on CountyFIPS = FIPS
+where Category="Neonatal disorders" or Category="HIV/AIDS and tuberculosis" or Category="Diabetes, urogenital, blood, and endocrine diseases"
+		or Category="Chronic respiratory diseases" or Category="Cirrhosis and other chronic liver diseases" or Category="Nutritional deficiencies"
+		or Category="Cardiovascular diseases"
+group by FIPS
+order by FIPS;
+
+INSERT INTO `CovidifyUSA`.`MortalityRates`(`CountyFKey`,`Year`,`NeonatalDisordersMortalityRate`,
+`HIVAIDSandTBMortalityRate`,`DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,`ChronicRespiratoryDiseasesMortalityRate`,
+`LiverDiseaseMortalityRate`,`NutritionalDeficienciesMortalityRate`,`CardiovascularDiseasesMortalityRate`)
+SELECT
+	CountyKey as CountyFKey, @year00 as `Year`,
+	SUM(CASE WHEN Category="Neonatal disorders" THEN MRate00 END) as `NeonatalDisordersMortalityRate`,
+	SUM(CASE WHEN Category="HIV/AIDS and tuberculosis" THEN MRate00 END) as `HIVAIDSandTBMortalityRate`,
+    SUM(CASE WHEN Category="Diabetes, urogenital, blood, and endocrine diseases" THEN MRate00 END) as `DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Chronic respiratory diseases" THEN MRate00 END) as `ChronicRespiratoryDiseasesMortalityRate`,
+	SUM(CASE WHEN Category="Cirrhosis and other chronic liver diseases" THEN MRate00 END) as `LiverDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Nutritional deficiencies" THEN MRate00 END) as `NutritionalDeficienciesMortalityRate`,
+    SUM(CASE WHEN Category="Cardiovascular diseases" THEN MRate00 END) as `CardiovascularDiseasesMortalityRate`
+from MortalityStage inner join StateCounty on CountyFIPS = FIPS
+where Category="Neonatal disorders" or Category="HIV/AIDS and tuberculosis" or Category="Diabetes, urogenital, blood, and endocrine diseases"
+		or Category="Chronic respiratory diseases" or Category="Cirrhosis and other chronic liver diseases" or Category="Nutritional deficiencies"
+		or Category="Cardiovascular diseases"
+group by FIPS
+order by FIPS;
+
+INSERT INTO `CovidifyUSA`.`MortalityRates`(`CountyFKey`,`Year`,`NeonatalDisordersMortalityRate`,
+`HIVAIDSandTBMortalityRate`,`DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,`ChronicRespiratoryDiseasesMortalityRate`,
+`LiverDiseaseMortalityRate`,`NutritionalDeficienciesMortalityRate`,`CardiovascularDiseasesMortalityRate`)
+SELECT
+	CountyKey as CountyFKey, @year05 as `Year`,
+	SUM(CASE WHEN Category="Neonatal disorders" THEN MRate05 END) as `NeonatalDisordersMortalityRate`,
+	SUM(CASE WHEN Category="HIV/AIDS and tuberculosis" THEN MRate05 END) as `HIVAIDSandTBMortalityRate`,
+    SUM(CASE WHEN Category="Diabetes, urogenital, blood, and endocrine diseases" THEN MRate05 END) as `DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Chronic respiratory diseases" THEN MRate05 END) as `ChronicRespiratoryDiseasesMortalityRate`,
+	SUM(CASE WHEN Category="Cirrhosis and other chronic liver diseases" THEN MRate05 END) as `LiverDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Nutritional deficiencies" THEN MRate05 END) as `NutritionalDeficienciesMortalityRate`,
+    SUM(CASE WHEN Category="Cardiovascular diseases" THEN MRate05 END) as `CardiovascularDiseasesMortalityRate`
+from MortalityStage inner join StateCounty on CountyFIPS = FIPS
+where Category="Neonatal disorders" or Category="HIV/AIDS and tuberculosis" or Category="Diabetes, urogenital, blood, and endocrine diseases"
+		or Category="Chronic respiratory diseases" or Category="Cirrhosis and other chronic liver diseases" or Category="Nutritional deficiencies"
+		or Category="Cardiovascular diseases"
+group by FIPS
+order by FIPS;
+
+INSERT INTO `CovidifyUSA`.`MortalityRates`(`CountyFKey`,`Year`,`NeonatalDisordersMortalityRate`,
+`HIVAIDSandTBMortalityRate`,`DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,`ChronicRespiratoryDiseasesMortalityRate`,
+`LiverDiseaseMortalityRate`,`NutritionalDeficienciesMortalityRate`,`CardiovascularDiseasesMortalityRate`)
+SELECT
+	CountyKey as CountyFKey, @year10 as `Year`,
+	SUM(CASE WHEN Category="Neonatal disorders" THEN MRate10 END) as `NeonatalDisordersMortalityRate`,
+	SUM(CASE WHEN Category="HIV/AIDS and tuberculosis" THEN MRate10 END) as `HIVAIDSandTBMortalityRate`,
+    SUM(CASE WHEN Category="Diabetes, urogenital, blood, and endocrine diseases" THEN MRate10 END) as `DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Chronic respiratory diseases" THEN MRate10 END) as `ChronicRespiratoryDiseasesMortalityRate`,
+	SUM(CASE WHEN Category="Cirrhosis and other chronic liver diseases" THEN MRate10 END) as `LiverDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Nutritional deficiencies" THEN MRate10 END) as `NutritionalDeficienciesMortalityRate`,
+    SUM(CASE WHEN Category="Cardiovascular diseases" THEN MRate10 END) as `CardiovascularDiseasesMortalityRate`
+from MortalityStage inner join StateCounty on CountyFIPS = FIPS
+where Category="Neonatal disorders" or Category="HIV/AIDS and tuberculosis" or Category="Diabetes, urogenital, blood, and endocrine diseases"
+		or Category="Chronic respiratory diseases" or Category="Cirrhosis and other chronic liver diseases" or Category="Nutritional deficiencies"
+		or Category="Cardiovascular diseases"
+group by FIPS
+order by FIPS;
+
+INSERT INTO `CovidifyUSA`.`MortalityRates`(`CountyFKey`,`Year`,`NeonatalDisordersMortalityRate`,
+`HIVAIDSandTBMortalityRate`,`DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,`ChronicRespiratoryDiseasesMortalityRate`,
+`LiverDiseaseMortalityRate`,`NutritionalDeficienciesMortalityRate`,`CardiovascularDiseasesMortalityRate`)
+SELECT
+	CountyKey as CountyFKey, @year14 as `Year`,
+	SUM(CASE WHEN Category="Neonatal disorders" THEN MRate14 END) as `NeonatalDisordersMortalityRate`,
+	SUM(CASE WHEN Category="HIV/AIDS and tuberculosis" THEN MRate14 END) as `HIVAIDSandTBMortalityRate`,
+    SUM(CASE WHEN Category="Diabetes, urogenital, blood, and endocrine diseases" THEN MRate14 END) as `DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Chronic respiratory diseases" THEN MRate14 END) as `ChronicRespiratoryDiseasesMortalityRate`,
+	SUM(CASE WHEN Category="Cirrhosis and other chronic liver diseases" THEN MRate14 END) as `LiverDiseaseMortalityRate`,
+    SUM(CASE WHEN Category="Nutritional deficiencies" THEN MRate14 END) as `NutritionalDeficienciesMortalityRate`,
+    SUM(CASE WHEN Category="Cardiovascular diseases" THEN MRate14 END) as `CardiovascularDiseasesMortalityRate`
+from MortalityStage inner join StateCounty on CountyFIPS = FIPS
+where Category="Neonatal disorders" or Category="HIV/AIDS and tuberculosis" or Category="Diabetes, urogenital, blood, and endocrine diseases"
+		or Category="Chronic respiratory diseases" or Category="Cirrhosis and other chronic liver diseases" or Category="Nutritional deficiencies"
+		or Category="Cardiovascular diseases"
+group by FIPS
+order by FIPS;
+
+select * from MortalityRates;
+
 ## Covid By Race
 -- `StateFKey` INT NOT NULL,
 --   `Race` ENUM('White', 'Black', 'Hispanic', 'Asian', 'Multiracial', 'NHPI', 'Multi', 'Other', 'Unknown') NULL,
@@ -410,6 +570,8 @@ SELECT
   (SELECT COUNT(*) FROM Climate) as N_Climate,
   (SELECT COUNT(*) FROM Population) as N_Population,
   (SELECT COUNT(*) FROM StateHospitalData) as N_StHospital,
-  (SELECT COUNT(*) FROM CountyHospitalData) as N_CtHospital
+  (SELECT COUNT(*) FROM CountyHospitalData) as N_CtHospital,
+  (SELECT COUNT(*) FROM MortalityRates) as N_MortalityRts
   ;
-  
+
+
