@@ -26,24 +26,23 @@ LINES TERMINATED BY '\n'
 set `StateFKey` = (SELECT `StateKey` FROM `CovidifyUSA`.`State` where `StateName`=@state), 
 `CountyFIPS`=@fips, `CountyName`=@county;
 
-select * from County;
-select * from State;
-
 # find the county key based on county name and state name
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateCounty` (
   `StateKey` INT,
   `StateName` TEXT,
   `CountyKey` INT,
-  `CountyName` TEXT
+  `CountyName` TEXT,
+  `CountyFIPS` VARCHAR(45)
   )
 ENGINE = InnoDB;
-INSERT StateCounty SELECT StateKey, StateName, CountyKey, CountyName from State 
+INSERT StateCounty SELECT StateKey, StateName, CountyKey, CountyName, CountyFIPS from State 
 inner join `CovidifyUSA`.`County` on StateFKey=StateKey;
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidStage` (
   `CountyName` VARCHAR(45),
   `State` VARCHAR(45),
   `Date` VARCHAR(45),
+  `FIPS` VARCHAR(45),
   `CovidDeaths` INT,
   `CovidCases` INT
   )
@@ -52,20 +51,19 @@ LOAD DATA INFILE '/var/lib/mysql-files/covid-us-counties.csv'
 INTO TABLE `CovidifyUSA`.`CovidStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@date,@county,@state,@fips,@cases,@deaths)
-set `CountyName`=@county,`State`=@state,`Date`=@date, `CovidDeaths`=@deaths, `CovidCases`=@cases;
+set `CountyName`=@county,`State`=@state,`Date`=@date, `FIPS`=@fips, `CovidDeaths`=@deaths, `CovidCases`=@cases;
 
 INSERT INTO `CovidifyUSA`.`CovidByDate`
 (`CountyFKey`, `Date`, `CovidDeaths`, `CovidCases`)
 SELECT `CountyKey`, `Date`, `CovidDeaths`, `CovidCases`
 #from CovidStage inner join County on CovidStage.CountyName=County.CountyName; 
-from CovidStage inner join StateCounty on StateCounty.CountyName=CovidStage.CountyName
-and StateCounty.StateName=CovidStage.State;
-
+from CovidStage inner join StateCounty on StateCounty.CountyFIPS=CovidStage.FIPS;
 
 SET SESSION sql_mode = '';
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MultiStaging`(
 	## PresElection table
 	`County` TEXT, # County - read in and get rid of comma, get rid of 'county'
+    `FIPS` VARCHAR(45),
     `State` TEXT,
 	#`Year` INT, #08, 12, 16
 	`DemocratsPercent08` DECIMAL(5,2),
@@ -135,7 +133,7 @@ IGNORE 1 ROWS
     @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @total16, @Other16Frac,
     @Rep16Frac, @Dem16Frac, @dummy, @dummy, @total08, @total12, @other08, @other12, @Other12Frac,
 	@Other08Frac, @Rep12Frac, @Rep08Frac, @Dem12Frac, @Dem08Frac)
-set `County`=@County, `State`=@State,`DemocratsPercent08`=@Dem08Frac, `DemocratsPercent12`=@Dem12Frac, `DemocratsPercent16`=@Dem16Frac, 
+set `County`=@County, `FIPS`=@Fips, `State`=@State,`DemocratsPercent08`=@Dem08Frac, `DemocratsPercent12`=@Dem12Frac, `DemocratsPercent16`=@Dem16Frac, 
 `RepublicansPercent08`=@Rep08Frac, `RepublicansPercent12`=@Rep12Frac, `RepublicansPercent16`=@Rep16Frac, 
  `OtherPercent08`=@Other08Frac, `OtherPercent12`=@Other12Frac, `OtherPercent16`=@Other16Frac, 
  `White`=@White, `AfricanAmerican`=@AfricanAmerican, `Latino`=@Latino, `NativeAmerican`=@NativeAmerican, `AsianAmerican`=@AsianAmerican,
@@ -149,24 +147,23 @@ UPDATE `CovidifyUSA`.`MultiStaging` SET County = SUBSTRING_INDEX(County, ' Count
 
 # Election table
 
-
 SET @year08= 2008;
 INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages` 
 (`CountyFKey`,  `DemocratsPercent`, `RepublicansPercent`, `OtherPercent`, `Year`)
 SELECT `CountyKey`,`DemocratsPercent08`, `RepublicansPercent08`, `OtherPercent08`,@year08
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS;
 
 SET @year12= 2012;
 INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages` 
 (`CountyFKey`,  `DemocratsPercent`, `RepublicansPercent`, `OtherPercent`, `Year`)
 SELECT `CountyKey`,`DemocratsPercent12`, `RepublicansPercent12`, `OtherPercent12`,@year12
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS;
 
 SET @year16= 2016;
 INSERT INTO `CovidifyUSA`.`PresidentialElectionVotePercentages` 
 (`CountyFKey`,  `DemocratsPercent`, `RepublicansPercent`, `OtherPercent`, `Year`)
 SELECT `CountyKey`,`DemocratsPercent16`, `RepublicansPercent16`, `OtherPercent16`,@year16
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS;
 
 ## Demographics table
 INSERT INTO `CovidifyUSA`.`Demographics` 
@@ -174,7 +171,7 @@ INSERT INTO `CovidifyUSA`.`Demographics`
   `AsianAmerican`, `OtherEthnicity`, `PovertyRate`, `MedianAge`, `MedianEarnings`) 
 SELECT `CountyKey`, @year16,`White`, `AfricanAmerican`, `Latino`, `NativeAmerican`, 
 `AsianAmerican`, `OtherEthnicity`, `PovertyRate`, `MedianAge`, `MedianEarnings`
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State;
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS;
 
 ## Climate Table
 INSERT INTO `CovidifyUSA`.`Climate` 
@@ -182,7 +179,7 @@ INSERT INTO `CovidifyUSA`.`Climate`
   `AutumnPrcp`, `WinterTavg`, `SummerTavg`, `SpringTavg`, `AutumnTavg`)
 SELECT `CountyKey`, @year16, `Elevation`, `WinterPrcp`, `SummerPrcp`, `SpringPrcp`,
   `AutumnPrcp`, `WinterTavg`, `SummerTavg`, `SpringTavg`, `AutumnTavg`
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State; 
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS; 
 ;
 # Why is WinterTavg being read in as an INT?
 #SELECT `WinterTavg` from MultiStaging;
@@ -191,7 +188,7 @@ from MultiStaging inner join StateCounty on CountyName=County and StateName=Stat
 INSERT INTO `CovidifyUSA`.`Population`
 (`CountyFKey`, `Year`, `TotalPopulation`)
 SELECT `CountyKey`, @year16, `TotalPopulation`
-from MultiStaging inner join StateCounty on CountyName=County and StateName=State; 
+from MultiStaging inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS; 
 
 ## Update Latitude/Longitude in County table
 
@@ -202,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`LongLatCounty` (
   )
 ENGINE = InnoDB;
 INSERT LongLatCounty SELECT `CountyKey`, `Longitude`, `Latitude` from MultiStaging 
-inner join StateCounty on CountyName=County and StateName=State;
+inner join StateCounty on StateCounty.CountyFIPS=MultiStaging.FIPS;
 
 Update `CovidifyUSA`.`County` 
 Inner Join LongLatCounty on CountyKey=CountyFKey
@@ -245,27 +242,30 @@ from State Inner Join StateHospitalStage on State.StateName=StateHospitalStage.S
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CountyHospitalStage` (
   `StateName` TEXT,
   `CountyName` TEXT,
+  `FIPS` VARCHAR(45),
   `ICUBeds` INT,
   `PopulationTotal` INT,
   `Population60plus` INT,
   `Population60percent` DECIMAL
   )
 ENGINE = InnoDB;
-LOAD DATA INFILE '/var/lib/mysql-files/ICUBedsByCounty2020.csv' 
+LOAD DATA INFILE '/var/lib/mysql-files/ICUBedsByCounty2020.csv'
 INTO TABLE `CovidifyUSA`.`CountyHospitalStage` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
-(@StateName, @CountyName, @ICUBeds, @totalPopulation, @population60, @percpopulation60, @dummy)
-set `StateName`=@StateName, `CountyName`=@CountyName, `ICUBeds`=@ICUBeds, 
+(@StateName, @CountyName,@fips, @ICUBeds, @totalPopulation, @population60, @percpopulation60, @dummy)
+set `StateName`=@StateName, `CountyName`=@CountyName,`FIPS`=@fips, `ICUBeds`=@ICUBeds, 
 `PopulationTotal`=@totalPopulation, `Population60plus`=@population60, 
 `Population60percent`=@percpopulation60;
+
+select * from CountyHospitalStage;
+select * from StateCounty;
 
 SET @year20 = 2020;
 INSERT INTO `CovidifyUSA`.`CountyHospitalData` 
 (`CountyFKey`,  `ICUBeds`, `Year`)
 SELECT `CountyKey`, `ICUBeds`,@year20
 from CountyHospitalStage inner join StateCounty 
-on StateCounty.CountyName=CountyHospitalStage.CountyName 
-and StateCounty.StateName=CountyHospitalStage.StateName;
+on StateCounty.CountyFIPS=CountyHospitalStage.FIPS; 
 
 #SELECT COUNT(*) FROM CountyHospitalData; #3143 in csv, 2960 here
 # Possible - check if new counties in each new read in csv file and add first!
@@ -277,8 +277,7 @@ and StateCounty.StateName=CountyHospitalStage.StateName;
 INSERT INTO `CovidifyUSA`.`Population`(`CountyFKey`, `TotalPopulation`, `Population60Plus`, `Year`)
 SELECT `CountyKey`, `PopulationTotal`, `Population60plus`,@year20
 from CountyHospitalStage inner join StateCounty 
-on StateCounty.CountyName=CountyHospitalStage.CountyName 
-and StateCounty.StateName=CountyHospitalStage.StateName;
+on StateCounty.CountyFIPS=CountyHospitalStage.FIPS;
 
 ## Mortality Rates
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MortalityStage` (
