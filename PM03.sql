@@ -48,7 +48,7 @@ JOIN `State` ON `County`.`StateFKey` = `State`.`StateKey`
 GROUP BY `State`.`StateName`
 ORDER BY `CaseFatalityRate` DESC;
 
-#4. What is the Case Fatality Rate of Covid-19 of the top 50 Counties With the Most Total Confirmed Cases?
+#4. What is the Case Fatality Rate of Covid-19 of the 50 Counties With the Most Total Confirmed Cases?
 SELECT `County`.`CountyName`, `State`.`StateName`, sum(`Covid1`.`CovidCases`) - ifnull(sum(`Covid2`.`CovidCases`), 0) AS `TotalNumOfCases`, (sum(`Covid1`.`CovidDeaths`) - ifnull(sum(`Covid2`.`CovidDeaths`), 0)) / (sum(`Covid1`.`CovidCases`) - ifnull(sum(`Covid2`.`CovidCases`), 0)) * 100 AS `CaseFatalityRate`
 FROM `CovidByDate` AS `Covid1`
 LEFT JOIN `CovidBYDate` AS `Covid2` ON  datediff(`Covid1`.`Date`, `Covid2`.`Date`) = 1 AND `Covid1`.`CountyFKey` = `Covid2`.`CountyFKey`
