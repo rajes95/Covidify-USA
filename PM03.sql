@@ -85,6 +85,17 @@ from (
 	on stateVotes2016.StateKey=caseFatalities.StateKey
 order by `CaseFatalityRate` DESC;
 
+#Q7: 
+Select A.CasesBlack, B.CasesHispanic, C.CasesWhite FROM(
+	(Select SUM(Positive) as 'CasesBlack' from CovidByRace  WHERE Race = 'Black' and 
+	DATE_FORMAT(Date, '%m-%d') = DATE_FORMAT('2020-06-03', '%m-%d')) AS A
+	CROSS JOIN
+	(Select SUM(Positive) as 'CasesHispanic' from CovidByRace  WHERE Race = 'Hispanic' and 
+	DATE_FORMAT(Date, '%m-%d') = DATE_FORMAT('2020-06-03', '%m-%d')) AS B
+	CROSS JOIN
+	(Select SUM(Positive) as 'CasesWhite' from CovidByRace  WHERE Race = 'White' and 
+	DATE_FORMAT(Date, '%m-%d') = DATE_FORMAT('2020-06-03', '%m-%d')) AS C
+	);
 
 #Q9: 
 SELECT r.StateName, RespDiseasePer100k, FatalityRate FROM
