@@ -33,6 +33,7 @@ DROP TABLE IF EXISTS `CovidifyUSA`.`State` ;
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`State` (
   `StateKey` INT NOT NULL AUTO_INCREMENT,
   `StateFIPS` VARCHAR(45) NULL,
+  `PostalCode` VARCHAR(45) NULL,
   `StateName` VARCHAR(100) NULL,
   PRIMARY KEY (`StateKey`),
   UNIQUE INDEX `StateFIPS_UNIQUE` (`StateFIPS` ASC))
@@ -291,7 +292,6 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidByRace` (
   `Date` DATE NULL,
   PRIMARY KEY (`CovidByRaceKey`),
   INDEX `fk_CovidByRace_State1_idx` (`StateFKey` ASC),
-  UNIQUE INDEX `RaceUniq` (`StateFKey` ASC, `Date` ASC),
   CONSTRAINT `fk_CovidByRace_State1`
     FOREIGN KEY (`StateFKey`)
     REFERENCES `CovidifyUSA`.`State` (`StateKey`)
