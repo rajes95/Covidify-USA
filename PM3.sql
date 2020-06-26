@@ -10,7 +10,7 @@ WHERE `County`.`StateFKey` = 21
 GROUP BY `Covid1`.`Date`
 ORDER BY `Covid1`.`Date`;
 
-#2. How did States vote in 2016, sorted by Descending Case Fatality Ratio?
+#2. How did States vote in 2016, sorted by Descending COVID19 Case Fatality Ratio?
 -- TODO: We should move this question to after # 8 probably since we are reusing the case fatality ratio code.
 select StateName, CaseFatalityRate, ElectionYear, TotalPopulation, DemPerc, RepPerc, OtherPerc
 from (
