@@ -84,3 +84,21 @@ from (
 		ORDER BY `CaseFatalityRate` DESC) caseFatalities 
 	on stateVotes2016.StateKey=caseFatalities.StateKey
 order by `CaseFatalityRate` DESC;
+
+
+#Q9: 
+SELECT r.StateName, RespDiseasePer100k, FatalityRate FROM
+	(SELECT StateName, RespDiseasePer100k FROM
+	(Select CountyFKey, ChronicRespiratoryDiseasesMortalityRate as RespDiseasePer100k
+	from MortalityRates where Year=2014 
+	) as A
+		JOIN StateCounty on CountyFKey=CountyKey GROUP BY StateName 
+		ORDER BY RespDiseasePer100k DESC) AS r
+	JOIN
+	(SELECT `State`.`StateName`, (sum(`Covid1`.`CovidDeaths`) - ifnull(sum(`Covid2`.`CovidDeaths`), 0)) / (sum(`Covid1`.`CovidCases`) - ifnull(sum(`Covid2`.`CovidCases`), 0)) * 100  AS `FatalityRate`
+	FROM `CovidByDate` AS `Covid1`
+	LEFT JOIN `CovidByDate` AS `Covid2` ON  datediff(`Covid1`.`Date`, `Covid2`.`Date`) = 1 AND `Covid1`.`CountyFKey` = `Covid2`.`CountyFKey`
+	JOIN `County` ON `Covid1`.`CountyFKey` = `County`.`CountyKey` 
+	JOIN `State` ON `County`.`StateFKey` = `State`.`StateKey`
+	GROUP BY `State`.`StateName`
+	ORDER BY `FatalityRate`) AS death ON death.StateName=r.StateName;
