@@ -37,10 +37,6 @@ from (
 	on stateVotes2016.StateKey=caseFatalities.StateKey
 order by `CaseFatalityRate` DESC;
 
-
-
-select * from Population;
-
 #3. COVID-19 deaths per day over the last 3 months stratified by political region (i.e. states with democratic governors vs states with republican governors?)
 
 #8. What is the Case Fatality Rate of Covid-19 by State in descending order?
