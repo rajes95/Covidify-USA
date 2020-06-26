@@ -16,7 +16,7 @@ LOAD DATA INFILE './state_fips.csv'
 INTO TABLE `CovidifyUSA`.`State` FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@StateName,@PostalCode, @Fips)
-set `StateName`=@StateName,`StateFIPS`=@Fips;
+set `StateName`=@StateName,`StateFIPS`=@Fips, `PostalCode`=@PostalCode;
 
 LOAD DATA INFILE './county_fips.csv'
 IGNORE INTO TABLE `CovidifyUSA`.`County`
@@ -471,7 +471,6 @@ where Category="Neonatal disorders" or Category="HIV/AIDS and tuberculosis" or C
 group by FIPS
 order by FIPS;
 
-select * from MortalityRates;
 
 ## Covid By Race
 -- `StateFKey` INT NOT NULL,
@@ -510,8 +509,57 @@ set `State`=@state, `Datetime`=@datets, `PosWhite`=@poswhite, `PosBlack`=@posbla
   `DeathAsian`=@deathasian, `DeathMulti`=@deathmulti, `DeathAIAN`=@deathAIAN, 
   `DeathNHPI`=@deathNHPI, `DeathOther`=@deathother, `DeathUnknown`=@deathunknown;
 
-# TODO: may want to use a for loop to to fill out our table else will have too many select statements
-# SELECT * from CovidRaceStage;
+SET @raceblack = 'Black';
+INSERT INTO `CovidifyUSA`.`CovidByRace` 
+(`StateFKey`,  `Race`, `Positive`, `Negative`, `Death`, `Date`)
+SELECT StateKey, @raceblack, PosBlack, NegBlack, DeathBlack, STR_TO_DATE(Datetime,'%m/%d %H:%i')  
+from CovidRaceStage INNER JOIN State on PostalCode=State;
+
+# White
+SET @racewhite = 'White';
+INSERT INTO `CovidifyUSA`.`CovidByRace` 
+(`StateFKey`,  `Race`, `Positive`, `Negative`, `Death`, `Date`)
+SELECT StateKey, @racewhite, PosWhite, NegWhite, DeathWhite, STR_TO_DATE(Datetime,'%m/%d %H:%i')  
+from CovidRaceStage INNER JOIN State on PostalCode=State;
+
+# Hispanic
+SET @racehispanic = 'Hispanic';
+INSERT INTO `CovidifyUSA`.`CovidByRace` 
+(`StateFKey`,  `Race`, `Positive`, `Negative`, `Death`, `Date`)
+SELECT StateKey, @racehispanic, PosHispanic, NegHispanic, DeathHispanic, STR_TO_DATE(Datetime,'%m/%d %H:%i')  
+from CovidRaceStage INNER JOIN State on PostalCode=State;
+
+# MultiRacial
+SET @racemulti = 'Multiracial';
+INSERT INTO `CovidifyUSA`.`CovidByRace` 
+(`StateFKey`,  `Race`, `Positive`, `Negative`, `Death`, `Date`)
+SELECT StateKey, @racemulti, PosMulti, NegMulti, DeathMulti, STR_TO_DATE(Datetime,'%m/%d %H:%i')  
+from CovidRaceStage INNER JOIN State on PostalCode=State;
+
+# NHPI
+SET @raceNHPI = 'NHPI';
+INSERT INTO `CovidifyUSA`.`CovidByRace` 
+(`StateFKey`,  `Race`, `Positive`, `Negative`, `Death`, `Date`)
+SELECT StateKey, @raceNHPI, PosNHPI, NegNHPI, DeathNHPI, STR_TO_DATE(Datetime,'%m/%d %H:%i')  
+from CovidRaceStage INNER JOIN State on PostalCode=State;
+
+# Other
+SET @raceOther = 'Other';
+INSERT INTO `CovidifyUSA`.`CovidByRace` 
+(`StateFKey`,  `Race`, `Positive`, `Negative`, `Death`, `Date`)
+SELECT StateKey, @raceOther, PosOther, NegOther, DeathOther, STR_TO_DATE(Datetime,'%m/%d %H:%i')  
+from CovidRaceStage INNER JOIN State on PostalCode=State;
+ 
+# Unknown
+SET @raceUnknown = 'Unknown';
+INSERT INTO `CovidifyUSA`.`CovidByRace` 
+(`StateFKey`,  `Race`, `Positive`, `Negative`, `Death`, `Date`)
+SELECT StateKey, @raceUnknown, PosUnknown, NegUnknown, DeathUnknown, STR_TO_DATE(Datetime,'%m/%d %H:%i')  
+from CovidRaceStage INNER JOIN State on PostalCode=State;
+
+Update CovidByrace set Date = DATE_FORMAT(Date, '2020-%m-%d %H:%i');
+
+SELECT * from CovidByRace;
 																		
 SET SQL_SAFE_UPDATES = 0;
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`GovernorsDataStaging` (
@@ -550,15 +598,15 @@ WHERE State = 'United States Virgin Islands';
 
 Insert Into StateGovernor Select StateGovernorKey, StateKey, `Year`, Governor, Party From GovernorsDataStaging inner join State on StateName = State;
 
-DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
-DROP TABLE IF EXISTS `CovidifyUSA`.`MultiStaging`;
-DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
-DROP TABLE IF EXISTS `CovidifyUSA`.`LongLatCounty`;
-DROP TABLE IF EXISTS `CovidifyUSA`.`StateHospitalStage`;
-DROP TABLE IF EXISTS `CovidifyUSA`.`CountyHospitalStage`;
-DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
-DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
-DROP TABLE IF EXISTS `CovidifyUSA`.`MortalityStage`;
+-- DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
+-- DROP TABLE IF EXISTS `CovidifyUSA`.`MultiStaging`;
+-- DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
+-- DROP TABLE IF EXISTS `CovidifyUSA`.`LongLatCounty`;
+-- DROP TABLE IF EXISTS `CovidifyUSA`.`StateHospitalStage`;
+-- DROP TABLE IF EXISTS `CovidifyUSA`.`CountyHospitalStage`;
+-- DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
+-- DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
+-- DROP TABLE IF EXISTS `CovidifyUSA`.`MortalityStage`;
   
 SELECT
   (SELECT COUNT(*) FROM State) as N_State, 
@@ -573,5 +621,4 @@ SELECT
   (SELECT COUNT(*) FROM CountyHospitalData) as N_CtHospital,
   (SELECT COUNT(*) FROM MortalityRates) as N_MortalityRts
   ;
-
 
