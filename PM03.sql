@@ -59,7 +59,6 @@ ORDER BY `TotalNumOfCases` DESC
 LIMIT 50;
 
 #5. How did States vote in 2016, sorted by Descending COVID19 Case Fatality Ratio?
--- TODO: We should move this question to after #8 probably since I am reusing the case fatality ratio code here.
 Select StateName, CaseFatalityRate, ElectionYear, TotalPopulation, DemPerc, RepPerc, OtherPerc
 from (
 		select StateKey, StateName, PresidentialElectionVotePercentages.`Year` as ElectionYear, Sum(TotalPopulation) as TotalPopulation,
