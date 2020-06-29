@@ -56,7 +56,6 @@ set `CountyName`=@county,`State`=@state,`Date`=@date, `FIPS`=@fips, `CovidDeaths
 INSERT INTO `CovidifyUSA`.`CovidByDate`
 (`CountyFKey`, `Date`, `CovidDeaths`, `CovidCases`)
 SELECT `CountyKey`, `Date`, `CovidDeaths`, `CovidCases`
-#from CovidStage inner join County on CovidStage.CountyName=County.CountyName; 
 from CovidStage inner join StateCounty on StateCounty.CountyFIPS=CovidStage.FIPS;
 
 SET SESSION sql_mode = '';
@@ -78,7 +77,6 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MultiStaging`(
 
 	
 	## Demographics table
-	# Year - all 2016?
 	`White` DECIMAL(5,2), 
 	`AfricanAmerican` DECIMAL(5,2), 
 	`Latino` DECIMAL(5,2),
@@ -90,7 +88,6 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MultiStaging`(
 	`MedianEarnings` DECIMAL,
 	
 	## Climate table
-	-- `Year`
 	`Elevation` DECIMAL,
 	`WinterPrcp` DECIMAL,
 	`SummerPrcp` DECIMAL,
@@ -104,7 +101,6 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MultiStaging`(
 	##Population table
 	# total population
 	`TotalPopulation` INT,
-	# population over 60 ## Where is this?
 	
 	## county table
 	`Longitude` VARCHAR(45),
@@ -316,9 +312,6 @@ SET @year10 = 2010;
 SET @year14 = 2014;
 
 # join based on FIPS
-# TODO: may want to use a for loop to to fill out our table else will have 9yrs*7categories select statements
-#SELECT * from MortalityStage WHERE Category='Cardiovascular diseases';
-#SELECT * from County WHERE CountyFIPS=5137;
 INSERT INTO `CovidifyUSA`.`MortalityRates`(`CountyFKey`,`Year`,`NeonatalDisordersMortalityRate`,
 `HIVAIDSandTBMortalityRate`,`DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate`,`ChronicRespiratoryDiseasesMortalityRate`,
 `LiverDiseaseMortalityRate`,`NutritionalDeficienciesMortalityRate`,`CardiovascularDiseasesMortalityRate`)
@@ -558,8 +551,6 @@ SELECT StateKey, @raceUnknown, PosUnknown, NegUnknown, DeathUnknown, STR_TO_DATE
 from CovidRaceStage INNER JOIN State on PostalCode=State;
 
 Update CovidByRace set Date = DATE_FORMAT(Date, '2020-%m-%d %H:%i');
-
-SELECT * from CovidByRace;
 																		
 SET SQL_SAFE_UPDATES = 0;
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`GovernorsDataStaging` (
@@ -598,15 +589,16 @@ WHERE State = 'United States Virgin Islands';
 
 Insert Into StateGovernor Select StateGovernorKey, StateKey, `Year`, Governor, Party From GovernorsDataStaging inner join State on StateName = State;
 
--- DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
--- DROP TABLE IF EXISTS `CovidifyUSA`.`MultiStaging`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`MultiStaging`;
 -- DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
--- DROP TABLE IF EXISTS `CovidifyUSA`.`LongLatCounty`;
--- DROP TABLE IF EXISTS `CovidifyUSA`.`StateHospitalStage`;
--- DROP TABLE IF EXISTS `CovidifyUSA`.`CountyHospitalStage`;
--- DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
--- DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
--- DROP TABLE IF EXISTS `CovidifyUSA`.`MortalityStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`LongLatCounty`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`StateHospitalStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CountyHospitalStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`MortalityStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
   
 SELECT
   (SELECT COUNT(*) FROM State) as N_State, 
@@ -619,6 +611,8 @@ SELECT
   (SELECT COUNT(*) FROM Population) as N_Population,
   (SELECT COUNT(*) FROM StateHospitalData) as N_StHospital,
   (SELECT COUNT(*) FROM CountyHospitalData) as N_CtHospital,
-  (SELECT COUNT(*) FROM MortalityRates) as N_MortalityRts
+  (SELECT COUNT(*) FROM MortalityRates) as N_MortalityRts,
+  (SELECT COUNT(*) FROM CovidByRace) as N_CovidRacial
   ;
+
 
