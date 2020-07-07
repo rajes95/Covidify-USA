@@ -114,8 +114,6 @@ public class StateDao  {
         String resultStateName = results.getString("StateName");
         String stateFIPS = results.getString("StateFIPS");
         String postalCode = results.getString("PostalCode");
-
-
         State state = new State(stateKey, resultStateName, stateFIPS, postalCode);
         return state;
       }
@@ -136,6 +134,45 @@ public class StateDao  {
     return null;
   }
 
+  public State getStateByKey(int stateKey) throws SQLException {
+    String selectRestaurant =
+            "SELECT StateKey,StateName,StateFIPS,PostalCode,"
+                    + "FROM State "
+                    + "WHERE StateKey=?;";
+    Connection connection = null;
+    PreparedStatement selectStmt = null;
+    ResultSet results = null;
+    try {
+      connection = connectionManager.getConnection();
+      selectStmt = connection.prepareStatement(selectRestaurant);
+      selectStmt.setInt(1, stateKey);
+      results = selectStmt.executeQuery();
+      if (results.next()) {
+        int resultStateKey = results.getInt("StateKey");
+        String resultStateName = results.getString("StateName");
+        String stateFIPS = results.getString("StateFIPS");
+        String postalCode = results.getString("PostalCode");
+        State state = new State(resultStateKey, resultStateName, stateFIPS, postalCode);
+        return state;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw e;
+    } finally {
+      if (connection != null) {
+        connection.close();
+      }
+      if (selectStmt != null) {
+        selectStmt.close();
+      }
+      if (results != null) {
+        results.close();
+      }
+    }
+    return null;
+  }
+
+
   public State delete(State state) throws SQLException {
     String deleteRestaurant = "DELETE FROM State WHERE StateKey=?;";
     Connection connection = null;
@@ -145,7 +182,7 @@ public class StateDao  {
       deleteStmt = connection.prepareStatement(deleteRestaurant);
       deleteStmt.setInt(1, state.getStateKey());
       deleteStmt.executeUpdate();
-      // Return null so the caller can no longer operate on the SitDownRestaurant instance.
+      // Return null so the caller can no longer operate on the State instance.
       return null;
     } catch (SQLException e) {
       e.printStackTrace();

@@ -15,6 +15,25 @@ import java.util.List;
 
 import covidify.model.*;
 
+/*
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidByDate` (
+  `CovidByDateKey` INT NOT NULL AUTO_INCREMENT,
+  `CountyFKey` INT NOT NULL,
+  `Date` DATE NULL,
+  `CovidDeaths` INT NULL,
+  `CovidCases` INT NULL,
+  PRIMARY KEY (`CovidByDateKey`),
+  INDEX `CountyFKey1_idx` (`CountyFKey` ASC),
+  UNIQUE INDEX `CovUniq` (`CountyFKey` ASC, `Date` ASC),
+  CONSTRAINT `CountyFKey1`
+    FOREIGN KEY (`CountyFKey`)
+    REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
+    ON DELETE RESTRICT
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+ */
+
 public class CovidByDateDao {
   protected ConnectionManager connectionManager;
   private static RestaurantDao instance = null;

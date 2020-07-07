@@ -26,44 +26,78 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`County` (
 
 public class County {
   protected int countyKey;
-  protected String name;
-  protected String description;
+  protected State state;
+  protected String countyFIPS;
+  protected String countyName;
+  protected String longitude;
+  protected String latitude;
 
-  public County(int companyKey, String name, String description){
-    this.companyKey = companyKey;
-    this.name = name;
-    this.description = description;
-  }
-
-  public County(int companyKey){
-    this.companyKey = companyKey;
-  }
-
-  public County(String name, String description){
-    this.name = name;
-    this.description = description;
-  }
-  public int getCompanyKey() {
-    return companyKey;
+  public County(int countyKey, State state, String countyFIPS, String countyName, String longitude, String latitude) {
+    this.countyKey = countyKey;
+    this.state = state;
+    this.countyFIPS = countyFIPS;
+    this.countyName = countyName;
+    this.longitude = longitude;
+    this.latitude = latitude;
   }
 
-  public void setCompanyKey(int companyKey) {
-    this.companyKey = companyKey;
+  public County(int countyKey) {
+    this.countyKey = countyKey;
   }
 
-  public String getName() {
-    return name;
+  public County(State state, String countyFIPS, String countyName, String longitude, String latitude) {
+    this.state = state;
+    this.countyFIPS = countyFIPS;
+    this.countyName = countyName;
+    this.longitude = longitude;
+    this.latitude = latitude;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public int getCountyKey() {
+    return countyKey;
   }
 
-  public String getDescription() {
-    return description;
+  public void setCountyKey(int countyKey) {
+    this.countyKey = countyKey;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public State getState() {
+    return state;
   }
+
+  public void setState(State  state) {
+    this.state = state;
+  }
+
+  public String getCountyFIPS() {
+    return countyFIPS;
+  }
+
+  public void setCountyFIPS(String countyFIPS) {
+    this.countyFIPS = countyFIPS;
+  }
+
+  public String getCountyName() {
+    return countyName;
+  }
+
+  public void setCountyName(String  countyName) {
+    this.countyName = countyName;
+  }
+  public String getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(String  latitude) {
+    this.latitude = latitude;
+  }
+  public String getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(String  longitude) {
+    this.longitude = longitude;
+  }
+
+
 }

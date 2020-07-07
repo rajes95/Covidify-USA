@@ -8,16 +8,16 @@ package covidify.model;
 import java.sql.Date;
 
 public class StateHospitalData {
-  protected int reservationKey;
+  protected int stateHospitalDataKey;
   protected CovidByDate covidByDate;
   protected StateGovernor restaurant;
   protected Date startDate;
   protected Date endDate;
   protected Integer partySize;
 
-  public StateHospitalData(int reservationKey, CovidByDate covidByDate, StateGovernor restaurant,
+  public StateHospitalData(int stateHospitalDataKey, CovidByDate covidByDate, StateGovernor restaurant,
                            Date startDate, Date endDate, Integer partySize){
-    this.reservationKey = reservationKey;
+    this.stateHospitalDataKey = reservationKey;
     this.covidByDate = covidByDate;
     this.restaurant = restaurant;
     this.startDate = startDate;
