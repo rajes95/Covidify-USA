@@ -16,7 +16,7 @@ import java.util.List;
 
 import covidify.model.County;
 import covidify.model.MortalityRates;
-
+//TODO here onwards
 public class CovidByRaceDao {
   protected ConnectionManager connectionManager;
   private static RestaurantDao instance = null;

@@ -30,6 +30,7 @@ public class PresidentialElectionVotePercentagesDao {
     }
     return instance;
   }
+  //TODO here onwards
 
   public StateHospitalData create(StateHospitalData stateHospitalData) throws SQLException {
     String insertReservation = "INSERT INTO Reservation(UserName,SitDownRestaurantKey,Start,End,PartySize) "

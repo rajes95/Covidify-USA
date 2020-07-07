@@ -29,7 +29,7 @@ public class ClimateDao {
     return instance;
   }
 
-
+  //TODO here onwards
   public County create(County county) throws SQLException {
     String insertCompany = "INSERT INTO Company(Name,Description) "
             + "VALUES(?,?);";

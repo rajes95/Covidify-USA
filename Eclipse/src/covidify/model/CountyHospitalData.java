@@ -6,7 +6,7 @@
 package covidify.model;
 
 import java.sql.Date;
-
+//TODO here onwards
 public class CountyHospitalData {
   protected int reviewKey;
   protected CovidByDate covidByDate;

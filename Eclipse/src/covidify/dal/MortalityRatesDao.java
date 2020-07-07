@@ -31,7 +31,7 @@ public class MortalityRatesDao {
     }
     return instance;
   }
-
+  //TODO here onwards
   public MortalityRates create(MortalityRates mortalityRates) throws SQLException {
     String insertMortalityRates = "INSERT INTO MortalityRates(UserKey,RestaurantKey) "
             + "VALUES(?,?);";

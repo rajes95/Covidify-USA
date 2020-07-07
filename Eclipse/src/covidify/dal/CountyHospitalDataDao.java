@@ -32,7 +32,7 @@ public class CountyHospitalDataDao {
     }
     return instance;
   }
-
+  //TODO here onwards
   public State create(State state) throws SQLException {
     String insertCreditCard = "INSERT INTO CreditCard(NameOnCard,CardNum,CardExpiration,UserName) "
             + "VALUES(?,?,?,?);";

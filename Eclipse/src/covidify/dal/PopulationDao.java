@@ -28,7 +28,7 @@ public class PopulationDao {
     return instance;
   }
 
-
+  //TODO here onwards
   public CovidByDate create(CovidByDate covidByDate) throws SQLException {
     String insertUser = "INSERT INTO User(UserName,PasswordHash,FirstName,LastName,Email,PhoneNum) "
             + "VALUES(?,?,?,?,?,?);";

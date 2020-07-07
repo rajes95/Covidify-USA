@@ -4,7 +4,7 @@
  * Lily Bessette, Ari Fleischer, Elise Jortberg, Rajesh Sakhamuru
  */
 package covidify.model;
-
+//TODO here onwards
 public class MortalityRates {
   protected int restaurantKey;
   protected String name;

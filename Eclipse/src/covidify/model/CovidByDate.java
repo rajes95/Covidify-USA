@@ -53,43 +53,34 @@ public class CovidByDate {
     this.covidByDateKey = covidByDateKey;
   }
 
-  public String getPasswordHash() {
-    return passwordHash;
+  public County getCounty() {
+    return county;
   }
 
-  public void setPasswordHash(String passwordHash) {
-    this.passwordHash = passwordHash;
+  public void setCounty(County county) {
+    this.county = county;
   }
 
-  public String getFirstName() {
-    return firstName;
+  public Date getDate() {
+    return date;
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
+  public void setDate(Date date) {
+    this.date = date;
   }
 
-  public String getLastName() {
-    return lastName;
+  public Integer getCovidDeaths() {
+    return covidDeaths;
   }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
+  public void setCovidDeaths(Integer covidDeaths) {
+    this.covidDeaths = covidDeaths;
+  }
+  public Integer getCovidCases() {
+    return covidCases;
   }
 
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPhoneNum() {
-    return email;
-  }
-
-  public void setPhoneNum(String phoneNum) {
-    this.phoneNum = phoneNum;
+  public void setCovidCases(Integer covidCases) {
+    this.covidCases = covidCases;
   }
 }

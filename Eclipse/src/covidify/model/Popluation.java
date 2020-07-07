@@ -5,7 +5,7 @@
  */
 package covidify.model;
 
-
+//TODO here onwards
 
 public class Popluation {
   protected int countyKey;

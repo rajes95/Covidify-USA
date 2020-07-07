@@ -15,7 +15,7 @@ import java.util.List;
 
 import covidify.model.*;
 
-public class DemographicsDao extends RestaurantDao {
+public class DemographicsDao  {
   private static DemographicsDao instance = null;
 
   protected DemographicsDao() {
@@ -29,14 +29,8 @@ public class DemographicsDao extends RestaurantDao {
     return instance;
   }
 
-
+  //TODO here onwards
   public Demographics create(Demographics restaurant) throws SQLException {
-    // Insert into the superclass table first.
-    create(new MortalityRates(restaurant.getRestaurantKey(), restaurant.getName(), restaurant.getDescription(),
-            restaurant.getMenu(), restaurant.getListedHours(), restaurant.getIsActive(),
-            restaurant.getStreet1(), restaurant.getStreet2(), restaurant.getCity(),
-            restaurant.getState(), restaurant.getZipCode(), restaurant.getCuisine(), restaurant.getCounty()));
-
     String insertRestaurant = "INSERT INTO FoodCartRestaurant(FoodCartRestaurantKey,IsLicensed) VALUES(?,?);";
     Connection connection = null;
     PreparedStatement insertStmt = null;

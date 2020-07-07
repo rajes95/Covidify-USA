@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,95 +37,57 @@ ENGINE = InnoDB;
 
 public class CovidByDateDao {
   protected ConnectionManager connectionManager;
-  private static RestaurantDao instance = null;
+  private static CovidByDateDao instance = null;
 
   protected CovidByDateDao() {
     connectionManager = new ConnectionManager();
   }
-  public static RestaurantDao getInstance() {
+  public static CovidByDateDao getInstance() {
     if(instance == null) {
-      instance = new RestaurantDao();
+      instance = new CovidByDateDao();
     }
     return instance;
   }
 
   public CovidByDate create(CovidByDate covidByDate) throws SQLException {
-    String insertRestaurant = "INSERT INTO Restaurant(Name,Description,Menu,ListedHours,"
-            + "IsActive,Street1,Street2,City,State,ZipCode,Cuisine,CompanyKey) "
-            + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
+    String insertCovidByDate = "INSERT INTO CovidByDate(CountyFKey,Date,CovidDeaths,CovidCases) "
+            + "VALUES(?,?,?,?);";
     Connection connection = null;
     PreparedStatement insertStmt = null;
     ResultSet resultKey = null;
     try {
       connection = connectionManager.getConnection();
-      insertStmt = connection.prepareStatement(insertRestaurant, Statement.RETURN_GENERATED_KEYS);
-      insertStmt.setString(1, covidByDate.getName());
-      if (covidByDate.getDescription() == null) {
-        insertStmt.setNull(2, Types.LONGVARCHAR);
-      } else {
-        insertStmt.setString(2, covidByDate.getDescription());
-      }
-      if (covidByDate.getMenu() == null) {
-        insertStmt.setNull(3, Types.LONGVARCHAR);
-      } else {
-        insertStmt.setString(3, covidByDate.getMenu());
-      }
-      if (covidByDate.getListedHours() == null) {
-        insertStmt.setNull(4, Types.LONGVARCHAR);
-      } else {
-        insertStmt.setString(4, covidByDate.getListedHours());
-      }
-      if (covidByDate.getIsActive() == null) {
-        insertStmt.setNull(5, Types.BOOLEAN);
-      } else {
-        insertStmt.setBoolean(5, covidByDate.getIsActive());
-      }
-      if (covidByDate.getStreet1() == null) {
-        insertStmt.setNull(6, Types.VARCHAR);
-      } else {
-        insertStmt.setString(6, covidByDate.getStreet1());
-      }
-      if (covidByDate.getStreet2() == null) {
-        insertStmt.setNull(7, Types.VARCHAR);
-      } else {
-        insertStmt.setString(7, covidByDate.getStreet2());
-      }
-      if (covidByDate.getCity() == null) {
-        insertStmt.setNull(8, Types.VARCHAR);
-      } else {
-        insertStmt.setString(8, covidByDate.getCity());
-      }
-      if (covidByDate.getState() == null) {
-        insertStmt.setNull(9, Types.CHAR);
-      } else {
-        insertStmt.setString(9, covidByDate.getState());
-      }
-      if (covidByDate.getZipCode() == null) {
-        insertStmt.setNull(10, Types.CHAR);
-      } else {
-        insertStmt.setString(10, covidByDate.getZipCode());
-      }
-      if (covidByDate.getCuisine() == null) {
-        // Wasn't sure how to represent ENUMs here as there is no Enum type in Types for SQL
-        insertStmt.setNull(11, Types.VARCHAR);
-      } else {
-        insertStmt.setString(11, covidByDate.getCuisine().name());
-      }
+      insertStmt = connection.prepareStatement(insertCovidByDate, Statement.RETURN_GENERATED_KEYS);
       if (covidByDate.getCounty() == null) {
-        insertStmt.setNull(12, Types.INTEGER);
+        insertStmt.setNull(1, Types.INTEGER);
       } else {
-        insertStmt.setInt(12, covidByDate.getCounty().getCompanyKey());
+        insertStmt.setInt(1, covidByDate.getCounty().getCountyKey());
+      }
+      if (covidByDate.getDate() == null) {
+        insertStmt.setNull(2, Types.TIMESTAMP);
+      } else {
+        insertStmt.setTimestamp(2,new Timestamp(covidByDate.getDate().getTime()));
+      }
+      if (covidByDate.getCovidDeaths() == null) {
+        insertStmt.setNull(3, Types.INTEGER);
+      } else {
+        insertStmt.setInt(3, covidByDate.getCovidDeaths());
+      }
+      if (covidByDate.getCovidCases() == null) {
+        insertStmt.setNull(4, Types.INTEGER);
+      } else {
+        insertStmt.setInt(4, covidByDate.getCovidCases());
       }
       insertStmt.executeUpdate();
 
       resultKey = insertStmt.getGeneratedKeys();
-      int restaurantKey = -1;
+      int covidByDateKey = -1;
       if (resultKey.next()) {
-        restaurantKey = resultKey.getInt(1);
+        covidByDateKey = resultKey.getInt(1);
       } else {
         throw new SQLException("Unable to retrieve auto-generated key.");
       }
-      covidByDate.setRestaurantKey(restaurantKey);
+      covidByDate.setCovidByDateKey(covidByDateKey);
       return covidByDate;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -142,26 +105,27 @@ public class CovidByDateDao {
     }
   }
 
+  //TODO here onwards
 
-  public CovidByDate getRestaurantById(int restaurantId) throws SQLException {
-    String selectRestaurant =
-            "SELECT RestaurantKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
+  public CovidByDate getCovidByDateById(int covidByDateId) throws SQLException {
+    String selectCovidByDate =
+            "SELECT CovidByDateKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
                     + "Street2,City,State,ZipCode,Cuisine,CompanyKey "
-                    + "FROM Restaurant "
-                    + "WHERE RestaurantKey=?;";
+                    + "FROM CovidByDate "
+                    + "WHERE CovidByDateKey=?;";
     Connection connection = null;
     PreparedStatement selectStmt = null;
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectRestaurant);
-      selectStmt.setInt(1, restaurantId);
+      selectStmt = connection.prepareStatement(selectCovidByDate);
+      selectStmt.setInt(1, covidByDateId);
       results = selectStmt.executeQuery();
 
       CountyDao countyDao = CountyDao.getInstance();
 
       if (results.next()) {
-        int resultsRestaurantKey = results.getInt("RestaurantKey");
+        int resultsCovidByDateKey = results.getInt("CovidByDateKey");
         String name = results.getString("Name");
         String description = results.getString("Description");
         String menu = results.getString("Menu");
@@ -176,7 +140,7 @@ public class CovidByDateDao {
         int companyKey = results.getInt("CompanyKey");
 
         County county = countyDao.getCompanyById(companyKey);
-        CovidByDate covidByDate = new CovidByDate(resultsRestaurantKey, name, description,menu,
+        CovidByDate covidByDate = new CovidByDate(resultsCovidByDateKey, name, description,menu,
                 listedHours,isActive,street1,street2,city,state,zipCode,
                 CovidByDate.CuisineType.valueOf(cuisine), county);
         return covidByDate;
@@ -200,25 +164,25 @@ public class CovidByDateDao {
 
   // Note: I think there was a typo in the spec for the method argument 'cusine' instead of
   // cuisine, so I made it cuisine instead.
-  public List<CovidByDate> getRestaurantsByCuisine(CovidByDate.CuisineType cuisine) throws SQLException{
-    List<CovidByDate> restaurants = new ArrayList<CovidByDate>();
-    String selectRestaurant =
-            "SELECT RestaurantKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
+  public List<CovidByDate> getCovidByDatesByCuisine(CovidByDate.CuisineType cuisine) throws SQLException{
+    List<CovidByDate> covidByDates = new ArrayList<CovidByDate>();
+    String selectCovidByDate =
+            "SELECT CovidByDateKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
                     + "Street2,City,State,ZipCode,Cuisine,CompanyKey "
-                    + "FROM Restaurant "
+                    + "FROM CovidByDate "
                     + "WHERE Cuisine=?;";
     Connection connection = null;
     PreparedStatement selectStmt = null;
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectRestaurant);
+      selectStmt = connection.prepareStatement(selectCovidByDate);
       selectStmt.setString(1, cuisine.toString());
       results = selectStmt.executeQuery();
 
       CountyDao countyDao = CountyDao.getInstance();
       while(results.next()) {
-        int restaurantKey = results.getInt("RestaurantKey");
+        int covidByDateKey = results.getInt("CovidByDateKey");
         String name = results.getString("Name");
         String description = results.getString("Description");
         String menu = results.getString("Menu");
@@ -233,10 +197,10 @@ public class CovidByDateDao {
         int companyKey = results.getInt("CompanyKey");
 
         County county = countyDao.getCompanyById(companyKey);
-        CovidByDate covidByDate = new CovidByDate(restaurantKey, name, description,menu,
+        CovidByDate covidByDate = new CovidByDate(covidByDateKey, name, description,menu,
                 listedHours,isActive,street1,street2,city,state,zipCode,
                 CovidByDate.CuisineType.valueOf(cuisineResult), county);
-        restaurants.add(covidByDate);
+        covidByDates.add(covidByDate);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -252,22 +216,22 @@ public class CovidByDateDao {
         results.close();
       }
     }
-    return restaurants;
+    return covidByDates;
   }
 
-  public List<CovidByDate> getRestaurantsByCompanyName(String companyName) throws SQLException{
-    List<CovidByDate> restaurants = new ArrayList<CovidByDate>();
-    String selectRestaurant =
-            "SELECT RestaurantKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
+  public List<CovidByDate> getCovidByDatesByCompanyName(String companyName) throws SQLException{
+    List<CovidByDate> covidByDates = new ArrayList<CovidByDate>();
+    String selectCovidByDate =
+            "SELECT CovidByDateKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
                     + "Street2,City,State,ZipCode,Cuisine,CompanyKey "
-                    + "FROM Restaurant "
+                    + "FROM CovidByDate "
                     + "WHERE CompanyKey=?;";
     Connection connection = null;
     PreparedStatement selectStmt = null;
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectRestaurant);
+      selectStmt = connection.prepareStatement(selectCovidByDate);
 
       CountyDao countyDao = CountyDao.getInstance();
       County county = countyDao.getCompanyByCompanyName(companyName);
@@ -277,7 +241,7 @@ public class CovidByDateDao {
 
 
       while(results.next()) {
-        int restaurantKey = results.getInt("RestaurantKey");
+        int covidByDateKey = results.getInt("CovidByDateKey");
         String name = results.getString("Name");
         String description = results.getString("Description");
         String menu = results.getString("Menu");
@@ -291,10 +255,10 @@ public class CovidByDateDao {
         String cuisine = results.getString("Cuisine");
 
         // Re-using company that we found above to avoid duplicating work
-        CovidByDate covidByDate = new CovidByDate(restaurantKey, name, description,menu,
+        CovidByDate covidByDate = new CovidByDate(covidByDateKey, name, description,menu,
                 listedHours,isActive,street1,street2,city,state,zipCode,
                 CovidByDate.CuisineType.valueOf(cuisine), county);
-        restaurants.add(covidByDate);
+        covidByDates.add(covidByDate);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -310,21 +274,21 @@ public class CovidByDateDao {
         results.close();
       }
     }
-    return restaurants;
+    return covidByDates;
   }
 
 
   public CovidByDate delete(CovidByDate covidByDate) throws SQLException {
-    String deleteRestaurant = "DELETE FROM Restaurant WHERE RestaurantKey=?;";
+    String deleteCovidByDate = "DELETE FROM CovidByDate WHERE CovidByDateKey=?;";
     Connection connection = null;
     PreparedStatement deleteStmt = null;
     try {
       connection = connectionManager.getConnection();
-      deleteStmt = connection.prepareStatement(deleteRestaurant);
-      deleteStmt.setInt(1, covidByDate.getRestaurantKey());
+      deleteStmt = connection.prepareStatement(deleteCovidByDate);
+      deleteStmt.setInt(1, covidByDate.getCovidByDateKey());
       deleteStmt.executeUpdate();
 
-      // Return null so the caller can no longer operate on the Restaurant instance.
+      // Return null so the caller can no longer operate on the CovidByDate instance.
       return null;
     } catch (SQLException e) {
       e.printStackTrace();
