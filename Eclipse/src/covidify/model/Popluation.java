@@ -5,6 +5,26 @@
  */
 package covidify.model;
 
+/*
+
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Population` (
+  `PopulationKey` INT NOT NULL AUTO_INCREMENT,
+  `CountyFKey` INT NOT NULL,
+  `Year` YEAR NULL,
+  `TotalPopulation` INT NULL,
+  `Population60Plus` INT NULL,
+  PRIMARY KEY (`PopulationKey`),
+  INDEX `CountyFKey7_idx` (`CountyFKey` ASC),
+  UNIQUE INDEX `Unique` (`CountyFKey` ASC, `Year` ASC),
+  CONSTRAINT `CountyFKey7`
+    FOREIGN KEY (`CountyFKey`)
+    REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+ */
+
 //TODO here onwards
 
 public class Popluation {

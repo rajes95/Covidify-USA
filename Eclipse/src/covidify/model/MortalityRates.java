@@ -5,6 +5,30 @@
  */
 package covidify.model;
 //TODO here onwards
+
+/*
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MortalityRates` (
+  `MortalityRatesKey` INT NOT NULL AUTO_INCREMENT,
+  `CountyFKey` INT NOT NULL,
+  `Year` YEAR NULL,
+  `NeonatalDisordersMortalityRate` DECIMAL(10,2) NULL,
+  `HIVAIDSandTBMortalityRate` DECIMAL(10,2) NULL,
+  `DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate` DECIMAL(10,2) NULL,
+  `ChronicRespiratoryDiseasesMortalityRate` DECIMAL(10,2) NULL,
+  `LiverDiseaseMortalityRate` DECIMAL(10,2) NULL,
+  `NutritionalDeficienciesMortalityRate` DECIMAL(10,2) NULL,
+  `CardiovascularDiseasesMortalityRate` DECIMAL(10,2) NULL,
+  PRIMARY KEY (`MortalityRatesKey`),
+  INDEX `CountyFKey6_idx` (`CountyFKey` ASC),
+  UNIQUE INDEX `Unique` (`CountyFKey` ASC, `Year` ASC),
+  CONSTRAINT `CountyFKey6`
+    FOREIGN KEY (`CountyFKey`)
+    REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+ */
 public class MortalityRates {
   protected int restaurantKey;
   protected String name;

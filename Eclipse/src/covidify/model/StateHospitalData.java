@@ -7,6 +7,25 @@ package covidify.model;
 
 import java.sql.Date;
 //TODO here onwards
+/*
+
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateHospitalData` (
+  `StateHospitalDataKey` INT NOT NULL AUTO_INCREMENT,
+  `StateFKey` INT NOT NULL,
+  `Year` YEAR NULL,
+  `NumberOfHospitals` VARCHAR(45) NULL,
+  `NumberOfHospitalEmployees` VARCHAR(45) NULL,
+  PRIMARY KEY (`StateHospitalDataKey`),
+  INDEX `StateFKey2_idx` (`StateFKey` ASC),
+  UNIQUE INDEX `Unique` (`StateFKey` ASC, `Year` ASC),
+  CONSTRAINT `StateFKey2`
+    FOREIGN KEY (`StateFKey`)
+    REFERENCES `CovidifyUSA`.`State` (`StateKey`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+ */
+
 public class StateHospitalData {
   protected int stateHospitalDataKey;
   protected CovidByDate covidByDate;

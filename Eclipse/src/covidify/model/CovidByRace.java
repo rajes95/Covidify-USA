@@ -4,41 +4,121 @@
  * Lily Bessette, Ari Fleischer, Elise Jortberg, Rajesh Sakhamuru
  */
 package covidify.model;
-//TODO here onwards
-public class CovidByRace  {
-  protected Integer maxWaitMinutes;
-  protected int  takeOutRestaurantKey;
+/*
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidByRace` (
+  `CovidByRaceKey` INT NOT NULL AUTO_INCREMENT,
+  `StateFKey` INT NOT NULL,
+  `Race` ENUM('White', 'Black', 'Hispanic', 'Asian', 'Multiracial', 'NHPI', 'Multi', 'Other', 'Unknown') NULL,
+  `Positive` INT NULL,
+  `Negative` INT NULL,
+  `Death` INT NULL,
+  `Date` DATE NULL,
+  PRIMARY KEY (`CovidByRaceKey`),
+  INDEX `fk_CovidByRace_State1_idx` (`StateFKey` ASC),
+  CONSTRAINT `fk_CovidByRace_State1`
+    FOREIGN KEY (`StateFKey`)
+    REFERENCES `CovidifyUSA`.`State` (`StateKey`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-  public TakeOutMortalityRates(int restaurantKey, String name, String description, String menu,
-                               String listedHours, Boolean isActive, String street1, String street2,
-                               String city, String state, String zipCode, CuisineType cuisine,
-                               County county, Integer maxWaitMinutes) {
-    super(restaurantKey, name, description, menu, listedHours, isActive, street1, street2,
-            city, state, zipCode, cuisine, county);
-    this.takeOutRestaurantKey = restaurantKey;
-    this.maxWaitMinutes = maxWaitMinutes;
+ */
+
+import java.io.Serializable;
+import java.sql.Date;
+
+public class CovidByRace {
+  protected int covidByRaceKey;
+  protected State state;
+  protected RaceType race;
+  protected Integer positive;
+  protected Integer negative;
+  protected Integer death;
+  protected Date date;
+
+  public enum RaceType {
+    White, Black, Hispanic, Asian, Multiracial, NHPI, Multi, Other, Unknown
   }
 
-  public TakeOutMortalityRates(int restaurantKey) {
-    super(restaurantKey);
-    this.takeOutRestaurantKey = restaurantKey;
+  public CovidByRace(int covidByRaceKey, State state, RaceType race,
+                     Integer positive, Integer negative, Integer death, Date date) {
+    this.covidByRaceKey = covidByRaceKey;
+    this.state = state;
+    this.race = race;
+    this.positive = positive;
+    this.negative = negative;
+    this.death = death;
+    this.date = date;
   }
 
-  public TakeOutMortalityRates(String name, String description, String menu,
-                               String listedHours, Boolean isActive, String street1, String street2,
-                               String city, String state, String zipCode, CuisineType cuisine,
-                               County county, Integer maxWaitMinutes) {
-    super(name, description, menu, listedHours, isActive, street1, street2,
-            city, state, zipCode, cuisine, county);
-    this.maxWaitMinutes = maxWaitMinutes;
+  public CovidByRace(int covidByRaceKey) {
+    this.covidByRaceKey = covidByRaceKey;
   }
 
-  public Integer getMaxWaitMinutes() {
-    return maxWaitMinutes;
+  public CovidByRace(State state, RaceType race,
+                     Integer positive, Integer negative, Integer death, Date date) {
+    this.state = state;
+    this.race = race;
+    this.positive = positive;
+    this.negative = negative;
+    this.death = death;
+    this.date = date;
   }
 
-  public void setMaxWaitMinutes(Integer maxWaitMinutes) {
-    this.maxWaitMinutes = maxWaitMinutes;
+  public int getCovidByRaceKey() {
+    return covidByRaceKey;
+  }
+
+  public void setCovidByRaceKey(int covidByRaceKey) {
+    this.covidByRaceKey = covidByRaceKey;
+  }
+  
+  public State getState() {
+    return state;
+  }
+
+  public void setState(State state) {
+    this.state = state;
+  }
+
+  public RaceType getRace() {
+    return race;
+  }
+
+  public void setRace(RaceType race) {
+    this.race = race;
+  }
+
+  public Integer getPositive() {
+    return positive;
+  }
+
+  public void setPositive(Integer positive) {
+    this.positive = positive;
+  }
+
+  public Integer getNegative() {
+    return negative;
+  }
+
+  public void setNegative(Integer negative) {
+    this.negative = negative;
+  }
+
+  public Integer getDeath() {
+    return death;
+  }
+
+  public void setDeath(Integer death) {
+    this.death = death;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
   }
 }
 

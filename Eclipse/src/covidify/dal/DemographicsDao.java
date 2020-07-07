@@ -15,11 +15,36 @@ import java.util.List;
 
 import covidify.model.*;
 
+/*
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Demographics` (
+  `DemographicsKey` INT NOT NULL AUTO_INCREMENT,
+  `CountyFKey` INT NOT NULL,
+  `Year` YEAR NULL,
+  `White` DECIMAL(5,2) NULL,
+  `AfricanAmerican` DECIMAL(5,2) NULL,
+  `Latino` DECIMAL(5,2) NULL,
+  `NativeAmerican` DECIMAL(5,2) NULL,
+  `AsianAmerican` DECIMAL(5,2) NULL,
+  `OtherEthnicity` DECIMAL(5,2) NULL,
+  `PovertyRate` DECIMAL(5,2) NULL,
+  `MedianAge` DECIMAL NULL,
+  `MedianEarnings` DECIMAL NULL,
+  PRIMARY KEY (`DemographicsKey`),
+  INDEX `CountyFKey3_idx` (`CountyFKey` ASC),
+  UNIQUE INDEX `Unique` (`CountyFKey` ASC, `Year` ASC),
+  CONSTRAINT `CountyFKey3`
+    FOREIGN KEY (`CountyFKey`)
+    REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+ */
 public class DemographicsDao  {
+  protected ConnectionManager connectionManager;
   private static DemographicsDao instance = null;
 
   protected DemographicsDao() {
-    super();
+    connectionManager = new ConnectionManager();
   }
 
   public static DemographicsDao getInstance() {
@@ -30,21 +55,81 @@ public class DemographicsDao  {
   }
 
   //TODO here onwards
-  public Demographics create(Demographics restaurant) throws SQLException {
-    String insertRestaurant = "INSERT INTO FoodCartRestaurant(FoodCartRestaurantKey,IsLicensed) VALUES(?,?);";
+  public Demographics create(Demographics demographics) throws SQLException {
+    String insertDemographics = "INSERT INTO Demographics(CountyFKey,Year,White,AfricanAmerican,"
+            +"Latino,NativeAmerican,AsianAmerican,,OtherEthnicity,PovertyRate,MedianAge,MedianEarnings) "
+            + "VALUES(?,?,?,?,?,?,?,?,?,?,?);";
     Connection connection = null;
     PreparedStatement insertStmt = null;
     try {
       connection = connectionManager.getConnection();
-      insertStmt = connection.prepareStatement(insertRestaurant);
-      insertStmt.setInt(1, restaurant.getRestaurantKey());
-      if (restaurant.getIsLicensed() == null) {
-        insertStmt.setNull(2, Types.BOOLEAN);
+      insertStmt = connection.prepareStatement(insertDemographics);
+      ResultSet resultKey = null;
+      if (demographics.getCounty() == null) {
+        insertStmt.setNull(1, Types.INTEGER);
       } else {
-        insertStmt.setBoolean(2, restaurant.getIsLicensed());
+        insertStmt.setInt(1, demographics.getCounty().getCountyKey());
+      }
+      if (demographics.getYear() == null) {
+        insertStmt.setNull(2, Types.DATE);
+      } else {
+        insertStmt.setDate(2, demographics.getYear());
+      }
+      if (demographics.getWhite() == null) {
+        insertStmt.setNull(3, Types.DECIMAL);
+      } else {
+        insertStmt.setDouble(3, demographics.getWhite());
+      }
+      if (demographics.getAfricanAmerican() == null) {
+        insertStmt.setNull(4, Types.DECIMAL);
+      } else {
+        insertStmt.setDouble(4, demographics.getAfricanAmerican());
+      }
+      if (demographics.getLatino() == null) {
+        insertStmt.setNull(5, Types.DECIMAL);
+      } else {
+        insertStmt.setDouble(5, demographics.getLatino());
+      }
+      if (demographics.getNativeAmerican() == null) {
+        insertStmt.setNull(6, Types.DECIMAL);
+      } else {
+        insertStmt.setDouble(6, demographics.getNativeAmerican());
+      }
+      if (demographics.getAsianAmerican() == null) {
+        insertStmt.setNull(7, Types.DECIMAL);
+      } else {
+        insertStmt.setDouble(7, demographics.getAsianAmerican());
+      }
+      if (demographics.getOtherEthnicity() == null) {
+        insertStmt.setNull(8, Types.DECIMAL);
+      } else {
+        insertStmt.setDouble(8, demographics.getOtherEthnicity());
+      }
+      if (demographics.getPovertyRate() == null) {
+        insertStmt.setNull(9, Types.DECIMAL);
+      } else {
+        insertStmt.setDouble(9, demographics.getPovertyRate());
+      }
+      if (demographics.getMedianAge() == null) {
+        insertStmt.setNull(10, Types.DECIMAL);
+      } else {
+        insertStmt.setDouble(10, demographics.getMedianAge());
+      }
+      if (demographics.getMedianEarnings() == null) {
+        insertStmt.setNull(11, Types.DECIMAL);
+      } else {
+        insertStmt.setDouble(11, demographics.getMedianEarnings());
       }
       insertStmt.executeUpdate();
-      return restaurant;
+      resultKey = insertStmt.getGeneratedKeys();
+      int demographicsKey = -1;
+      if (resultKey.next()) {
+        demographicsKey = resultKey.getInt(1);
+      } else {
+        throw new SQLException("Unable to retrieve auto-generated key.");
+      }
+      demographics.setDemographicsKey(demographicsKey);
+      return demographics;
     } catch (SQLException e) {
       e.printStackTrace();
       throw e;
@@ -58,25 +143,27 @@ public class DemographicsDao  {
     }
   }
 
-  public Demographics getFoodCartRestaurantById(int foodCartRestaurantId) throws SQLException {
-    String selectRestaurant =
-            "SELECT RestaurantKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
-                    + "Street2,City,State,ZipCode,Cuisine,CompanyKey,IsLicensed,FoodCartRestaurantKey "
-                    + "FROM FoodCartRestaurant "
-                    + "INNER JOIN Restaurant "
-                    + "ON Restaurant.RestaurantKey = FoodCartRestaurant.FoodCartRestaurantKey "
-                    + "WHERE FoodCartRestaurantKey=?;";
+  //TODO from here onward
+  /*
+  public Demographics getDemographicsById(int foodCartDemographicsId) throws SQLException {
+    String selectDemographics =
+            "SELECT DemographicsKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
+                    + "Street2,City,State,ZipCode,Cuisine,CompanyKey,IsLicensed,DemographicsKey "
+                    + "FROM Demographics "
+                    + "INNER JOIN Demographics "
+                    + "ON Demographics.DemographicsKey = Demographics.DemographicsKey "
+                    + "WHERE DemographicsKey=?;";
     Connection connection = null;
     PreparedStatement selectStmt = null;
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectRestaurant);
-      selectStmt.setInt(1, foodCartRestaurantId);
+      selectStmt = connection.prepareStatement(selectDemographics);
+      selectStmt.setInt(1, foodCartDemographicsId);
       results = selectStmt.executeQuery();
       CountyDao countyDao = CountyDao.getInstance();
       if (results.next()) {
-        int restaurantKey = results.getInt("RestaurantKey");
+        int demographicsKey = results.getInt("DemographicsKey");
         String name = results.getString("Name");
         String description = results.getString("Description");
         String menu = results.getString("Menu");
@@ -92,10 +179,10 @@ public class DemographicsDao  {
         Boolean isLicensed = results.getBoolean("IsLicensed");
 
         County county = countyDao.getCompanyById(companyKey);
-        Demographics restaurant = new Demographics(restaurantKey, name, description, menu,
+        Demographics demographics = new Demographics(demographicsKey, name, description, menu,
                 listedHours, isActive, street1, street2, city, state, zipCode,
                 MortalityRates.CuisineType.valueOf(cuisine), county, isLicensed);
-        return restaurant;
+        return demographics;
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -114,28 +201,28 @@ public class DemographicsDao  {
     return null;
   }
 
-  public List<Demographics> getFoodCartRestaurantsByCompanyName(String companyName) throws SQLException {
-    List<Demographics> restaurants = new ArrayList<Demographics>();
-    String selectRestaurant =
-            "SELECT RestaurantKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
-                    + "Street2,City,State,ZipCode,Cuisine,CompanyKey,MaxWaitMinutes,FoodCartRestaurantKey "
-                    + "FROM FoodCartRestaurantKey "
-                    + "INNER JOIN Restaurant "
-                    + "ON Restaurant.RestaurantKey = FoodCartRestaurant.FoodCartRestaurantKey "
+  public List<Demographics> getDemographicssByCompanyName(String companyName) throws SQLException {
+    List<Demographics> demographicss = new ArrayList<Demographics>();
+    String selectDemographics =
+            "SELECT DemographicsKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
+                    + "Street2,City,State,ZipCode,Cuisine,CompanyKey,MaxWaitMinutes,DemographicsKey "
+                    + "FROM DemographicsKey "
+                    + "INNER JOIN Demographics "
+                    + "ON Demographics.DemographicsKey = Demographics.DemographicsKey "
                     + "WHERE CompanyKey=?;";
     Connection connection = null;
     PreparedStatement selectStmt = null;
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectRestaurant);
+      selectStmt = connection.prepareStatement(selectDemographics);
       CountyDao countyDao = CountyDao.getInstance();
       County county = countyDao.getCompanyByCompanyName(companyName);
       selectStmt.setInt(1, county.getCompanyKey());
       results = selectStmt.executeQuery();
 
       while (results.next()) {
-        int restaurantKey = results.getInt("RestaurantKey");
+        int demographicsKey = results.getInt("DemographicsKey");
         String name = results.getString("Name");
         String description = results.getString("Description");
         String menu = results.getString("Menu");
@@ -150,10 +237,10 @@ public class DemographicsDao  {
         Boolean isLicensed = results.getBoolean("IsLicensed");
 
         // Re-using company that we found above to avoid duplicating work
-        Demographics restaurant = new Demographics(restaurantKey, name, description, menu,
+        Demographics demographics = new Demographics(demographicsKey, name, description, menu,
                 listedHours, isActive, street1, street2, city, state, zipCode,
                 MortalityRates.CuisineType.valueOf(cuisine), county, isLicensed);
-        restaurants.add(restaurant);
+        demographicss.add(demographics);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -169,23 +256,21 @@ public class DemographicsDao  {
         results.close();
       }
     }
-    return restaurants;
+    return demographicss;
   }
 
-
+*/
   public Demographics delete(Demographics demographics) throws SQLException {
-    String deleteRestaurant = "DELETE FROM FoodCartRestaurant WHERE FoodCartRestaurantKey=?;";
+    String deleteDemographics = "DELETE FROM Demographics WHERE DemographicsKey=?;";
     Connection connection = null;
     PreparedStatement deleteStmt = null;
     try {
       connection = connectionManager.getConnection();
-      deleteStmt = connection.prepareStatement(deleteRestaurant);
-      deleteStmt.setInt(1, demographics.getRestaurantKey());
+      deleteStmt = connection.prepareStatement(deleteDemographics);
+      deleteStmt.setInt(1, demographics.getDemographicsKey());
       deleteStmt.executeUpdate();
-
-      // Also delete from super Restaurant class.
-      super.delete(demographics);
-      // Return null so the caller can no longer operate on the FoodCartRestaurant instance.
+      
+      // Return null so the caller can no longer operate on the Demographics instance.
       return null;
     } catch (SQLException e) {
       e.printStackTrace();
