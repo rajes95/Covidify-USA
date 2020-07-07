@@ -19,6 +19,24 @@ import java.util.List;
 
 import covidify.model.*;
 
+/*
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateGovernor` (
+  `StateGovernorKey` INT NOT NULL AUTO_INCREMENT,
+  `StateFKey` INT NOT NULL,
+  `Year` YEAR NULL,
+  `Governor` VARCHAR(45) NULL,
+  `GovernorParty` ENUM('Democratic', 'Republican', 'Other') NULL,
+  PRIMARY KEY (`StateGovernorKey`),
+  INDEX `StateFKey1_idx` (`StateFKey` ASC),
+  UNIQUE INDEX `Unique` (`StateFKey` ASC, `Year` ASC),
+  CONSTRAINT `StateFKey1`
+    FOREIGN KEY (`StateFKey`)
+    REFERENCES `CovidifyUSA`.`State` (`StateKey`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+ */
+
 public class StateGovernorDao {
   protected ConnectionManager connectionManager;
   private static StateGovernorDao instance = null;
@@ -33,52 +51,47 @@ public class StateGovernorDao {
     }
     return instance;
   }
-  //TODO here onwards
-  public StateGovernor create(StateGovernor countyHospitalData) throws SQLException {
-    String insertReview = "INSERT INTO Review(UserName,RestaurantKey,CreatedWhen,WrittenContent,Rating) "
-            + "VALUES(?,?,?,?,?);";
+
+  public StateGovernor create(StateGovernor stateGovernor) throws SQLException {
+    String insertStateGovernor = "INSERT INTO StateGovernor(StateFKey,Year,Governor,GovernorParty) "
+            + "VALUES(?,?,?,?);";
     Connection connection = null;
     PreparedStatement insertStmt = null;
     ResultSet resultKey = null;
     try {
       connection = connectionManager.getConnection();
-      insertStmt = connection.prepareStatement(insertReview, Statement.RETURN_GENERATED_KEYS);
-      if (countyHospitalData.getCovidByDate().getUserName() == null) {
-        insertStmt.setNull(1, Types.VARCHAR);
+      insertStmt = connection.prepareStatement(insertStateGovernor, Statement.RETURN_GENERATED_KEYS);
+      if (stateGovernor.getState() == null) {
+        insertStmt.setNull(1, Types.INTEGER);
       } else {
-        insertStmt.setString(1, countyHospitalData.getCovidByDate().getUserName());
+        insertStmt.setInt(1, stateGovernor.getState().getStateKey());
       }
-      if (countyHospitalData.getMortalityRates() == null) {
-        insertStmt.setNull(2, Types.INTEGER);
+      if (stateGovernor.getYear() == null) {
+        insertStmt.setNull(2, Types.DATE);
       } else {
-        insertStmt.setInt(2, countyHospitalData.getMortalityRates().getRestaurantKey());
+        insertStmt.setDate(2, stateGovernor.getYear());
       }
-      if (countyHospitalData.getCreatedWhen() == null) {
-        insertStmt.setNull(3, Types.TIMESTAMP);
+      if (stateGovernor.getGovernor() == null) {
+        insertStmt.setNull(3, Types.VARCHAR);
       } else {
-        insertStmt.setTimestamp(3, new Timestamp(countyHospitalData.getCreatedWhen().getTime()));
+        insertStmt.setString(3, stateGovernor.getGovernor());
       }
-      if (countyHospitalData.getWrittenContent() == null) {
-        insertStmt.setNull(4, Types.LONGVARCHAR);
+      if (stateGovernor.getGovernorParty() == null) {
+        insertStmt.setNull(4, Types.VARCHAR);
       } else {
-        insertStmt.setString(4, countyHospitalData.getWrittenContent());
-      }
-      if (countyHospitalData.getRating() == null) {
-        insertStmt.setNull(5, Types.DECIMAL);
-      } else {
-        insertStmt.setFloat(5, countyHospitalData.getRating());
+        insertStmt.setString(4, stateGovernor.getGovernorParty().toString());
       }
       insertStmt.executeUpdate();
 
       resultKey = insertStmt.getGeneratedKeys();
-      int reviewKey = -1;
+      int stateGovernorKey = -1;
       if (resultKey.next()) {
-        reviewKey = resultKey.getInt(1);
+        stateGovernorKey = resultKey.getInt(1);
       } else {
         throw new SQLException("Unable to retrieve auto-generated key.");
       }
-      countyHospitalData.setReviewKey(reviewKey);
-      return countyHospitalData;
+      stateGovernor.setStateGovernorKey(stateGovernorKey);
+      return stateGovernor;
     } catch (SQLException e) {
       e.printStackTrace();
       throw e;
@@ -96,24 +109,26 @@ public class StateGovernorDao {
   }
 
 
-  public StateGovernor getReviewById(int reviewId) throws SQLException {
-    String selectReview =
-            "SELECT ReviewKey,UserName,RestaurantKey,CreatedWhen,WrittenContent,Rating " +
-                    "FROM Review " +
-                    "WHERE ReviewKey=?;";
+  //TODO here onwards
+/*
+  public StateGovernor getStateGovernorById(int stateGovernorId) throws SQLException {
+    String selectStateGovernor =
+            "SELECT StateGovernorKey,UserName,RestaurantKey,CreatedWhen,WrittenContent,Rating " +
+                    "FROM StateGovernor " +
+                    "WHERE StateGovernorKey=?;";
     Connection connection = null;
     PreparedStatement selectStmt = null;
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectReview);
-      selectStmt.setInt(1, reviewId);
+      selectStmt = connection.prepareStatement(selectStateGovernor);
+      selectStmt.setInt(1, stateGovernorId);
       results = selectStmt.executeQuery();
 
       PopulationDao populationDao = PopulationDao.getInstance();
       RestaurantDao restaurantDao = RestaurantDao.getInstance();
       if (results.next()) {
-        int reviewKey = results.getInt("ReviewKey");
+        int stateGovernorKey = results.getInt("StateGovernorKey");
         String userName = results.getString("UserName");
         int restaurantKey = results.getInt("RestaurantKey");
         ;
@@ -124,8 +139,8 @@ public class StateGovernorDao {
 
         CovidByDate covidByDate = populationDao.getUserByUserName(userName);
         MortalityRates mortalityRates = restaurantDao.getRestaurantById(restaurantKey);
-        StateGovernor countyHospitalData = new StateGovernor(reviewKey, covidByDate, mortalityRates, createdWhen, writtenContent, rating);
-        return countyHospitalData;
+        StateGovernor stateGovernor = new StateGovernor(stateGovernorKey, covidByDate, mortalityRates, createdWhen, writtenContent, rating);
+        return stateGovernor;
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -144,18 +159,18 @@ public class StateGovernorDao {
     return null;
   }
 
-  public List<StateGovernor> getReviewsByUserName(String userName) throws SQLException {
-    List<StateGovernor> reviews = new ArrayList<StateGovernor>();
-    String selectReview =
-            "SELECT ReviewKey,UserName,RestaurantKey,CreatedWhen,WrittenContent,Rating " +
-                    "FROM Review " +
+  public List<StateGovernor> getStateGovernorsByUserName(String userName) throws SQLException {
+    List<StateGovernor> stateGovernors = new ArrayList<StateGovernor>();
+    String selectStateGovernor =
+            "SELECT StateGovernorKey,UserName,RestaurantKey,CreatedWhen,WrittenContent,Rating " +
+                    "FROM StateGovernor " +
                     "WHERE UserName=?;";
     Connection connection = null;
     PreparedStatement selectStmt = null;
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectReview);
+      selectStmt = connection.prepareStatement(selectStateGovernor);
       selectStmt.setString(1, userName);
       results = selectStmt.executeQuery();
 
@@ -164,7 +179,7 @@ public class StateGovernorDao {
       RestaurantDao restaurantDao = RestaurantDao.getInstance();
 
       while (results.next()) {
-        int reviewKey = results.getInt("ReviewKey");
+        int stateGovernorKey = results.getInt("StateGovernorKey");
         int restaurantKey = results.getInt("RestaurantKey");
         ;
         Date createdWhen = new Date(results.getTimestamp("CreatedWhen").getTime());
@@ -173,8 +188,8 @@ public class StateGovernorDao {
 
         // Re-using User that we found above to avoid duplicating work
         MortalityRates mortalityRates = restaurantDao.getRestaurantById(restaurantKey);
-        StateGovernor countyHospitalData = new StateGovernor(reviewKey, covidByDate, mortalityRates, createdWhen, writtenContent, rating);
-        reviews.add(countyHospitalData);
+        StateGovernor stateGovernor = new StateGovernor(stateGovernorKey, covidByDate, mortalityRates, createdWhen, writtenContent, rating);
+        stateGovernors.add(stateGovernor);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -190,21 +205,21 @@ public class StateGovernorDao {
         results.close();
       }
     }
-    return reviews;
+    return stateGovernors;
   }
 
-  public List<StateGovernor> getReviewsByRestaurantId(int restaurantId) throws SQLException {
-    List<StateGovernor> reviews = new ArrayList<StateGovernor>();
-    String selectReview =
-            "SELECT ReviewKey,UserName,RestaurantKey,CreatedWhen,WrittenContent,Rating " +
-                    "FROM Review " +
+  public List<StateGovernor> getStateGovernorsByRestaurantId(int restaurantId) throws SQLException {
+    List<StateGovernor> stateGovernors = new ArrayList<StateGovernor>();
+    String selectStateGovernor =
+            "SELECT StateGovernorKey,UserName,RestaurantKey,CreatedWhen,WrittenContent,Rating " +
+                    "FROM StateGovernor " +
                     "WHERE RestaurantKey=?;";
     Connection connection = null;
     PreparedStatement selectStmt = null;
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectReview);
+      selectStmt = connection.prepareStatement(selectStateGovernor);
       selectStmt.setInt(1, restaurantId);
       results = selectStmt.executeQuery();
 
@@ -213,7 +228,7 @@ public class StateGovernorDao {
       RestaurantDao restaurantDao = RestaurantDao.getInstance();
       MortalityRates mortalityRates = restaurantDao.getRestaurantById(restaurantId);
       while (results.next()) {
-        int reviewKey = results.getInt("ReviewKey");
+        int stateGovernorKey = results.getInt("StateGovernorKey");
         String userName = results.getString("UserName");
         Date createdWhen = new Date(results.getTimestamp("CreatedWhen").getTime());
         String writtenContent = results.getString("WrittenContent");
@@ -221,8 +236,8 @@ public class StateGovernorDao {
 
         // Re-using Restaurant that we found above to avoid duplicating work
         CovidByDate covidByDate = populationDao.getUserByUserName(userName);
-        StateGovernor countyHospitalData = new StateGovernor(reviewKey, covidByDate, mortalityRates, createdWhen, writtenContent, rating);
-        reviews.add(countyHospitalData);
+        StateGovernor stateGovernor = new StateGovernor(stateGovernorKey, covidByDate, mortalityRates, createdWhen, writtenContent, rating);
+        stateGovernors.add(stateGovernor);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -238,20 +253,20 @@ public class StateGovernorDao {
         results.close();
       }
     }
-    return reviews;
+    return stateGovernors;
   }
-
-  public StateGovernor delete(StateGovernor countyHospitalData) throws SQLException {
-    String deleteReview = "DELETE FROM Review WHERE ReviewKey=?;";
+*/
+    public StateGovernor delete(StateGovernor stateGovernor) throws SQLException {
+    String deleteStateGovernor = "DELETE FROM StateGovernor WHERE StateGovernorKey=?;";
     Connection connection = null;
     PreparedStatement deleteStmt = null;
     try {
       connection = connectionManager.getConnection();
-      deleteStmt = connection.prepareStatement(deleteReview);
-      deleteStmt.setInt(1, countyHospitalData.getReviewKey());
+      deleteStmt = connection.prepareStatement(deleteStateGovernor);
+      deleteStmt.setInt(1, stateGovernor.getStateGovernorKey());
       deleteStmt.executeUpdate();
 
-      // Return null so the caller can no longer operate on the Review instance.
+      // Return null so the caller can no longer operate on the StateGovernor instance.
       return null;
     } catch (SQLException e) {
       e.printStackTrace();

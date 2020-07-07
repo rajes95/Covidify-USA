@@ -4,61 +4,116 @@
  * Lily Bessette, Ari Fleischer, Elise Jortberg, Rajesh Sakhamuru
  */
 package covidify.model;
-//TODO here onwards
+/*
+CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`PresidentialElectionVotePercentages` (
+  `PresidentialElectionVotePercentagesKey` INT NOT NULL AUTO_INCREMENT,
+  `CountyFKey` INT NOT NULL,
+  `Year` YEAR NULL,
+  `DemocratsPercent` DECIMAL(5,2) NULL,
+  `RepublicansPercent` DECIMAL(5,2) NULL,
+  `OtherPercent` DECIMAL(5,2) NULL,
+  PRIMARY KEY (`PresidentialElectionVotePercentagesKey`),
+  INDEX `CountyFKey2_idx` (`CountyFKey` ASC),
+  UNIQUE INDEX `Unique` (`CountyFKey` ASC, `Year` ASC),
+  CONSTRAINT `CountyFKey2`
+    FOREIGN KEY (`CountyFKey`)
+    REFERENCES `CovidifyUSA`.`County` (`CountyKey`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+ */
+
+import java.sql.Date;
+
 public class PresidentialElectionVotePercentages {
-  protected int recommendationKey;
-  protected CovidByDate covidByDate;
-  protected MortalityRates mortalityRates;
+  protected int presidentialElectionVotePercentagesKey;
+  protected County county;
+  protected Date year;
+  protected Float democratsPercent;
+  protected Float republicansPercent;
+  protected Float otherPercent;
 
-  public Recommendation(int recommendationKey, CovidByDate covidByDate, MortalityRates mortalityRates){
-    this.recommendationKey = recommendationKey;
-    this.covidByDate = covidByDate;
-    this.mortalityRates = mortalityRates;
+  public PresidentialElectionVotePercentages(int presidentialElectionVotePercentagesKey, County county,
+                                             Date year, Float democratsPercent, Float republicansPercent,
+                                             Float otherPercent){
+    this.presidentialElectionVotePercentagesKey = presidentialElectionVotePercentagesKey;
+    this.county= county;
+    this.year = year;
+    this.democratsPercent = democratsPercent;
+    this.republicansPercent = republicansPercent;
+    this.otherPercent = otherPercent;
   }
 
-  public Recommendation(int recommendationKey){
-    this.recommendationKey = recommendationKey;
+  public PresidentialElectionVotePercentages(int presidentialElectionVotePercentagesKey){
+    this.presidentialElectionVotePercentagesKey = presidentialElectionVotePercentagesKey;
   }
 
-  public Recommendation(CovidByDate covidByDate, MortalityRates mortalityRates){
-    this.covidByDate = covidByDate;
-    this.mortalityRates = mortalityRates;
+  public PresidentialElectionVotePercentages(County county, Date year, Float democratsPercent,
+                                             Float republicansPercent, Float otherPercent){
+    this.county= county;
+    this.year = year;
+    this.democratsPercent = democratsPercent;
+    this.republicansPercent = republicansPercent;
+    this.otherPercent = otherPercent;
   }
 
-  public int getRecommendationKey() {
-    return recommendationKey;
+  public int getPresidentialElectionVotePercentagesKey() {
+    return presidentialElectionVotePercentagesKey;
   }
 
-  public void setRecommendationKey(int recommendationKey) {
-    this.recommendationKey = recommendationKey;
+  public void setPresidentialElectionVotePercentagesKey(int presidentialElectionVotePercentagesKey) {
+    this.presidentialElectionVotePercentagesKey = presidentialElectionVotePercentagesKey;
   }
 
-  public CovidByDate getCovidByDate() {
-    return covidByDate;
+  public County getCounty(){
+    return county;
   }
 
-  public void setCovidByDate(CovidByDate covidByDate) {
-    this.covidByDate = covidByDate;
+  public void setCounty(County county){
+    this.county = county;
   }
 
-  public MortalityRates getMortalityRates() {
-    return mortalityRates;
+  public Date getYear(){
+    return year;
   }
 
-  public void setMortalityRates(MortalityRates mortalityRates) {
-    this.mortalityRates = mortalityRates;
+  public void setYear(Date year){
+    this.year = year;
+  }
+
+  public Float getDemocratsPercent(){
+    return democratsPercent;
+  }
+
+  public void setDemocratsPercent(Float democratsPercent){
+    this.democratsPercent = democratsPercent;
+  }
+  public Float getRepublicansPercent(){
+    return republicansPercent;
+  }
+
+  public void setRepublicansPercent(Float republicansPercent){
+    this.republicansPercent = republicansPercent;
+  }
+
+  public Float getOtherPercent(){
+    return otherPercent;
+  }
+
+  public void setOtherPercent(Float otherPercent){
+    this.otherPercent = otherPercent;
   }
 
 }
 
 /*
-CREATE TABLE IF NOT EXISTS `restdb`.`Recommendation` (
-  `RecommendationKey` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `restdb`.`PresidentialElectionVotePercentages` (
+  `PresidentialElectionVotePercentagesKey` INT NOT NULL AUTO_INCREMENT,
   `UserKey` VARCHAR(45) NULL,
   `RestaurantKey` INT NULL,
   INDEX `UserKey2_idx` (`UserKey` ASC),
   INDEX `RestaurantKey5_idx` (`RestaurantKey` ASC),
-  PRIMARY KEY (`RecommendationKey`),
+  PRIMARY KEY (`PresidentialElectionVotePercentagesKey`),
   CONSTRAINT `UserKey2`
     FOREIGN KEY (`UserKey`)
     REFERENCES `restdb`.`User` (`UserName`)
