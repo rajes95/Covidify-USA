@@ -15,7 +15,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import covidify.model.*;
+import covidify.model.State;
 
 
 /*
@@ -45,7 +45,7 @@ public class StateDao  {
   }
 
   public State create(State state) throws SQLException {
-    String insertState = "INSERT INTO State(StateName,StateFIPS,PostalCode) "
+    String insertState = "INSERT INTO State(StateFIPS,PostalCode,StateName) "
             + "VALUES(?,?,?);";
     Connection connection = null;
     PreparedStatement insertStmt = null;
@@ -53,21 +53,22 @@ public class StateDao  {
     try {
       connection = connectionManager.getConnection();
       insertStmt = connection.prepareStatement(insertState, Statement.RETURN_GENERATED_KEYS);
-      if (state.getStateName() == null) {
+      if (state.getStateFIPS() == null) {
         insertStmt.setNull(1, Types.VARCHAR);
       } else {
-        insertStmt.setString(1, state.getStateName());
-      }
-      if (state.getStateFIPS() == null) {
-        insertStmt.setNull(2, Types.VARCHAR);
-      } else {
-        insertStmt.setString(2, state.getStateFIPS());
+        insertStmt.setString(1, state.getStateFIPS());
       }
       if (state.getPostalCode() == null) {
-        insertStmt.setNull(3, Types.VARCHAR);
+        insertStmt.setNull(2, Types.VARCHAR);
       } else {
-        insertStmt.setString(3, state.getPostalCode());
+        insertStmt.setString(2, state.getPostalCode());
       }
+      if (state.getStateName() == null) {
+          insertStmt.setNull(3, Types.VARCHAR);
+       } else {
+         insertStmt.setString(3, state.getStateName());
+       }
+      
       insertStmt.executeUpdate();
 
       resultKey = insertStmt.getGeneratedKeys();
@@ -97,8 +98,8 @@ public class StateDao  {
 
 
   public State getStateByName(String stateName) throws SQLException {
-    String selectRestaurant =
-            "SELECT StateKey,StateName,StateFIPS,PostalCode,"
+    String selectState =
+            "SELECT StateKey,StateFIPS,PostalCode,StateName "
                     + "FROM State "
                     + "WHERE StateName=?;";
     Connection connection = null;
@@ -106,15 +107,15 @@ public class StateDao  {
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectRestaurant);
+      selectStmt = connection.prepareStatement(selectState);
       selectStmt.setString(1, stateName);
       results = selectStmt.executeQuery();
       if (results.next()) {
         int stateKey = results.getInt("StateKey");
-        String resultStateName = results.getString("StateName");
         String stateFIPS = results.getString("StateFIPS");
         String postalCode = results.getString("PostalCode");
-        State state = new State(stateKey, resultStateName, stateFIPS, postalCode);
+        String resultStateName = results.getString("StateName");
+        State state = new State(resultStateKey, stateFIPS, postalCode, resultStateName);
         return state;
       }
     } catch (SQLException e) {
@@ -135,8 +136,8 @@ public class StateDao  {
   }
 
   public State getStateByKey(int stateKey) throws SQLException {
-    String selectRestaurant =
-            "SELECT StateKey,StateName,StateFIPS,PostalCode,"
+    String selectState =
+            "SELECT StateKey,StateFIPS,PostalCode,StateName "
                     + "FROM State "
                     + "WHERE StateKey=?;";
     Connection connection = null;
@@ -144,15 +145,15 @@ public class StateDao  {
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectRestaurant);
+      selectStmt = connection.prepareStatement(selectState);
       selectStmt.setInt(1, stateKey);
       results = selectStmt.executeQuery();
       if (results.next()) {
         int resultStateKey = results.getInt("StateKey");
-        String resultStateName = results.getString("StateName");
         String stateFIPS = results.getString("StateFIPS");
         String postalCode = results.getString("PostalCode");
-        State state = new State(resultStateKey, resultStateName, stateFIPS, postalCode);
+        String resultStateName = results.getString("StateName");
+        State state = new State(resultStateKey, stateFIPS, postalCode, resultStateName);
         return state;
       }
     } catch (SQLException e) {
@@ -171,15 +172,166 @@ public class StateDao  {
     }
     return null;
   }
+  
+  public State getStateByPostalCode(String postalCode) throws SQLException {
+	    String selectState =
+	            "SELECT StateKey,StateFIPS,PostalCode,StateName "
+	                    + "FROM State "
+	                    + "WHERE PostalCode=?;";
+	    Connection connection = null;
+	    PreparedStatement selectStmt = null;
+	    ResultSet results = null;
+	    try {
+	      connection = connectionManager.getConnection();
+	      selectStmt = connection.prepareStatement(selectState);
+	      selectStmt.setInt(1, postalCode);
+	      results = selectStmt.executeQuery();
+	      if (results.next()) {
+	        int resultStateKey = results.getInt("StateKey");
+	        String stateFIPS = results.getString("StateFIPS");
+	        String postalCode = results.getString("PostalCode");
+	        String resultStateName = results.getString("StateName");
+	        State state = new State(resultStateKey, stateFIPS, postalCode, resultStateName);
+	        return state;
+	      }
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	      throw e;
+	    } finally {
+	      if (connection != null) {
+	        connection.close();
+	      }
+	      if (selectStmt != null) {
+	        selectStmt.close();
+	      }
+	      if (results != null) {
+	        results.close();
+	      }
+	    }
+	    return null;
+	  }
+  
+  public State getStateByFIPS(int stateKey) throws SQLException {
+	    String selectState =
+	            "SELECT StateKey,StateFIPS,PostalCode,StateName "
+	                    + "FROM State "
+	                    + "WHERE StateKey=?;";
+	    Connection connection = null;
+	    PreparedStatement selectStmt = null;
+	    ResultSet results = null;
+	    try {
+	      connection = connectionManager.getConnection();
+	      selectStmt = connection.prepareStatement(selectState);
+	      selectStmt.setInt(1, stateKey);
+	      results = selectStmt.executeQuery();
+	      if (results.next()) {
+	        int resultStateKey = results.getInt("StateKey");
+	        String stateFIPS = results.getString("StateFIPS");
+	        String postalCode = results.getString("PostalCode");
+	        String resultStateName = results.getString("StateName");
+	        State state = new State(resultStateKey, stateFIPS, postalCode, resultStateName);
+	        return state;
+	      }
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	      throw e;
+	    } finally {
+	      if (connection != null) {
+	        connection.close();
+	      }
+	      if (selectStmt != null) {
+	        selectStmt.close();
+	      }
+	      if (results != null) {
+	        results.close();
+	      }
+	    }
+	    return null;
+	  }
+  
+  public State updateStateFIPS(State state, String newStateFIPS) throws SQLException {
+		String updateState = "UPDATE State SET StateFIPS=? WHERE StateKey=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try {
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updateState);
+			updateStmt.setString(1, newStateFIPS);
+			updateStmt.setInt(2, state.getStateKey());
+			updateStmt.executeUpdate();
+			state.setStateFIPS(newStateFIPS);
+			return company;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(updateStmt != null) {
+				updateStmt.close();
+			}
+		}
+	}
+  
+  public State updatePostalCode(State state, String newPostalCode) throws SQLException {
+		String updateState = "UPDATE State SET PostalCode=? WHERE StateKey=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try {
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updateState);
+			updateStmt.setString(1, newPostalCode);
+			updateStmt.setInt(2, state.getStateKey());
+			updateStmt.executeUpdate();
+			state.setPostalCode(newPostalCode);
+			return company;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(updateStmt != null) {
+				updateStmt.close();
+			}
+		}
+	}
+  
+  public State updateStateName(State state, String newStateName) throws SQLException {
+		String updateState = "UPDATE State SET StateName=? WHERE StateKey=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try {
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updateState);
+			updateStmt.setString(1, newStateName);
+			updateStmt.setInt(2, state.getStateKey());
+			updateStmt.executeUpdate();
+			state.setStateName(newStateName);
+			return company;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(updateStmt != null) {
+				updateStmt.close();
+			}
+		}
+	}
 
 
   public State delete(State state) throws SQLException {
-    String deleteRestaurant = "DELETE FROM State WHERE StateKey=?;";
+    String deleteState = "DELETE FROM State WHERE StateKey=?;";
     Connection connection = null;
     PreparedStatement deleteStmt = null;
     try {
       connection = connectionManager.getConnection();
-      deleteStmt = connection.prepareStatement(deleteRestaurant);
+      deleteStmt = connection.prepareStatement(deleteState);
       deleteStmt.setInt(1, state.getStateKey());
       deleteStmt.executeUpdate();
       // Return null so the caller can no longer operate on the State instance.
