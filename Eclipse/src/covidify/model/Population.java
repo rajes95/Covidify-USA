@@ -48,7 +48,7 @@ public class Population {
     this.populationKey = populationKey;
   }
 
-  public Popluation(int countyFKey, Date year, Integer totalPopulation, Integer population60Plus) {
+  public Population(int countyFKey, Date year, Integer totalPopulation, Integer population60Plus) {
     this.countyFKey = countyFKey;
     this.year = year;
     this.totalPopulation = totalPopulation;

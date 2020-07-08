@@ -34,7 +34,7 @@ public class StateHospitalData {
 
   public StateHospitalData(int stateHospitalDataKey, int stateFKey, Date year, Long numberOfHospitals,
                            Long numberOfHospitalEmployees) {
-    this.stateHospitalDataKey = reservationKey;
+    this.stateHospitalDataKey = stateHospitalDataKey;
     this.stateFKey = stateFKey;
     this.year = year;
     this.numberOfHospitals = numberOfHospitals;
