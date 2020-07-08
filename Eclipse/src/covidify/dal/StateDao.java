@@ -10,10 +10,7 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
 
 import covidify.model.State;
 
@@ -115,7 +112,7 @@ public class StateDao  {
         String stateFIPS = results.getString("StateFIPS");
         String postalCode = results.getString("PostalCode");
         String resultStateName = results.getString("StateName");
-        State state = new State(resultStateKey, stateFIPS, postalCode, resultStateName);
+        State state = new State(stateKey, stateFIPS, postalCode, resultStateName);
         return state;
       }
     } catch (SQLException e) {
@@ -184,14 +181,14 @@ public class StateDao  {
 	    try {
 	      connection = connectionManager.getConnection();
 	      selectStmt = connection.prepareStatement(selectState);
-	      selectStmt.setInt(1, postalCode);
+	      selectStmt.setString(1, postalCode);
 	      results = selectStmt.executeQuery();
 	      if (results.next()) {
 	        int resultStateKey = results.getInt("StateKey");
 	        String stateFIPS = results.getString("StateFIPS");
-	        String postalCode = results.getString("PostalCode");
+	        String postCode = results.getString("PostalCode");
 	        String resultStateName = results.getString("StateName");
-	        State state = new State(resultStateKey, stateFIPS, postalCode, resultStateName);
+	        State state = new State(resultStateKey, stateFIPS, postCode, resultStateName);
 	        return state;
 	      }
 	    } catch (SQLException e) {
@@ -211,25 +208,25 @@ public class StateDao  {
 	    return null;
 	  }
   
-  public State getStateByFIPS(int stateKey) throws SQLException {
+  public State getStateByFIPS(String stateFIPS) throws SQLException {
 	    String selectState =
 	            "SELECT StateKey,StateFIPS,PostalCode,StateName "
 	                    + "FROM State "
-	                    + "WHERE StateKey=?;";
+	                    + "WHERE StateFIPS=?;";
 	    Connection connection = null;
 	    PreparedStatement selectStmt = null;
 	    ResultSet results = null;
 	    try {
 	      connection = connectionManager.getConnection();
 	      selectStmt = connection.prepareStatement(selectState);
-	      selectStmt.setInt(1, stateKey);
+	      selectStmt.setString(1, stateFIPS);
 	      results = selectStmt.executeQuery();
 	      if (results.next()) {
 	        int resultStateKey = results.getInt("StateKey");
-	        String stateFIPS = results.getString("StateFIPS");
+	        String fips = results.getString("StateFIPS");
 	        String postalCode = results.getString("PostalCode");
 	        String resultStateName = results.getString("StateName");
-	        State state = new State(resultStateKey, stateFIPS, postalCode, resultStateName);
+	        State state = new State(resultStateKey, fips, postalCode, resultStateName);
 	        return state;
 	      }
 	    } catch (SQLException e) {
@@ -260,7 +257,7 @@ public class StateDao  {
 			updateStmt.setInt(2, state.getStateKey());
 			updateStmt.executeUpdate();
 			state.setStateFIPS(newStateFIPS);
-			return company;
+			return state;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
@@ -285,7 +282,7 @@ public class StateDao  {
 			updateStmt.setInt(2, state.getStateKey());
 			updateStmt.executeUpdate();
 			state.setPostalCode(newPostalCode);
-			return company;
+			return state;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
@@ -310,7 +307,7 @@ public class StateDao  {
 			updateStmt.setInt(2, state.getStateKey());
 			updateStmt.executeUpdate();
 			state.setStateName(newStateName);
-			return company;
+			return state;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
