@@ -29,14 +29,14 @@ ENGINE = InnoDB;
 
 import java.util.Date;
 
-public class Popluation {
+public class Population {
   protected int populationKey;
   protected int countyFKey;
   protected Date year;
   protected Integer totalPopulation;
   protected Integer population60Plus;
 
-  public Popluation(int populationKey, int countyFKey, Date year, Integer totalPopulation, Integer population60Plus) {
+  public Population(int populationKey, int countyFKey, Date year, Integer totalPopulation, Integer population60Plus) {
     this.populationKey = populationKey;
     this.countyFKey = countyFKey;
     this.year = year;
@@ -44,7 +44,7 @@ public class Popluation {
     this.population60Plus = population60Plus;
   }
 
-  public Popluation(int populationKey){
+  public Population(int populationKey){
     this.populationKey = populationKey;
   }
 
