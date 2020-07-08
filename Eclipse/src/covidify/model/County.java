@@ -29,10 +29,10 @@ public class County {
   protected State state;
   protected String countyFIPS;
   protected String countyName;
-  protected String longitude;
-  protected String latitude;
+  protected Double longitude;
+  protected Double latitude;
 
-  public County(int countyKey, State state, String countyFIPS, String countyName, String longitude, String latitude) {
+  public County(int countyKey, State state, String countyFIPS, String countyName, Double longitude, Double latitude) {
     this.countyKey = countyKey;
     this.state = state;
     this.countyFIPS = countyFIPS;
@@ -45,7 +45,7 @@ public class County {
     this.countyKey = countyKey;
   }
 
-  public County(State state, String countyFIPS, String countyName, String longitude, String latitude) {
+  public County(State state, String countyFIPS, String countyName, Double longitude, Double latitude) {
     this.state = state;
     this.countyFIPS = countyFIPS;
     this.countyName = countyName;
@@ -84,18 +84,20 @@ public class County {
   public void setCountyName(String  countyName) {
     this.countyName = countyName;
   }
-  public String getLatitude() {
+
+  public Double getLatitude() {
     return latitude;
   }
 
-  public void setLatitude(String  latitude) {
+  public void setLatitude(Double  latitude) {
     this.latitude = latitude;
   }
-  public String getLongitude() {
+
+  public Double getLongitude() {
     return longitude;
   }
 
-  public void setLongitude(String  longitude) {
+  public void setLongitude(Double  longitude) {
     this.longitude = longitude;
   }
 
