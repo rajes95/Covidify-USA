@@ -53,5 +53,45 @@ public class Population {
     this.year = year;
     this.totalPopulation = totalPopulation;
     this.population60Plus = population60Plus;
+  }
 
+  public int getPopulationKey() {
+    return populationKey;
+  }
+
+  public void setPopulationKey(int populationKey) {
+    this.populationKey = populationKey;
+  }
+
+  public int getCountyFKey() {
+    return countyFKey;
+  }
+
+  public void setCountyFKey(int countyFKey) {
+    this.countyFKey = countyFKey;
+  }
+
+  public Date getYear() {
+    return year;
+  }
+
+  public void setYear(Date year) {
+    this.year = year;
+  }
+
+  public Integer getTotalPopulation() {
+    return totalPopulation;
+  }
+
+  public void setTotalPopulation(Integer totalPopulation) {
+    this.totalPopulation = totalPopulation;
+  }
+
+  public Integer getPopulation60Plus() {
+    return population60Plus;
+  }
+
+  public void setPopulation60Plus(Integer population60Plus) {
+    this.population60Plus = population60Plus;
+  }
 }
