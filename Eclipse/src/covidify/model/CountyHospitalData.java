@@ -5,8 +5,7 @@
  */
 package covidify.model;
 
-import java.sql.Date;
-//TODO here onwards
+import java.util.Date;
 
 /*
 
@@ -26,107 +25,71 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CountyHospitalData` (
 ENGINE = InnoDB;
  */
 public class CountyHospitalData {
-  protected int reviewKey;
-  protected CovidByDate covidByDate;
-  protected MortalityRates mortalityRates;
-  protected Date createdWhen;
-  protected String writtenContent;
-  protected Float rating;
+    protected int countyHospitalDataKey;
+    protected int countyFKey;
+    protected Date year;
+    protected Integer icuBeds;
 
-  public CountyHospitalData(int reviewKey, CovidByDate covidByDate, MortalityRates mortalityRates,
-                            Date createdWhen, String writtenContent, Float rating){
-    this.reviewKey = reviewKey;
-    this.covidByDate = covidByDate;
-    this.mortalityRates = mortalityRates;
-    this.createdWhen = createdWhen;
-    this.writtenContent = writtenContent;
-    this.rating = rating;
-  }
+    public CountyHospitalData(int countyHospitalDataKey, int countyFKey, Date year, Integer icuBeds) {
+        this.countyHospitalDataKey = countyHospitalDataKey;
+        this.countyFKey = countyFKey;
+        this.year = year;
+        this.icuBeds = icuBeds;
+    }
 
-  public CountyHospitalData(int reviewKey){
-    this.reviewKey = reviewKey;
-  }
+    public CountyHospitalData(int countyHospitalDataKey) {
+        this.countyHospitalDataKey = countyHospitalDataKey;
+    }
 
-  public CountyHospitalData(CovidByDate covidByDate, MortalityRates mortalityRates,
-                            Date createdWhen, String writtenContent, Float rating){
-    this.covidByDate = covidByDate;
-    this.mortalityRates = mortalityRates;
-    this.createdWhen = createdWhen;
-    this.writtenContent = writtenContent;
-    this.rating = rating;
-  }
+    public CountyHospitalData(int countyFKey, Date year, Integer icuBeds) {
+        this.countyFKey = countyFKey;
+        this.year = year;
+        this.icuBeds = icuBeds;
+    }
 
-  public int getReviewKey() {
-    return reviewKey;
-  }
+    public int getCountyHospitalDataKey() {
+        return countyHospitalDataKey;
+    }
 
-  public void setReviewKey(int reviewKey) {
-    this.reviewKey = reviewKey;
-  }
+    public void setCountyHospitalDataKey(int countyHospitalDataKey) {
+        this.countyHospitalDataKey = countyHospitalDataKey;
+    }
 
-  public CovidByDate getCovidByDate() {
-    return covidByDate;
-  }
+    public int getCountyFKey() {
+        return countyFKey;
+    }
 
-  public void setCovidByDate(CovidByDate covidByDate) {
-    this.covidByDate = covidByDate;
-  }
+    public void setCountyFKey(int countyFKey) {
+        this.countyFKey = countyFKey;
+    }
 
-  public MortalityRates getMortalityRates() {
-    return mortalityRates;
-  }
+    public Date getYear() {
+        return year;
+    }
 
-  public void setMortalityRates(MortalityRates mortalityRates) {
-    this.mortalityRates = mortalityRates;
-  }
+    public void setYear(Date year) {
+        this.year = year;
+    }
 
-  public Date getCreatedWhen() {
-    return createdWhen;
-  }
+    public Integer getIcuBeds() {
+        return icuBeds;
+    }
 
-  public void setCreatedWhen(Date createdWhen) {
-    this.createdWhen = createdWhen;
-  }
-
-  public String getWrittenContent() {
-    return writtenContent;
-  }
-
-  public void setWrittenContent(String writtenContent) {
-    this.writtenContent = writtenContent;
-  }
-
-  public Float getRating() {
-    return rating;
-  }
-
-  public void setRating(Float rating) {
-    this.rating = rating;
-  }
-
+    public void setIcuBeds(Integer icuBeds) {
+        this.icuBeds = icuBeds;
+    }
 }
 
 /*
-CREATE TABLE IF NOT EXISTS `restdb`.`Review` (
-  `ReviewKey` INT NOT NULL AUTO_INCREMENT,
-  `UserName` VARCHAR(45) NULL,
-  `RestaurantKey` INT NULL,
-  `CreatedWhen` TIMESTAMP NOT NULL DEFAULT NOW(),
-  `WrittenContent` TEXT NULL,
-  `Rating` DECIMAL(2,1) NOT NULL,
-  PRIMARY KEY (`ReviewKey`),
-  INDEX `UserKey1_idx` (`UserName` ASC),
-  INDEX `RestaurantKey4_idx` (`RestaurantKey` ASC),
-  UNIQUE INDEX `RevUniq` (`UserName` ASC, `RestaurantKey` ASC),
-  CONSTRAINT `UserKey1`
-    FOREIGN KEY (`UserName`)
-    REFERENCES `restdb`.`User` (`UserName`)
-    ON DELETE SET NULL
-    ON UPDATE SET NULL,
-  CONSTRAINT `RestaurantKey4`
-    FOREIGN KEY (`RestaurantKey`)
-    REFERENCES `restdb`.`Restaurant` (`RestaurantKey`)
-    ON DELETE SET NULL
-    ON UPDATE SET NULL)
-ENGINE = InnoDB;
+ * CREATE TABLE IF NOT EXISTS `restdb`.`Review` ( `ReviewKey` INT NOT NULL
+ * AUTO_INCREMENT, `UserName` VARCHAR(45) NULL, `RestaurantKey` INT NULL,
+ * `CreatedWhen` TIMESTAMP NOT NULL DEFAULT NOW(), `WrittenContent` TEXT NULL,
+ * `Rating` DECIMAL(2,1) NOT NULL, PRIMARY KEY (`ReviewKey`), INDEX
+ * `UserKey1_idx` (`UserName` ASC), INDEX `RestaurantKey4_idx` (`RestaurantKey`
+ * ASC), UNIQUE INDEX `RevUniq` (`UserName` ASC, `RestaurantKey` ASC),
+ * CONSTRAINT `UserKey1` FOREIGN KEY (`UserName`) REFERENCES `restdb`.`User`
+ * (`UserName`) ON DELETE SET NULL ON UPDATE SET NULL, CONSTRAINT
+ * `RestaurantKey4` FOREIGN KEY (`RestaurantKey`) REFERENCES
+ * `restdb`.`Restaurant` (`RestaurantKey`) ON DELETE SET NULL ON UPDATE SET
+ * NULL) ENGINE = InnoDB;
  */

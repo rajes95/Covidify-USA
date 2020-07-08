@@ -5,8 +5,7 @@
  */
 package covidify.model;
 
-import java.sql.Date;
-//TODO here onwards
+import java.util.Date;
 /*
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateHospitalData` (
@@ -28,83 +27,70 @@ ENGINE = InnoDB;
 
 public class StateHospitalData {
   protected int stateHospitalDataKey;
-  protected CovidByDate covidByDate;
-  protected StateGovernor restaurant;
-  protected Date startDate;
-  protected Date endDate;
-  protected Integer partySize;
+  protected int stateFKey;
+  protected Date year;
+  protected Long numberOfHospitals;
+  protected Long numberOfHospitalEmployees;
 
-  public StateHospitalData(int stateHospitalDataKey, CovidByDate covidByDate, StateGovernor restaurant,
-                           Date startDate, Date endDate, Integer partySize){
+  public StateHospitalData(int stateHospitalDataKey, int stateFKey, Date year, Long numberOfHospitals,
+                           Long numberOfHospitalEmployees) {
     this.stateHospitalDataKey = reservationKey;
-    this.covidByDate = covidByDate;
-    this.restaurant = restaurant;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.partySize = partySize;
+    this.stateFKey = stateFKey;
+    this.year = year;
+    this.numberOfHospitals = numberOfHospitals;
+    this.numberOfHospitalEmployees = numberOfHospitalEmployees;
   }
 
-  public StateHospitalData(int reservationKey){
-    this.reservationKey = reservationKey;
+  public StateHospitalData(int stateHospitalDataKey) {
+    this.stateHospitalDataKey = reservationKey;
   }
 
-  public StateHospitalData(CovidByDate covidByDate, StateGovernor restaurant,
-                           Date startDate, Date endDate, Integer partySize){
-    this.covidByDate = covidByDate;
-    this.restaurant = restaurant;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.partySize = partySize;
+  public StateHospitalData(int stateFKey, Date year, Long numberOfHospitals, Long numberOfHospitalEmployees) {
+    this.stateFKey = stateFKey;
+    this.year = year;
+    this.numberOfHospitals = numberOfHospitals;
+    this.numberOfHospitalEmployees = numberOfHospitalEmployees;
   }
 
-  public int getReservationKey() {
-    return reservationKey;
+  public int getStateHospitalDataKey() {
+    return stateHospitalDataKey;
   }
 
-  public void setReservationKey(int reservationKey) {
-    this.reservationKey = reservationKey;
+  public void setStateHospitalDataKey(int stateHospitalDataKey) {
+    this.stateHospitalDataKey = stateHospitalDataKey;
   }
 
-  public CovidByDate getCovidByDate() {
-    return covidByDate;
+  public int getStateFKey() {
+    return stateFKey;
   }
 
-  public void setCovidByDate(CovidByDate covidByDate) {
-    this.covidByDate = covidByDate;
+  public void setStateFKey(int stateFKey) {
+    this.stateFKey = stateFKey;
   }
 
-  public StateGovernor getRestaurant() {
-    return restaurant;
+  public Date getYear() {
+    return year;
   }
 
-  public void setRestaurant(StateGovernor restaurant) {
-    this.restaurant = restaurant;
+  public void setYear(Date year) {
+    this.year = year;
   }
 
-  public Date getStartDate() {
-    return startDate;
+  public Long getNumberOfHospitals() {
+    return numberOfHospitals;
   }
 
-  public void setStartDate(Date startDate) {
-    this.startDate = startDate;
+  public void setNumberOfHospitals(Long numberOfHospitals) {
+    this.numberOfHospitals = numberOfHospitals;
   }
 
-  public Date getEndDate() {
-    return endDate;
+  public Long getNumberOfHospitalEmployees() {
+    return numberOfHospitalEmployees;
   }
 
-  public void setEndDate(Date endDate) {
-    this.endDate = endDate;
+  public void setNumberOfHospitalEmployees(Long numberOfHospitalEmployees) {
+    this.numberOfHospitalEmployees = numberOfHospitalEmployees;
   }
-
-  public Integer getPartySize() {
-    return partySize;
-  }
-
-  public void setPartySize(Integer partySize) {
-    this.partySize = partySize;
-  }
-
 }
 
 /*

@@ -27,46 +27,31 @@ ENGINE = InnoDB;
 
 //TODO here onwards
 
+import java.util.Date;
+
 public class Popluation {
-  protected int countyKey;
-  protected String name;
-  protected String description;
+  protected int populationKey;
+  protected int countyFKey;
+  protected Date year;
+  protected Integer totalPopulation;
+  protected Integer population60Plus;
 
-  public Popluation(int companyKey, String name, String description){
-    this.companyKey = companyKey;
-    this.name = name;
-    this.description = description;
-  }
-
-  public Popluation(int companyKey){
-    this.companyKey = companyKey;
-  }
-
-  public Popluation(String name, String description){
-    this.name = name;
-    this.description = description;
-  }
-  public int getCompanyKey() {
-    return companyKey;
+  public Popluation(int populationKey, int countyFKey, Date year, Integer totalPopulation, Integer population60Plus) {
+    this.populationKey = populationKey;
+    this.countyFKey = countyFKey;
+    this.year = year;
+    this.totalPopulation = totalPopulation;
+    this.population60Plus = population60Plus;
   }
 
-  public void setCompanyKey(int companyKey) {
-    this.companyKey = companyKey;
+  public Popluation(int populationKey){
+    this.populationKey = populationKey;
   }
 
-  public String getName() {
-    return name;
-  }
+  public Popluation(int countyFKey, Date year, Integer totalPopulation, Integer population60Plus) {
+    this.countyFKey = countyFKey;
+    this.year = year;
+    this.totalPopulation = totalPopulation;
+    this.population60Plus = population60Plus;
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
 }

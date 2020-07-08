@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Demographics` (
  */
 
 
-import java.sql.Date;
+import java.util.Date;
 
 
 public class Demographics {

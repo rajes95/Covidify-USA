@@ -23,19 +23,19 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`PresidentialElectionVotePercentages` (
     ENGINE = InnoDB;
  */
 
-import java.sql.Date;
+import java.util.Date;
 
 public class PresidentialElectionVotePercentages {
   protected int presidentialElectionVotePercentagesKey;
   protected County county;
   protected Date year;
-  protected Float democratsPercent;
-  protected Float republicansPercent;
-  protected Float otherPercent;
+  protected Double democratsPercent;
+  protected Double republicansPercent;
+  protected Double otherPercent;
 
   public PresidentialElectionVotePercentages(int presidentialElectionVotePercentagesKey, County county,
-                                             Date year, Float democratsPercent, Float republicansPercent,
-                                             Float otherPercent){
+                                             Date year, Double democratsPercent, Double republicansPercent,
+                                             Double otherPercent){
     this.presidentialElectionVotePercentagesKey = presidentialElectionVotePercentagesKey;
     this.county= county;
     this.year = year;
@@ -48,8 +48,8 @@ public class PresidentialElectionVotePercentages {
     this.presidentialElectionVotePercentagesKey = presidentialElectionVotePercentagesKey;
   }
 
-  public PresidentialElectionVotePercentages(County county, Date year, Float democratsPercent,
-                                             Float republicansPercent, Float otherPercent){
+  public PresidentialElectionVotePercentages(County county, Date year, Double democratsPercent,
+                                             Double republicansPercent, Double otherPercent){
     this.county= county;
     this.year = year;
     this.democratsPercent = democratsPercent;
@@ -81,26 +81,27 @@ public class PresidentialElectionVotePercentages {
     this.year = year;
   }
 
-  public Float getDemocratsPercent(){
+  public Double getDemocratsPercent(){
     return democratsPercent;
   }
 
-  public void setDemocratsPercent(Float democratsPercent){
+  public void setDemocratsPercent(Double democratsPercent){
     this.democratsPercent = democratsPercent;
   }
-  public Float getRepublicansPercent(){
+
+  public Double getRepublicansPercent(){
     return republicansPercent;
   }
 
-  public void setRepublicansPercent(Float republicansPercent){
+  public void setRepublicansPercent(Double republicansPercent){
     this.republicansPercent = republicansPercent;
   }
 
-  public Float getOtherPercent(){
+  public Double getOtherPercent(){
     return otherPercent;
   }
 
-  public void setOtherPercent(Float otherPercent){
+  public void setOtherPercent(Double otherPercent){
     this.otherPercent = otherPercent;
   }
 

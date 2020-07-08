@@ -6,6 +6,8 @@
 package covidify.model;
 //TODO here onwards
 
+import java.util.Date;
+
 /*
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MortalityRates` (
   `MortalityRatesKey` INT NOT NULL AUTO_INCREMENT,
@@ -30,165 +32,128 @@ ENGINE = InnoDB;
 
  */
 public class MortalityRates {
-  protected int restaurantKey;
-  protected String name;
-  protected String description;
-  protected String menu;
-  protected String listedHours;
-  protected Boolean isActive;
-  protected String street1;
-  protected String street2;
-  protected String city;
-  protected String state;
-  protected String zipCode;
-  protected CuisineType cuisine;
-  protected County county;
+  protected int mortalityRatesKey;
+  protected int countyFKey;
+  protected Date year;
+  protected Double neonatalRate;
+  protected Double hivRate;
+  protected Double diabetesRate;
+  protected Double chronicRespitoraryRate;
+  protected Double liverDiseaseRate;
+  protected Double nutritionalDeficienciesRate;
+  protected Double cardiovascularRate;
 
-  public enum CuisineType {
-    african, american, asian, european, hispanic
+
+  public MortalityRates(int mortalityRatesKey, int countyFKey, Date year, Double neonatalRate, Double hivRate,
+                        Double diabetesRate, Double chronicRespitoraryRate, Double liverDiseaseRate,
+                        Double nutritionalDeficienciesRate, Double cardiovascularRate) {
+    this.mortalityRatesKey = mortalityRatesKey;
+    this.countyFKey = countyFKey;
+    this.year = year;
+    this.neonatalRate = neonatalRate;
+    this.hivRate = hivRate;
+    this.diabetesRate = diabetesRate;
+    this.chronicRespitoraryRate = chronicRespitoraryRate;
+    this.liverDiseaseRate = liverDiseaseRate;
+    this.nutritionalDeficienciesRate = nutritionalDeficienciesRate;
+    this.cardiovascularRate = cardiovascularRate;
   }
 
-  public MortalityRates(int restaurantKey, String name, String description, String menu,
-                        String listedHours, Boolean isActive, String street1, String street2,
-                        String city, String state, String zipCode, CuisineType cuisine, County county) {
-    this.restaurantKey = restaurantKey;
-    this.name = name;
-    this.description = description;
-    this.menu = menu;
-    this.listedHours = listedHours;
-    this.isActive = isActive;
-    this.street1 = street1;
-    this.street2 = street2;
-    this.city = city;
-    this.state = state;
-    this.zipCode = zipCode;
-    this.cuisine = cuisine;
-    this.county = county;
+  public MortalityRates(int mortalityRatesKey) {
+    this.mortalityRatesKey = mortalityRatesKey;
   }
 
-  public MortalityRates(int restaurantKey) {
-    this.restaurantKey = restaurantKey;
+  public MortalityRates(int countyFKey, Date year, Double neonatalRate, Double hivRate, Double diabetesRate,
+                        Double chronicRespitoraryRate, Double liverDiseaseRate, Double nutritionalDeficienciesRate,
+                        Double cardiovascularRate) {
+    this.countyFKey = countyFKey;
+    this.year = year;
+    this.neonatalRate = neonatalRate;
+    this.hivRate = hivRate;
+    this.diabetesRate = diabetesRate;
+    this.chronicRespitoraryRate = chronicRespitoraryRate;
+    this.liverDiseaseRate = liverDiseaseRate;
+    this.nutritionalDeficienciesRate = nutritionalDeficienciesRate;
+    this.cardiovascularRate = cardiovascularRate;
+  }
+  
+  public int getMortalityRatesKey() {
+    return mortalityRatesKey;
   }
 
-  public MortalityRates(String name, String description, String menu,
-                        String listedHours, Boolean isActive, String street1, String street2,
-                        String city, String state, String zipCode, CuisineType cuisine, County county) {
-    this.name = name;
-    this.description = description;
-    this.menu = menu;
-    this.listedHours = listedHours;
-    this.isActive = isActive;
-    this.street1 = street1;
-    this.street2 = street2;
-    this.city = city;
-    this.state = state;
-    this.zipCode = zipCode;
-    this.cuisine = cuisine;
-    this.county = county;
+  public void setMortalityRatesKey(int mortalityRatesKey) {
+    this.mortalityRatesKey = mortalityRatesKey;
   }
 
-  public int getRestaurantKey() {
-    return restaurantKey;
+  public int getCountyFKey() {
+    return countyFKey;
   }
 
-  public void setRestaurantKey(int restaurantKey) {
-    this.restaurantKey = restaurantKey;
+  public void setCountyFKey(int countyFKey) {
+    this.countyFKey = countyFKey;
   }
 
-  public String getName() {
-    return name;
+  public Date getYear() {
+    return year;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setYear(Date year) {
+    this.year = year;
   }
 
-  public String getDescription() {
-    return description;
+  public Double getNeonatalRate() {
+    return neonatalRate;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setNeonatalRate(Double neonatalRate) {
+    this.neonatalRate = neonatalRate;
   }
 
-  public String getMenu() {
-    return menu;
+  public Double getHivRate() {
+    return hivRate;
   }
 
-  public void setMenu(String menu) {
-    this.menu = menu;
+  public void setHivRate(Double hivRate) {
+    this.hivRate = hivRate;
   }
 
-  public String getListedHours() {
-    return listedHours;
+  public Double getDiabetesRate() {
+    return diabetesRate;
   }
 
-  public void setListedHours(String listedHours) {
-    this.listedHours = listedHours;
+  public void setDiabetesRate(Double diabetesRate) {
+    this.diabetesRate = diabetesRate;
   }
 
-  public Boolean getIsActive() {
-    return isActive;
+  public Double getChronicRespitoraryRate() {
+    return chronicRespitoraryRate;
   }
 
-  public void setIsActive(Boolean isActive) {
-    this.isActive = isActive;
+  public void setChronicRespitoraryRate(Double chronicRespitoraryRate) {
+    this.chronicRespitoraryRate = chronicRespitoraryRate;
   }
 
-  public String getStreet1() {
-    return street1;
+  public Double getLiverDiseaseRate() {
+    return liverDiseaseRate;
   }
 
-  public void setStreet1(String street1) {
-    this.street1 = street1;
+  public void setLiverDiseaseRate(Double liverDiseaseRate) {
+    this.liverDiseaseRate = liverDiseaseRate;
   }
 
-  public String getStreet2() {
-    return street2;
+  public Double getNutritionalDeficienciesRate() {
+    return nutritionalDeficienciesRate;
   }
 
-  public void setStreet2(String street2) {
-    this.street2 = street2;
+  public void setNutritionalDeficienciesRate(Double nutritionalDeficienciesRate) {
+    this.nutritionalDeficienciesRate = nutritionalDeficienciesRate;
   }
 
-  public String getCity() {
-    return city;
+  public Double getCardiovascularRate() {
+    return cardiovascularRate;
   }
 
-  public void setCity(String city) {
-    this.city = city;
+  public void setCardiovascularRate(Double cardiovascularRate) {
+    this.cardiovascularRate = cardiovascularRate;
   }
-
-  public String getState() {
-    return state;
-  }
-
-  public void setState(String state) {
-    this.state = state;
-  }
-
-  public String getZipCode() {
-    return zipCode;
-  }
-
-  public void setZipCode(String zipCode) {
-    this.zipCode = zipCode;
-  }
-
-  public CuisineType getCuisine() {
-    return cuisine;
-  }
-
-  public void setCuisine(CuisineType cuisine) {
-    this.cuisine = cuisine;
-  }
-
-  public County getCounty() {
-    return county;
-  }
-
-  public void setCounty(County county) {
-    this.county = county;
-  }
-
 }

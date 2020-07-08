@@ -4,8 +4,8 @@
  * Lily Bessette, Ari Fleischer, Elise Jortberg, Rajesh Sakhamuru
  */
 package covidify.model;
-import java.io.Serializable;
-import java.sql.Date;
+
+import java.util.Date;
 
 /*
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateGovernor` (
