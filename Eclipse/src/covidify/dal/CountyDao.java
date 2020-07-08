@@ -168,7 +168,7 @@ public class CountyDao {
 	    try {
 	      connection = connectionManager.getConnection();
 	      selectStmt = connection.prepareStatement(selectCounty);
-	      selectStmt.setString(1, countyFIPs);
+	      selectStmt.setInt(1, countyKey);
 	      results = selectStmt.executeQuery();
 	      StateDao stateDao = StateDao.getInstance();
 
@@ -200,6 +200,99 @@ public class CountyDao {
 	    }
 	    return null;
 	  }
+  
+  public County getCountyByCountyNameAndStateName(String countyName, String stateName) throws SQLException {
+	    String selectCounty =
+	            "SELECT CountyKey,StateFKey,CountyFIPS,CountyName,Longitude,Latitude " +
+	                    "FROM County " +
+	            		"JOIN State ON County.StateFKey = State.StateKey"
+	                    "WHERE CountyName=? and State.StateName=?;";
+	    Connection connection = null;
+	    PreparedStatement selectStmt = null;
+	    ResultSet results = null;
+	    try {
+	      connection = connectionManager.getConnection();
+	      selectStmt = connection.prepareStatement(selectCounty);
+	      selectStmt.setString(1, countyName);
+	      selectStmt.setString(2, stateName);
+	      results = selectStmt.executeQuery();
+	      StateDao stateDao = StateDao.getInstance();
+
+	      if (results.next()) {
+	        int countyKey = results.getInt("CountyKey");
+	        int stateFKey = results.getInt("StateFKey");
+	        String countyName = results.getString("CountyName");
+	        Double longitude = Double(results.getString("Longitude"));
+	        Double latitude = Double(results.getString("Latitude"));
+
+	        State state = stateDao.getStateByKey(stateFKey);
+
+	        County county = new County(countyKey, state, countyFIPs, countyName, longitude, latitude);
+	        return county;
+	      }
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	      throw e;
+	    } finally {
+	      if (connection != null) {
+	        connection.close();
+	      }
+	      if (selectStmt != null) {
+	        selectStmt.close();
+	      }
+	      if (results != null) {
+	        results.close();
+	      }
+	    }
+	    return null;
+	  }
+  
+  public County getCountyByCountyNameAndStatePostalCode(String countyName, String statePostalCode) throws SQLException {
+	    String selectCounty =
+	            "SELECT CountyKey,StateFKey,CountyFIPS,CountyName,Longitude,Latitude " +
+	                    "FROM County " +
+	            		"JOIN State ON County.StateFKey = State.StateKey"
+	                    "WHERE CountyName=? and State.PostalCode=?;";
+	    Connection connection = null;
+	    PreparedStatement selectStmt = null;
+	    ResultSet results = null;
+	    try {
+	      connection = connectionManager.getConnection();
+	      selectStmt = connection.prepareStatement(selectCounty);
+	      selectStmt.setString(1, countyName);
+	      selectStmt.setString(2, statePostalCode);
+	      results = selectStmt.executeQuery();
+	      StateDao stateDao = StateDao.getInstance();
+
+	      if (results.next()) {
+	        int countyKey = results.getInt("CountyKey");
+	        int stateFKey = results.getInt("StateFKey");
+	        String countyName = results.getString("CountyName");
+	        Double longitude = Double(results.getString("Longitude"));
+	        Double latitude = Double(results.getString("Latitude"));
+
+	        State state = stateDao.getStateByKey(stateFKey);
+
+	        County county = new County(countyKey, state, countyFIPs, countyName, longitude, latitude);
+	        return county;
+	      }
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	      throw e;
+	    } finally {
+	      if (connection != null) {
+	        connection.close();
+	      }
+	      if (selectStmt != null) {
+	        selectStmt.close();
+	      }
+	      if (results != null) {
+	        results.close();
+	      }
+	    }
+	    return null;
+	  }
+
 
   public List<County> getCountyByStateFKey(int stateFKey) throws SQLException {
 		List<County> counties = new ArrayList<County>();
@@ -399,6 +492,49 @@ public class CountyDao {
 		        Double latitude = Double(results.getString("Latitude"));
 
 		        County county = new County(countyKey, state, countyFIPs, countyName, longitude, latitude);
+				counties.add(county);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(selectStmt != null) {
+				selectStmt.close();
+			}
+			if(results != null) {
+				results.close();
+			}
+		}
+		return counties;
+	}
+  
+  public List<County> getCountyByCountyName(String countyName) throws SQLException {
+		List<County> counties = new ArrayList<County>();
+		String selectCounties =
+				"SELECT CountyKey,StateFKey,CountyFIPS,CountyName,Longitude,Latitude " +
+	                    "FROM County " +
+	                    "WHERE CountyName=?;";;
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		try {
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectCounties);
+			selectStmt.setString(1, countyName);
+			results = selectStmt.executeQuery();
+			StateDao stateDao = StateDao.getInstance();
+			while(results.next()) {
+				int countyKey = results.getInt("CountyKey");
+		        int stateFKey = results.getInt("StateFKey");
+		        String nameOfCounty = results.getString("CountyName");
+		        Double longitude = Double(results.getString("Longitude"));
+		        Double latitude = Double(results.getString("Latitude"));
+
+		        State state = stateDao.getStateByKey(stateFKey);
+		        County county = new County(countyKey, state, countyFIPs, nameOfCounty, longitude, latitude);
 				counties.add(county);
 			}
 		} catch (SQLException e) {
