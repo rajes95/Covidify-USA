@@ -6,6 +6,7 @@
 package covidify.dal;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -73,7 +74,7 @@ public class DemographicsDao  {
       if (demographics.getYear() == null) {
         insertStmt.setNull(2, Types.DATE);
       } else {
-        insertStmt.setDate(2, demographics.getYear());
+        insertStmt.setDate(2, (java.sql.Date) demographics.getYear());
       }
       if (demographics.getWhite() == null) {
         insertStmt.setNull(3, Types.DECIMAL);
@@ -143,103 +144,36 @@ public class DemographicsDao  {
     }
   }
 
-  //TODO from here onward
-  /*
-  public Demographics getDemographicsById(int foodCartDemographicsId) throws SQLException {
+
+  public List<Demographics> getDemographicsByCounty(County county) throws SQLException {
+	List<Demographics> demographicss = new ArrayList<Demographics>();
     String selectDemographics =
-            "SELECT DemographicsKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
-                    + "Street2,City,State,ZipCode,Cuisine,CompanyKey,IsLicensed,DemographicsKey "
-                    + "FROM Demographics "
-                    + "INNER JOIN Demographics "
-                    + "ON Demographics.DemographicsKey = Demographics.DemographicsKey "
-                    + "WHERE DemographicsKey=?;";
+            "SELECT DemographicsKey,CountyFKey,Year,White,AfricanAmerican,Latino,NativeAmerican,AsianAmerican,OtherEthnicity,PovertyRate,MedianAge,MedianEarnings FROM Demographics " +
+                    "WHERE CountyFKey=?;";
     Connection connection = null;
     PreparedStatement selectStmt = null;
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
       selectStmt = connection.prepareStatement(selectDemographics);
-      selectStmt.setInt(1, foodCartDemographicsId);
-      results = selectStmt.executeQuery();
-      CountyDao countyDao = CountyDao.getInstance();
-      if (results.next()) {
-        int demographicsKey = results.getInt("DemographicsKey");
-        String name = results.getString("Name");
-        String description = results.getString("Description");
-        String menu = results.getString("Menu");
-        String listedHours = results.getString("ListedHours");
-        Boolean isActive = results.getBoolean("IsActive");
-        String street1 = results.getString("Street1");
-        String street2 = results.getString("Street2");
-        String city = results.getString("City");
-        String state = results.getString("State");
-        String zipCode = results.getString("ZipCode");
-        String cuisine = results.getString("Cuisine");
-        int companyKey = results.getInt("CompanyKey");
-        Boolean isLicensed = results.getBoolean("IsLicensed");
-
-        County county = countyDao.getCompanyById(companyKey);
-        Demographics demographics = new Demographics(demographicsKey, name, description, menu,
-                listedHours, isActive, street1, street2, city, state, zipCode,
-                MortalityRates.CuisineType.valueOf(cuisine), county, isLicensed);
-        return demographics;
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-      throw e;
-    } finally {
-      if (connection != null) {
-        connection.close();
-      }
-      if (selectStmt != null) {
-        selectStmt.close();
-      }
-      if (results != null) {
-        results.close();
-      }
-    }
-    return null;
-  }
-
-  public List<Demographics> getDemographicssByCompanyName(String companyName) throws SQLException {
-    List<Demographics> demographicss = new ArrayList<Demographics>();
-    String selectDemographics =
-            "SELECT DemographicsKey,Name,Description,Menu,ListedHours,IsActive,Street1,"
-                    + "Street2,City,State,ZipCode,Cuisine,CompanyKey,MaxWaitMinutes,DemographicsKey "
-                    + "FROM DemographicsKey "
-                    + "INNER JOIN Demographics "
-                    + "ON Demographics.DemographicsKey = Demographics.DemographicsKey "
-                    + "WHERE CompanyKey=?;";
-    Connection connection = null;
-    PreparedStatement selectStmt = null;
-    ResultSet results = null;
-    try {
-      connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectDemographics);
-      CountyDao countyDao = CountyDao.getInstance();
-      County county = countyDao.getCompanyByCompanyName(companyName);
-      selectStmt.setInt(1, county.getCompanyKey());
+      selectStmt.setInt(1, county.getCountyKey());
       results = selectStmt.executeQuery();
 
-      while (results.next()) {
+      while(results.next()) {
         int demographicsKey = results.getInt("DemographicsKey");
-        String name = results.getString("Name");
-        String description = results.getString("Description");
-        String menu = results.getString("Menu");
-        String listedHours = results.getString("ListedHours");
-        Boolean isActive = results.getBoolean("IsActive");
-        String street1 = results.getString("Street1");
-        String street2 = results.getString("Street2");
-        String city = results.getString("City");
-        String state = results.getString("State");
-        String zipCode = results.getString("ZipCode");
-        String cuisine = results.getString("Cuisine");
-        Boolean isLicensed = results.getBoolean("IsLicensed");
+        Date resyear = results.getDate("Year");
+        Double reswhite = results.getDouble("White");
+        Double resaa = results.getDouble("AfricanAmerican");
+        Double reslat = results.getDouble("Latino");
+        Double resna = results.getDouble("NativeAmerican");
+        Double resasian = results.getDouble("AsianAmerican");
+        Double resother = results.getDouble("OtherEthnicity");
+        Double respov = results.getDouble("PovertyRate");
+        Double resage = results.getDouble("MedianAge");
+        Double researn = results.getDouble("MedianEarnings");
 
-        // Re-using company that we found above to avoid duplicating work
-        Demographics demographics = new Demographics(demographicsKey, name, description, menu,
-                listedHours, isActive, street1, street2, city, state, zipCode,
-                MortalityRates.CuisineType.valueOf(cuisine), county, isLicensed);
+        Demographics demographics = new Demographics(demographicsKey, county, resyear, reswhite, resaa, reslat,
+        		resna, resasian, resother, respov, resage, researn);
         demographicss.add(demographics);
       }
     } catch (SQLException e) {
@@ -259,7 +193,31 @@ public class DemographicsDao  {
     return demographicss;
   }
 
-*/
+  public Demographics updateDemographics(Demographics demographics, County county) throws SQLException {
+		String updateDemographics = "UPDATE Demographics SET CountyFKey=? WHERE DemographicsKey=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try {
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updateDemographics);
+			updateStmt.setInt(1, county.getCountyKey());
+			updateStmt.setInt(2, demographics.getDemographicsKey());
+			updateStmt.executeUpdate();
+			demographics.setCounty(county);
+			return demographics;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(updateStmt != null) {
+				updateStmt.close();
+			}
+		}
+	}
+  
   public Demographics delete(Demographics demographics) throws SQLException {
     String deleteDemographics = "DELETE FROM Demographics WHERE DemographicsKey=?;";
     Connection connection = null;
