@@ -28,6 +28,7 @@ public class Inserter
 		StateHospitalDataDao shdDao = StateHospitalDataDao.getInstance();
 		PresidentialElectionVotePercentagesDao pevpDao = PresidentialElectionVotePercentagesDao
 				.getInstance();
+		PopulationDao popDao = PopulationDao.getInstance();
 
 		// INSERT rows into CovidifyUSA database.
 
@@ -38,15 +39,35 @@ public class Inserter
 		County santaClara = countyDao.getCountyByFIPS("06085");
 		System.out.println(santaClara);
 
-		
-		
-		
-		
-		
-		
-		
+		Population pop = new Population(santaClara, (short) 2012, 5000, 50000);
+		pop = popDao.create(pop);
+
+//		List<Population> pops = popDao
+//				.getPopulationByCountyKey(pop.getCounty().getCountyKey());
+//
+//		for (Population p : pops)
+//		{
+//			System.out.println(p);
+//		}
+//
+//		pops = popDao.getPopulationByYear((short) 2020);
+//
+//		for (Population p : pops)
+//		{
+//			System.out.println(p);
+//		}
+//		popDao.updateYear(pop, (short) 1999);
+//		popDao.updateTotalPopulation(pop, 700);
+//		popDao.updatePopulation60Plus(pop, 100);
+//
+//		pop = popDao.getPopulationByPopulationKey(pop.getPopulationKey());
+//
+//		System.out.println(pop);
+//
+//		popDao.delete(pop);
+
 //		PresidentialElectionVotePercentages pevp = new PresidentialElectionVotePercentages(
-//				santaClara, (short) 2020, 25.5, 30.5, 30.5);
+//				santaClara, (short) 2020, .25, .30, .30);
 //		pevp = pevpDao.create(pevp);
 //
 //		System.out.println(pevp);

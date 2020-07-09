@@ -25,73 +25,95 @@ ENGINE = InnoDB;
 
  */
 
-//TODO here onwards
+public class Population
+{
+	protected int populationKey;
+	protected County county;
+	protected Short year;
+	protected Integer totalPopulation;
+	protected Integer population60Plus;
 
-import java.util.Date;
+	public Population(int populationKey, County county, Short year,
+			Integer totalPopulation, Integer population60Plus)
+	{
+		this.populationKey = populationKey;
+		this.county = county;
+		this.year = year;
+		this.totalPopulation = totalPopulation;
+		this.population60Plus = population60Plus;
+	}
 
-public class Population {
-  protected int populationKey;
-  protected int countyFKey;
-  protected Date year;
-  protected Integer totalPopulation;
-  protected Integer population60Plus;
+	public Population(int populationKey)
+	{
+		this.populationKey = populationKey;
+	}
 
-  public Population(int populationKey, int countyFKey, Date year, Integer totalPopulation, Integer population60Plus) {
-    this.populationKey = populationKey;
-    this.countyFKey = countyFKey;
-    this.year = year;
-    this.totalPopulation = totalPopulation;
-    this.population60Plus = population60Plus;
-  }
+	public Population(County county, Short year, Integer totalPopulation,
+			Integer population60Plus)
+	{
+		this.county = county;
+		this.year = year;
+		this.totalPopulation = totalPopulation;
+		this.population60Plus = population60Plus;
+	}
 
-  public Population(int populationKey){
-    this.populationKey = populationKey;
-  }
+	public int getPopulationKey()
+	{
+		return populationKey;
+	}
 
-  public Population(int countyFKey, Date year, Integer totalPopulation, Integer population60Plus) {
-    this.countyFKey = countyFKey;
-    this.year = year;
-    this.totalPopulation = totalPopulation;
-    this.population60Plus = population60Plus;
-  }
+	public void setPopulationKey(int populationKey)
+	{
+		this.populationKey = populationKey;
+	}
 
-  public int getPopulationKey() {
-    return populationKey;
-  }
+	public County getCounty()
+	{
+		return county;
+	}
 
-  public void setPopulationKey(int populationKey) {
-    this.populationKey = populationKey;
-  }
+	public void setCounty(County county)
+	{
+		this.county = county;
+	}
 
-  public int getCountyFKey() {
-    return countyFKey;
-  }
+	public Short getYear()
+	{
+		return year;
+	}
 
-  public void setCountyFKey(int countyFKey) {
-    this.countyFKey = countyFKey;
-  }
+	public void setYear(Short year)
+	{
+		this.year = year;
+	}
 
-  public Date getYear() {
-    return year;
-  }
+	public Integer getTotalPopulation()
+	{
+		return totalPopulation;
+	}
 
-  public void setYear(Date year) {
-    this.year = year;
-  }
+	public void setTotalPopulation(Integer totalPopulation)
+	{
+		this.totalPopulation = totalPopulation;
+	}
 
-  public Integer getTotalPopulation() {
-    return totalPopulation;
-  }
+	public Integer getPopulation60Plus()
+	{
+		return population60Plus;
+	}
 
-  public void setTotalPopulation(Integer totalPopulation) {
-    this.totalPopulation = totalPopulation;
-  }
+	public void setPopulation60Plus(Integer population60Plus)
+	{
+		this.population60Plus = population60Plus;
+	}
 
-  public Integer getPopulation60Plus() {
-    return population60Plus;
-  }
-
-  public void setPopulation60Plus(Integer population60Plus) {
-    this.population60Plus = population60Plus;
-  }
+	public String toString()
+	{
+		String str = "PopulationKey:" + this.getPopulationKey() + ", State:"
+				+ this.getCounty().getState().getStateName() + ", County:"
+				+ this.getCounty().getCountyName() + ", Year:" + this.getYear()
+				+ ", TotalPopulation:" + this.getTotalPopulation() + ", Population60Plus:"
+				+ this.getPopulation60Plus();
+		return str;
+	}
 }
