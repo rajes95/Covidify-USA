@@ -30,6 +30,8 @@ public class County
 	protected State state;
 	protected String countyFIPS;
 	protected String countyName;
+	// TODO: Switching these to String will solve a nullPointer error in CountyDao
+	// when longitude and latitude aren't present (are null in db).
 	protected Double longitude;
 	protected Double latitude;
 

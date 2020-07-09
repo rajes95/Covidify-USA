@@ -229,12 +229,7 @@ SELECT `StateKey`,`NumberOfHospitals`, `NumberOfHospitalEmployees` ,@year19
 from State Inner Join StateHospitalStage on State.StateName=StateHospitalStage.StateName;
 
 ## County Hospital Data
--- `CountyFKey` INT NOT NULL,
---   `Year` YEAR NULL, #2020
---   `ICUBeds` INT NULL,
-# match by state and county like before
 
-# How do we reconcile different fields in StatevsCounty Hospital Data Tables
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CountyHospitalStage` (
   `StateName` TEXT,
   `CountyName` TEXT,
@@ -466,12 +461,6 @@ order by FIPS;
 
 
 ## Covid By Race
--- `StateFKey` INT NOT NULL,
---   `Race` ENUM('White', 'Black', 'Hispanic', 'Asian', 'Multiracial', 'NHPI', 'Multi', 'Other', 'Unknown') NULL,
---   `Positive` INT NULL,
---   `Negative` INT NULL,
---   `Death` INT NULL,
---   `Date` DATE NULL,
 
 # States in this csv use two letter format- is this in state csv? Will join on this
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidRaceStage` (
@@ -591,7 +580,7 @@ Insert Into StateGovernor Select StateGovernorKey, StateKey, `Year`, Governor, P
 
 DROP TABLE IF EXISTS `CovidifyUSA`.`GovernorsDataStaging`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`MultiStaging`;
--- DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`StateCounty`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`LongLatCounty`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`StateHospitalStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`CountyHospitalStage`;
