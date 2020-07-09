@@ -189,7 +189,7 @@ public class StateGovernorDao
 	}
 
 	public List<StateGovernor> getStateGovernorsByStateKeyAndYear(int stateKey,
-			short year) throws SQLException
+			Short year) throws SQLException
 	{
 		List<StateGovernor> govs = new ArrayList<StateGovernor>();
 		String selectGovs = "SELECT * " + "FROM StateGovernor "
@@ -341,7 +341,7 @@ public class StateGovernorDao
 	}
 
 	public List<StateGovernor> getStateGovernorsByPartyAndYear(GovernorPartyType party,
-			short year) throws SQLException
+			Short year) throws SQLException
 	{
 		List<StateGovernor> govs = new ArrayList<StateGovernor>();
 		String selectGovs = "SELECT * " + "FROM StateGovernor "
@@ -392,7 +392,7 @@ public class StateGovernorDao
 		return govs;
 	}
 
-	public List<StateGovernor> getStateGovernorsByYear(short year) throws SQLException
+	public List<StateGovernor> getStateGovernorsByYear(Short year) throws SQLException
 	{
 		List<StateGovernor> govs = new ArrayList<StateGovernor>();
 		String selectGovs = "SELECT * " + "FROM StateGovernor " + "WHERE Year=?;";
@@ -475,7 +475,7 @@ public class StateGovernorDao
 		}
 	}
 
-	public StateGovernor updateGovernorYear(StateGovernor gov, short year)
+	public StateGovernor updateGovernorYear(StateGovernor gov, Short year)
 			throws SQLException
 	{
 		String updateGov = "UPDATE StateGovernor SET `Year`=? WHERE StateGovernorKey=?;";

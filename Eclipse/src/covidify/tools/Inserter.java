@@ -26,6 +26,8 @@ public class Inserter
 		CountyDao countyDao = CountyDao.getInstance();
 		StateGovernorDao govDao = StateGovernorDao.getInstance();
 		StateHospitalDataDao shdDao = StateHospitalDataDao.getInstance();
+		PresidentialElectionVotePercentagesDao pevpDao = PresidentialElectionVotePercentagesDao
+				.getInstance();
 
 		// INSERT rows into CovidifyUSA database.
 
@@ -36,34 +38,40 @@ public class Inserter
 		County santaClara = countyDao.getCountyByFIPS("06085");
 		System.out.println(santaClara);
 
-//		shdDao.delete(new StateHospitalData(69));
+		PresidentialElectionVotePercentages pevp = new PresidentialElectionVotePercentages(
+				santaClara, (short) 2020, 25.5, 30.5, 30.5);
+		pevp = pevpDao.create(pevp);
+		
+		System.out.println(pevp);
+		
+		pevpDao.delete(pevp);
 
-		StateHospitalData sh = new StateHospitalData(cali, (short) 2010, 100L, 20000L);
-		sh = shdDao.create(sh);
-
-		sh = shdDao
-				.getStateHospitalDataByStateHospitalDataKey(sh.getStateHospitalDataKey());
-		System.out.println(sh);
-
-		List<StateHospitalData> shs = shdDao
-				.getStateHospitalDataByStateKey(sh.getState().getStateKey());
-		System.out.println(shs);
-
-		List<StateHospitalData> byYear = shdDao.getStateHospitalDataByYear((short) 2019);
-
-		for (StateHospitalData b : byYear)
-		{
-			System.out.println(b);
-		}
-
-		shdDao.updateStateHospitalDataYear(sh, (short) 2000);
-		shdDao.updateStateHospitalDataNumOfHospitals(sh, 2000L);
-		shdDao.updateStateHospitalDataNumOfHospitalEmployees(sh, 2000L);
-
-		System.out.println(shdDao.getStateHospitalDataByStateHospitalDataKey(
-				sh.getStateHospitalDataKey()));
-
-		shdDao.delete(sh);
+//		StateHospitalData sh = new StateHospitalData(cali, (short) 2010, 100L, 20000L);
+//		sh = shdDao.create(sh);
+//
+//		sh = shdDao
+//				.getStateHospitalDataByStateHospitalDataKey(sh.getStateHospitalDataKey());
+//		System.out.println(sh);
+//
+//		List<StateHospitalData> shs = shdDao
+//				.getStateHospitalDataByStateKey(sh.getState().getStateKey());
+//		System.out.println(shs);
+//
+//		List<StateHospitalData> byYear = shdDao.getStateHospitalDataByYear((short) 2019);
+//
+//		for (StateHospitalData b : byYear)
+//		{
+//			System.out.println(b);
+//		}
+//
+//		shdDao.updateStateHospitalDataYear(sh, (short) 2000);
+//		shdDao.updateStateHospitalDataNumOfHospitals(sh, 2000L);
+//		shdDao.updateStateHospitalDataNumOfHospitalEmployees(sh, 2000L);
+//
+//		System.out.println(shdDao.getStateHospitalDataByStateHospitalDataKey(
+//				sh.getStateHospitalDataKey()));
+//
+//		shdDao.delete(sh);
 
 //		StateGovernor newGov = new StateGovernor(cali, (short) 2005,
 //				"Arnold Schwarzenegger", GovernorPartyType.Republican);
