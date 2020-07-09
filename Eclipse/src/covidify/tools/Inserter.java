@@ -38,13 +38,48 @@ public class Inserter
 		County santaClara = countyDao.getCountyByFIPS("06085");
 		System.out.println(santaClara);
 
-		PresidentialElectionVotePercentages pevp = new PresidentialElectionVotePercentages(
-				santaClara, (short) 2020, 25.5, 30.5, 30.5);
-		pevp = pevpDao.create(pevp);
 		
-		System.out.println(pevp);
 		
-		pevpDao.delete(pevp);
+		
+		
+		
+		
+		
+//		PresidentialElectionVotePercentages pevp = new PresidentialElectionVotePercentages(
+//				santaClara, (short) 2020, 25.5, 30.5, 30.5);
+//		pevp = pevpDao.create(pevp);
+//
+//		System.out.println(pevp);
+//
+//		pevp = pevpDao
+//				.getPresidentialElectionVotePercentagesByPresidentialElectionVotePercentagesKey(
+//						pevp.getPresidentialElectionVotePercentagesKey());
+//
+//		System.out.println(pevp);
+//
+//		List<PresidentialElectionVotePercentages> pevps = pevpDao
+//				.getPresidentialElectionVotePercentagesByYear((short) 2008);
+//
+//		for(PresidentialElectionVotePercentages p : pevps)
+//		{
+//			System.out.println(p);
+//		}
+//
+//		pevpDao.updateYear(pevp, (short) 2019);
+//		pevpDao.updateDemPercent(pevp, .75);
+//		pevpDao.updateRepPercent(pevp, .24);
+//		pevpDao.updateOtherPercent(pevp, .01);
+//
+//		List<PresidentialElectionVotePercentages> pevps = pevpDao
+//				.getPresidentialElectionVotePercentagesByCountyKey(
+//						pevp.getCounty().getCountyKey());
+//
+//		for (PresidentialElectionVotePercentages p : pevps)
+//		{
+//			System.out.println(p);
+//		}
+//
+//		pevpDao.delete(pevp);
 
 //		StateHospitalData sh = new StateHospitalData(cali, (short) 2010, 100L, 20000L);
 //		sh = shdDao.create(sh);
