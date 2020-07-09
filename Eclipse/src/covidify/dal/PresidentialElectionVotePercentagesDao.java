@@ -78,8 +78,7 @@ public class PresidentialElectionVotePercentagesDao
 				insertStmt.setInt(1,
 						presidentialElectionVotePercentages.getCounty().getCountyKey());
 			}
-			// TODO Not sure about this data type
-			if (presidentialElectionVotePercentages.getDemocratsPercent() == null)
+			if (presidentialElectionVotePercentages.getYear() == null)
 			{
 				insertStmt.setNull(2, Types.DATE);
 			}
