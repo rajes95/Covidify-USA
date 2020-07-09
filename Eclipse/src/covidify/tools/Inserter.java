@@ -30,6 +30,8 @@ public class Inserter
 				.getInstance();
 		PopulationDao popDao = PopulationDao.getInstance();
 
+		CovidByDateDao covDao = CovidByDateDao.getInstance();
+
 		// INSERT rows into CovidifyUSA database.
 
 		// READ.
@@ -38,10 +40,49 @@ public class Inserter
 
 		County santaClara = countyDao.getCountyByFIPS("06085");
 		System.out.println(santaClara);
+//
+//		Calendar cal1 = Calendar.getInstance();
+//		cal1.clear();
+//		cal1.set(2020, 7 - 1, 10);
+//		Date covDate = cal1.getTime();
+//		CovidByDate cov = new CovidByDate(santaClara, covDate, 50, 5000);
+//		cov = covDao.create(cov);
+//
+//		cov = covDao.getCovidByDateByCovidByDateKey(cov.getCovidByDateKey());
+//
+//		System.out.println(cov);
+//
+//		List<CovidByDate> covs = covDao
+//				.getCovidByDateByCountyKey(cov.getCounty().getCountyKey());
+//
+//		for (CovidByDate p : covs)
+//		{
+//			System.out.println(p);
+//		}
+//		Calendar cal2 = Calendar.getInstance();
+//		cal2.clear();
+//		cal2.set(2020, 7 - 1, 8);
+//		Date cov1Date = cal2.getTime();
+//		List<CovidByDate> covs = covDao.getCovidByDateByDate(cov1Date);
+//
+//		for (CovidByDate p : covs)
+//		{
+//			System.out.println(p);
+//		}
+//
+//		covDao.updateDate(cov, cov1Date);
+//		covDao.updateCovidCases(cov, 59);
+//		covDao.updateCovidDeaths(cov, 49);
+//
+//		cov = covDao.getCovidByDateByCovidByDateKey(cov.getCovidByDateKey());
+//
+//		System.out.println(cov);
+//
+//		covDao.delete(cov);
 
-		Population pop = new Population(santaClara, (short) 2012, 5000, 50000);
-		pop = popDao.create(pop);
-
+//		Population pop = new Population(santaClara, (short) 2012, 5000, 50000);
+//		pop = popDao.create(pop);
+//
 //		List<Population> pops = popDao
 //				.getPopulationByCountyKey(pop.getCounty().getCountyKey());
 //

@@ -26,61 +26,94 @@ ENGINE = InnoDB;
 
 import java.util.Date;
 
-public class CovidByDate {
-  protected int covidByDateKey;
-  protected County county;
-  protected Date date;
-  protected Integer covidDeaths;
-  protected Integer covidCases;
+public class CovidByDate
+{
+	protected int covidByDateKey;
+	protected County county;
+	protected Date date;
+	protected Integer covidDeaths;
+	protected Integer covidCases;
 
-  public CovidByDate(int covidByDateKey, County county, Date date, Integer covidDeaths,Integer covidCases) {
-    this.covidByDateKey = covidByDateKey;
-    this.county = county;
-    this.date = date;
-    this.covidDeaths =covidDeaths;
-    this.covidCases = covidCases;
-  }
+	public CovidByDate(int covidByDateKey, County county, Date date, Integer covidDeaths,
+			Integer covidCases)
+	{
+		this.covidByDateKey = covidByDateKey;
+		this.county = county;
+		this.date = date;
+		this.covidDeaths = covidDeaths;
+		this.covidCases = covidCases;
+	}
 
-  public CovidByDate(int covidByDateKey) {
-    this.covidByDateKey = covidByDateKey;
-  }
+	public CovidByDate(County county, Date date, Integer covidDeaths, Integer covidCases)
+	{
+		this.county = county;
+		this.date = date;
+		this.covidDeaths = covidDeaths;
+		this.covidCases = covidCases;
+	}
 
-  public int getCovidByDateKey() {
-    return covidByDateKey;
-  }
+	public CovidByDate(int covidByDateKey)
+	{
+		this.covidByDateKey = covidByDateKey;
+	}
 
-  public void setCovidByDateKey(int covidByDateKey) {
-    this.covidByDateKey = covidByDateKey;
-  }
+	public int getCovidByDateKey()
+	{
+		return covidByDateKey;
+	}
 
-  public County getCounty() {
-    return county;
-  }
+	public void setCovidByDateKey(int covidByDateKey)
+	{
+		this.covidByDateKey = covidByDateKey;
+	}
 
-  public void setCounty(County county) {
-    this.county = county;
-  }
+	public County getCounty()
+	{
+		return county;
+	}
 
-  public Date getDate() {
-    return date;
-  }
+	public void setCounty(County county)
+	{
+		this.county = county;
+	}
 
-  public void setDate(Date date) {
-    this.date = date;
-  }
+	public Date getDate()
+	{
+		return date;
+	}
 
-  public Integer getCovidDeaths() {
-    return covidDeaths;
-  }
+	public void setDate(Date date)
+	{
+		this.date = date;
+	}
 
-  public void setCovidDeaths(Integer covidDeaths) {
-    this.covidDeaths = covidDeaths;
-  }
-  public Integer getCovidCases() {
-    return covidCases;
-  }
+	public Integer getCovidDeaths()
+	{
+		return covidDeaths;
+	}
 
-  public void setCovidCases(Integer covidCases) {
-    this.covidCases = covidCases;
-  }
+	public void setCovidDeaths(Integer covidDeaths)
+	{
+		this.covidDeaths = covidDeaths;
+	}
+
+	public Integer getCovidCases()
+	{
+		return covidCases;
+	}
+
+	public void setCovidCases(Integer covidCases)
+	{
+		this.covidCases = covidCases;
+	}
+
+	public String toString()
+	{
+		String str = "CovidByDateKey:" + this.getCovidByDateKey() + ", State:"
+				+ this.getCounty().getState().getStateName() + ", County:"
+				+ this.getCounty().getCountyName() + ", Date:" + this.getDate()
+				+ ", CovidDeaths:" + this.getCovidDeaths() + ", CovidCases:"
+				+ this.getCovidCases();
+		return str;
+	}
 }
