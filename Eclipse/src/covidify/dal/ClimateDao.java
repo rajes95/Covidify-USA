@@ -6,12 +6,16 @@
 package covidify.dal;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 
+import covidify.model.Climate;
 import covidify.model.County;
 
 public class ClimateDao {
@@ -29,37 +33,31 @@ public class ClimateDao {
     return instance;
   }
 
-  //TODO here onwards
-  public County create(County county) throws SQLException {
-    String insertCompany = "INSERT INTO Company(Name,Description) "
-            + "VALUES(?,?);";
+  public Climate create(Climate climate) throws SQLException {
+    String insertClimate = "INSERT INTO Climate(ClimateFKey,Year,Elevation,WinterPrcp,"
+    		+ "SummerPrcp,SprintPrcp,AutumnPrcp,WinterTavg,SummerTavg,SpringTavg,AutumnTavg) "
+            + "VALUES(?,?,?,?,?,?,?,?,?,?,?);";
     Connection connection = null;
     PreparedStatement insertStmt = null;
     ResultSet resultKey = null;
     try {
       connection = connectionManager.getConnection();
-      insertStmt = connection.prepareStatement(insertCompany, Statement.RETURN_GENERATED_KEYS);
-      if (county.getDescription() == null) {
+      insertStmt = connection.prepareStatement(insertClimate, Statement.RETURN_GENERATED_KEYS);
+      if (climate.getElevation() == null) {
         insertStmt.setNull(1, Types.VARCHAR);
       } else {
-        insertStmt.setString(1, county.getName());
+        insertStmt.setDouble(1, climate.getElevation());
       }
-      if (county.getDescription() == null) {
-        insertStmt.setNull(2, Types.LONGVARCHAR);
-      } else {
-        insertStmt.setString(2, county.getDescription());
-      }
-      insertStmt.executeUpdate();
 
       resultKey = insertStmt.getGeneratedKeys();
-      int companyKey = -1;
+      int climateKey = -1;
       if (resultKey.next()) {
-        companyKey = resultKey.getInt(1);
+        climateKey = resultKey.getInt(1);
       } else {
         throw new SQLException("Unable to retrieve auto-generated key.");
       }
-      county.setCompanyKey(companyKey);
-      return county;
+      climate.setClimateKey(climateKey);
+      return climate;
     } catch (SQLException e) {
       e.printStackTrace();
       throw e;
@@ -77,27 +75,39 @@ public class ClimateDao {
   }
 
 
-  public County getCompanyByCompanyName(String companyName) throws SQLException {
-    String selectCompany =
-            "SELECT CompanyKey,Name,Description " +
-                    "FROM Company " +
-                    "WHERE Name=?;";
+  public List<Climate> getClimateByCounty(County county) throws SQLException {
+	List<Climate> climates = new ArrayList<Climate>();
+    String selectClimate =
+            "SELECT ClimateKey,CountyFKey,Year,Elevation,WinterPrcp,SummerPrcp,SpringPrcp,"
+            + "AutumnPrcp,WinterTavg,SummerTavg,SpringTavg,AutumnTavg " +
+                    "FROM Climate " +
+                    "WHERE CountyFKey=?;";
     Connection connection = null;
     PreparedStatement selectStmt = null;
     ResultSet results = null;
     try {
       connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectCompany);
-      selectStmt.setString(1, companyName);
+      selectStmt = connection.prepareStatement(selectClimate);
+      selectStmt.setInt(1, county.getCountyKey());
       results = selectStmt.executeQuery();
 
-      if (results.next()) {
-        int companyKey = results.getInt("CompanyKey");
-        String resultsCompanyName = results.getString("Name");
-        String description = results.getString("Description");
+      while(results.next()) {
+        int climateKey = results.getInt("ClimateKey");
+        Date resyear = results.getDate("Year");
+        Double reselev = results.getDouble("Elevation");
+        Double reswinterprcp = results.getDouble("WinterPrcp");
+        Double ressumprcp = results.getDouble("SummerPrcp");
+        Double resspringprcp = results.getDouble("SpringPrcp");
+        Double resautprcp = results.getDouble("AutumnPrcp");
+        Double reswintertemp = results.getDouble("WinterTavg");
+        Double ressumtemp = results.getDouble("SummerTavg");
+        Double resspringtemp = results.getDouble("SpringTAvg");
+        Double resauttemp = results.getDouble("AutumnTAvg");
+        
 
-        County county = new County(companyKey, resultsCompanyName, description);
-        return county;
+        Climate climate = new Climate(climateKey, county, resyear, reselev, reswinterprcp, ressumprcp,
+        		resspringprcp, resautprcp, reswintertemp, ressumtemp, resspringtemp, resauttemp);
+        climates.add(climate);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -113,83 +123,44 @@ public class ClimateDao {
         results.close();
       }
     }
-    return null;
+    return climates;
   }
 
-  public County getCompanyById(int companyKey) throws SQLException {
-    String selectCompany =
-            "SELECT CompanyKey,Name,Description " +
-                    "FROM Company " +
-                    "WHERE CompanyKey=?;";
-    Connection connection = null;
-    PreparedStatement selectStmt = null;
-    ResultSet results = null;
-    try {
-      connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectCompany);
-      selectStmt.setInt(1, companyKey);
-      results = selectStmt.executeQuery();
-
-      if (results.next()) {
-        int resultsCompanyKey = results.getInt("CompanyKey");
-        String companyName = results.getString("Name");
-        String description = results.getString("Description");
-
-        County county = new County(resultsCompanyKey, companyName, description);
-        return county;
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-      throw e;
-    } finally {
-      if (connection != null) {
-        connection.close();
-      }
-      if (selectStmt != null) {
-        selectStmt.close();
-      }
-      if (results != null) {
-        results.close();
-      }
-    }
-    return null;
-  }
+  public Climate updateClimate(Climate climate, County county) throws SQLException {
+		String updateClimate = "UPDATE Climate SET CountyFKey=? WHERE ClimateKey=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try {
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updateClimate);
+			updateStmt.setInt(1, county.getCountyKey());
+			updateStmt.setInt(2, climate.getClimateKey());
+			updateStmt.executeUpdate();
+			climate.setCounty(county);
+			return climate;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(updateStmt != null) {
+				updateStmt.close();
+			}
+		}
+	}
 
 
-  public County updateAbout(County county, String newAbout) throws SQLException {
-    String updateAboutCompany = "UPDATE Company SET Description=? WHERE CompanyKey=?;";
-    Connection connection = null;
-    PreparedStatement updateStmt = null;
-    try {
-      connection = connectionManager.getConnection();
-      updateStmt = connection.prepareStatement(updateAboutCompany);
-      updateStmt.setString(1, newAbout);
-      updateStmt.setInt(2, county.getCompanyKey());
-      updateStmt.executeUpdate();
 
-      county.setDescription(newAbout);
-      return county;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      throw e;
-    } finally {
-      if (connection != null) {
-        connection.close();
-      }
-      if (updateStmt != null) {
-        updateStmt.close();
-      }
-    }
-  }
-
-  public County delete(County county) throws SQLException {
-    String deleteCompany = "DELETE FROM Company WHERE CompanyKey=?;";
+  public Climate delete(Climate climate) throws SQLException {
+    String deleteClimate = "DELETE FROM Climate WHERE ClimateKey=?;";
     Connection connection = null;
     PreparedStatement deleteStmt = null;
     try {
       connection = connectionManager.getConnection();
-      deleteStmt = connection.prepareStatement(deleteCompany);
-      deleteStmt.setInt(1, county.getCompanyKey());
+      deleteStmt = connection.prepareStatement(deleteClimate);
+      deleteStmt.setInt(1, climate.getClimateKey());
       deleteStmt.executeUpdate();
 
       // Return null so the caller can no longer operate on the Company instance.
