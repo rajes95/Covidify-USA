@@ -26,13 +26,13 @@ ENGINE = InnoDB;
  */
 public class CountyHospitalData {
     protected int countyHospitalDataKey;
-    protected int countyFKey;
+    protected County county;
     protected Date year;
     protected Integer icuBeds;
 
-    public CountyHospitalData(int countyHospitalDataKey, int countyFKey, Date year, Integer icuBeds) {
+    public CountyHospitalData(int countyHospitalDataKey, County county, Date year, Integer icuBeds) {
         this.countyHospitalDataKey = countyHospitalDataKey;
-        this.countyFKey = countyFKey;
+        this.county = county;
         this.year = year;
         this.icuBeds = icuBeds;
     }
@@ -41,8 +41,8 @@ public class CountyHospitalData {
         this.countyHospitalDataKey = countyHospitalDataKey;
     }
 
-    public CountyHospitalData(int countyFKey, Date year, Integer icuBeds) {
-        this.countyFKey = countyFKey;
+    public CountyHospitalData(County county, Date year, Integer icuBeds) {
+        this.county = county;
         this.year = year;
         this.icuBeds = icuBeds;
     }
@@ -55,12 +55,12 @@ public class CountyHospitalData {
         this.countyHospitalDataKey = countyHospitalDataKey;
     }
 
-    public int getCountyFKey() {
-        return countyFKey;
+    public County getCounty() {
+        return county;
     }
 
-    public void setCountyFKey(int countyFKey) {
-        this.countyFKey = countyFKey;
+    public void setCounty(County county) {
+        this.county = county;
     }
 
     public Date getYear() {
