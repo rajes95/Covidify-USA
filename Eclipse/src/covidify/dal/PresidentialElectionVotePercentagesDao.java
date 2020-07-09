@@ -6,12 +6,10 @@
 package covidify.dal;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,113 +152,301 @@ public class PresidentialElectionVotePercentagesDao
 		}
 	}
 
-	// TODO
-	/*
-	 * public PresidentialElectionVotePercentages
-	 * getPresidentialElectionVotePercentagesById(int
-	 * presidentialElectionVotePercentagesId) throws SQLException { String
-	 * selectPresidentialElectionVotePercentages =
-	 * "SELECT PresidentialElectionVotePercentagesKey,UserName,SitDownRestaurantKey,Start,End,PartySize "
-	 * + "FROM PresidentialElectionVotePercentages " +
-	 * "WHERE PresidentialElectionVotePercentagesKey=?;"; Connection connection =
-	 * null; PreparedStatement selectStmt = null; ResultSet results = null; try {
-	 * connection = connectionManager.getConnection(); selectStmt =
-	 * connection.prepareStatement(selectPresidentialElectionVotePercentages);
-	 * selectStmt.setInt(1, presidentialElectionVotePercentagesId); results =
-	 * selectStmt.executeQuery();
-	 * 
-	 * PopulationDao populationDao = PopulationDao.getInstance(); StateDao stateDao
-	 * = StateDao.getInstance(); if (results.next()) { int
-	 * presidentialElectionVotePercentagesKey =
-	 * results.getInt("PresidentialElectionVotePercentagesKey"); String userName =
-	 * results.getString("UserName"); int restaurantKey =
-	 * results.getInt("SitDownRestaurantKey"); Date start = new
-	 * Date(results.getTimestamp("Start").getTime()); Date end = new
-	 * Date(results.getTimestamp("End").getTime()); Integer partySize =
-	 * results.getInt("PartySize");
-	 * 
-	 * CovidByDate covidByDate = populationDao.getUserByUserName(userName);
-	 * StateGovernor restaurant = stateDao.getSitDownRestaurantById(restaurantKey);
-	 * PresidentialElectionVotePercentages presidentialElectionVotePercentages = new
-	 * PresidentialElectionVotePercentages(presidentialElectionVotePercentagesKey,
-	 * covidByDate,restaurant,start,end,partySize); return
-	 * presidentialElectionVotePercentages; } } catch (SQLException e) {
-	 * e.printStackTrace(); throw e; } finally { if (connection != null) {
-	 * connection.close(); } if (selectStmt != null) { selectStmt.close(); } if
-	 * (results != null) { results.close(); } } return null; }
-	 * 
-	 * public List<PresidentialElectionVotePercentages>
-	 * getPresidentialElectionVotePercentagessByUserName(String userName) throws
-	 * SQLException { List<PresidentialElectionVotePercentages>
-	 * presidentialElectionVotePercentagess = new
-	 * ArrayList<PresidentialElectionVotePercentages>(); String
-	 * selectPresidentialElectionVotePercentages =
-	 * "SELECT PresidentialElectionVotePercentagesKey,UserName,SitDownRestaurantKey,Start,End,PartySize "
-	 * + "FROM PresidentialElectionVotePercentages " + "WHERE UserName=?;";
-	 * Connection connection = null; PreparedStatement selectStmt = null; ResultSet
-	 * results = null; try { connection = connectionManager.getConnection();
-	 * selectStmt =
-	 * connection.prepareStatement(selectPresidentialElectionVotePercentages);
-	 * selectStmt.setString(1, userName); results = selectStmt.executeQuery();
-	 * 
-	 * PopulationDao populationDao = PopulationDao.getInstance(); CovidByDate
-	 * covidByDate = populationDao.getUserByUserName(userName); StateDao stateDao =
-	 * StateDao.getInstance(); while (results.next()) { int
-	 * presidentialElectionVotePercentagesKey =
-	 * results.getInt("PresidentialElectionVotePercentagesKey"); int restaurantKey =
-	 * results.getInt("SitDownRestaurantKey"); Date start = new
-	 * Date(results.getTimestamp("Start").getTime()); Date end = new
-	 * Date(results.getTimestamp("End").getTime()); Integer partySize =
-	 * results.getInt("PartySize");
-	 * 
-	 * // Re-using User that we found above to avoid duplicating work StateGovernor
-	 * restaurant = stateDao.getSitDownRestaurantById(restaurantKey);
-	 * PresidentialElectionVotePercentages presidentialElectionVotePercentages = new
-	 * PresidentialElectionVotePercentages(presidentialElectionVotePercentagesKey,
-	 * covidByDate,restaurant,start,end,partySize);
-	 * presidentialElectionVotePercentagess.add(presidentialElectionVotePercentages)
-	 * ; } } catch (SQLException e) { e.printStackTrace(); throw e; } finally { if
-	 * (connection != null) { connection.close(); } if (selectStmt != null) {
-	 * selectStmt.close(); } if (results != null) { results.close(); } } return
-	 * presidentialElectionVotePercentagess; }
-	 * 
-	 * public List<PresidentialElectionVotePercentages>
-	 * getPresidentialElectionVotePercentagessBySitDownRestaurantId(int
-	 * sitDownRestaurantId) throws SQLException {
-	 * List<PresidentialElectionVotePercentages>
-	 * presidentialElectionVotePercentagess = new
-	 * ArrayList<PresidentialElectionVotePercentages>(); String
-	 * selectPresidentialElectionVotePercentages =
-	 * "SELECT PresidentialElectionVotePercentagesKey,UserName,SitDownRestaurantKey,Start,End,PartySize "
-	 * + "FROM PresidentialElectionVotePercentages " +
-	 * "WHERE SitDownRestaurantKey=?;"; Connection connection = null;
-	 * PreparedStatement selectStmt = null; ResultSet results = null; try {
-	 * connection = connectionManager.getConnection(); selectStmt =
-	 * connection.prepareStatement(selectPresidentialElectionVotePercentages);
-	 * selectStmt.setInt(1, sitDownRestaurantId); results =
-	 * selectStmt.executeQuery();
-	 * 
-	 * PopulationDao populationDao = PopulationDao.getInstance(); StateDao stateDao
-	 * = StateDao.getInstance(); StateGovernor restaurant =
-	 * stateDao.getSitDownRestaurantById(sitDownRestaurantId); while
-	 * (results.next()) { int presidentialElectionVotePercentagesKey =
-	 * results.getInt("PresidentialElectionVotePercentagesKey"); String userName =
-	 * results.getString("UserName"); Date start = new
-	 * Date(results.getTimestamp("Start").getTime()); Date end = new
-	 * Date(results.getTimestamp("End").getTime()); Integer partySize =
-	 * results.getInt("PartySize");
-	 * 
-	 * // Re-using SitDownRestaurant that we found above to avoid duplicating work
-	 * CovidByDate covidByDate = populationDao.getUserByUserName(userName);
-	 * PresidentialElectionVotePercentages presidentialElectionVotePercentages = new
-	 * PresidentialElectionVotePercentages(presidentialElectionVotePercentagesKey,
-	 * covidByDate, restaurant, start, end, partySize);
-	 * presidentialElectionVotePercentagess.add(presidentialElectionVotePercentages)
-	 * ; } } catch (SQLException e) { e.printStackTrace(); throw e; } finally { if
-	 * (connection != null) { connection.close(); } if (selectStmt != null) {
-	 * selectStmt.close(); } if (results != null) { results.close(); } } return
-	 * presidentialElectionVotePercentagess; }
-	 */
+	public PresidentialElectionVotePercentages getPresidentialElectionVotePercentagesByPresidentialElectionVotePercentagesKey(
+			int elecVotePercsKey) throws SQLException
+	{
+		String selectPevp = "SELECT * " + "FROM PresidentialElectionVotePercentages "
+				+ "WHERE PresidentialElectionVotePercentagesKey=?;";
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		try
+		{
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectPevp);
+			selectStmt.setInt(1, elecVotePercsKey);
+			results = selectStmt.executeQuery();
+			CountyDao countyDao = CountyDao.getInstance();
+
+			if (results.next())
+			{
+				PresidentialElectionVotePercentages pevp = new PresidentialElectionVotePercentages(
+						elecVotePercsKey,
+						countyDao.getCountyByCountyKey(results.getInt("CountyFKey")),
+						results.getShort("Year"), results.getDouble("DemocratsPercent"),
+						results.getDouble("RepublicansPercent"),
+						results.getDouble("OtherPercent"));
+
+				return pevp;
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				connection.close();
+			}
+			if (selectStmt != null)
+			{
+				selectStmt.close();
+			}
+			if (results != null)
+			{
+				results.close();
+			}
+		}
+		return null;
+	}
+
+	public List<PresidentialElectionVotePercentages> getPresidentialElectionVotePercentagesByYear(
+			Short year) throws SQLException
+	{
+		List<PresidentialElectionVotePercentages> pevps = new ArrayList<PresidentialElectionVotePercentages>();
+		String selectPevps = "SELECT * " + "FROM PresidentialElectionVotePercentages "
+				+ "WHERE `Year`=?;";
+		;
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		try
+		{
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectPevps);
+			selectStmt.setShort(1, year);
+			results = selectStmt.executeQuery();
+			CountyDao countyDao = CountyDao.getInstance();
+
+			while (results.next())
+			{
+				PresidentialElectionVotePercentages pevp = new PresidentialElectionVotePercentages(
+						results.getInt("PresidentialElectionVotePercentagesKey"),
+						countyDao.getCountyByCountyKey(results.getInt("CountyFKey")),
+						results.getShort("Year"), results.getDouble("DemocratsPercent"),
+						results.getDouble("RepublicansPercent"),
+						results.getDouble("OtherPercent"));
+				pevps.add(pevp);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				connection.close();
+			}
+			if (selectStmt != null)
+			{
+				selectStmt.close();
+			}
+			if (results != null)
+			{
+				results.close();
+			}
+		}
+		return pevps;
+	}
+
+	public List<PresidentialElectionVotePercentages> getPresidentialElectionVotePercentagesByCountyKey(
+			int countKey) throws SQLException
+	{
+		List<PresidentialElectionVotePercentages> pevps = new ArrayList<PresidentialElectionVotePercentages>();
+		String selectPevps = "SELECT * " + "FROM PresidentialElectionVotePercentages "
+				+ "WHERE `CountyFKey`=?;";
+		;
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		try
+		{
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectPevps);
+			selectStmt.setInt(1, countKey);
+			results = selectStmt.executeQuery();
+			CountyDao countyDao = CountyDao.getInstance();
+
+			while (results.next())
+			{
+				PresidentialElectionVotePercentages pevp = new PresidentialElectionVotePercentages(
+						results.getInt("PresidentialElectionVotePercentagesKey"),
+						countyDao.getCountyByCountyKey(results.getInt("CountyFKey")),
+						results.getShort("Year"), results.getDouble("DemocratsPercent"),
+						results.getDouble("RepublicansPercent"),
+						results.getDouble("OtherPercent"));
+				pevps.add(pevp);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				connection.close();
+			}
+			if (selectStmt != null)
+			{
+				selectStmt.close();
+			}
+			if (results != null)
+			{
+				results.close();
+			}
+		}
+		return pevps;
+	}
+
+	public PresidentialElectionVotePercentages updateYear(
+			PresidentialElectionVotePercentages pevp, Short year) throws SQLException
+	{
+		String updatePevp = "UPDATE PresidentialElectionVotePercentages SET `Year`=? WHERE PresidentialElectionVotePercentagesKey=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try
+		{
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updatePevp);
+			updateStmt.setShort(1, year);
+			updateStmt.setInt(2, pevp.getPresidentialElectionVotePercentagesKey());
+			updateStmt.executeUpdate();
+			pevp.setYear(year);
+			;
+			return pevp;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				connection.close();
+			}
+			if (updateStmt != null)
+			{
+				updateStmt.close();
+			}
+		}
+	}
+
+	public PresidentialElectionVotePercentages updateDemPercent(
+			PresidentialElectionVotePercentages pevp, Double demPerc) throws SQLException
+	{
+		String updatePevp = "UPDATE PresidentialElectionVotePercentages SET `DemocratsPercent`=? "
+				+ "WHERE PresidentialElectionVotePercentagesKey=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try
+		{
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updatePevp);
+			updateStmt.setDouble(1, demPerc);
+			updateStmt.setInt(2, pevp.getPresidentialElectionVotePercentagesKey());
+			updateStmt.executeUpdate();
+			pevp.setDemocratsPercent(demPerc);
+			return pevp;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				connection.close();
+			}
+			if (updateStmt != null)
+			{
+				updateStmt.close();
+			}
+		}
+	}
+
+	public PresidentialElectionVotePercentages updateRepPercent(
+			PresidentialElectionVotePercentages pevp, Double repPerc) throws SQLException
+	{
+		String updatePevp = "UPDATE PresidentialElectionVotePercentages SET `RepublicansPercent`=? "
+				+ "WHERE PresidentialElectionVotePercentagesKey=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try
+		{
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updatePevp);
+			updateStmt.setDouble(1, repPerc);
+			updateStmt.setInt(2, pevp.getPresidentialElectionVotePercentagesKey());
+			updateStmt.executeUpdate();
+			pevp.setRepublicansPercent(repPerc);
+			return pevp;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				connection.close();
+			}
+			if (updateStmt != null)
+			{
+				updateStmt.close();
+			}
+		}
+	}
+
+	public PresidentialElectionVotePercentages updateOtherPercent(
+			PresidentialElectionVotePercentages pevp, Double otherPerc)
+			throws SQLException
+	{
+		String updatePevp = "UPDATE PresidentialElectionVotePercentages SET `OtherPercent`=? "
+				+ "WHERE PresidentialElectionVotePercentagesKey=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try
+		{
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updatePevp);
+			updateStmt.setDouble(1, otherPerc);
+			updateStmt.setInt(2, pevp.getPresidentialElectionVotePercentagesKey());
+			updateStmt.executeUpdate();
+			pevp.setOtherPercent(otherPerc);
+			return pevp;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				connection.close();
+			}
+			if (updateStmt != null)
+			{
+				updateStmt.close();
+			}
+		}
+	}
 
 	public PresidentialElectionVotePercentages delete(
 			PresidentialElectionVotePercentages presidentialElectionVotePercentages)
