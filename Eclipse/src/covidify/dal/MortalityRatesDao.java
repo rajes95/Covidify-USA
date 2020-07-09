@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import covidify.model.*;
@@ -33,24 +34,52 @@ public class MortalityRatesDao {
   }
   //TODO here onwards
   public MortalityRates create(MortalityRates mortalityRates) throws SQLException {
-    String insertMortalityRates = "INSERT INTO MortalityRates(UserKey,RestaurantKey) "
-            + "VALUES(?,?);";
+    String insertMortalityRates = "INSERT INTO MortalityRates(CountyFKey,Year,NeonatalDisordersMortalityRate,"
+    		+ "HIVAIDSandTBMortalityRate,DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate,"
+    		+ "ChronicRespiratoryDiseasesMortalityRate,LiverDiseaseMortalityRate,"
+    		+ "NutritionalDeficienciesMortalityRate,CardiovascularDiseasesMortalityRate) "
+            + "VALUES(?,?,?,?,?,?,?,?,?);";
     Connection connection = null;
     PreparedStatement insertStmt = null;
     ResultSet resultKey = null;
     try {
       connection = connectionManager.getConnection();
       insertStmt = connection.prepareStatement(insertMortalityRates, Statement.RETURN_GENERATED_KEYS);
-      if (mortalityRates.getCovidByDate().getUserName() == null) {
-        insertStmt.setNull(1, Types.VARCHAR);
+      if (mortalityRates.getNeonatalRate() == null) {
+        insertStmt.setNull(3, Types.VARCHAR);
       } else {
-        insertStmt.setString(1, mortalityRates.getCovidByDate().getUserName());
+        insertStmt.setDouble(3, mortalityRates.getNeonatalRate());
       }
-      if (mortalityRates.getMortalityRates() == null) {
-        insertStmt.setNull(2, Types.INTEGER);
+      if (mortalityRates.getHivRate() == null) {
+        insertStmt.setNull(4, Types.INTEGER);
       } else {
-        insertStmt.setInt(2, mortalityRates.getMortalityRates().getRestaurantKey());
+        insertStmt.setDouble(4, mortalityRates.getHivRate());
       }
+      if (mortalityRates.getDiabetesRate() == null) {
+          insertStmt.setNull(5, Types.INTEGER);
+        } else {
+          insertStmt.setDouble(5, mortalityRates.getDiabetesRate());
+        }
+      if (mortalityRates.getChronicRespitoraryRate() == null) {
+          insertStmt.setNull(6, Types.INTEGER);
+        } else {
+          insertStmt.setDouble(6, mortalityRates.getChronicRespitoraryRate());
+        }
+      if (mortalityRates.getLiverDiseaseRate() == null) {
+          insertStmt.setNull(7, Types.INTEGER);
+        } else {
+          insertStmt.setDouble(7, mortalityRates.getLiverDiseaseRate());
+        }
+      if (mortalityRates.getNutritionalDeficienciesRate() == null) {
+          insertStmt.setNull(8, Types.INTEGER);
+        } else {
+          insertStmt.setDouble(8, mortalityRates.getNutritionalDeficienciesRate());
+        }
+      if (mortalityRates.getCardiovascularRate() == null) {
+          insertStmt.setNull(9, Types.INTEGER);
+        } else {
+          insertStmt.setDouble(9, mortalityRates.getCardiovascularRate());
+        }
       insertStmt.executeUpdate();
 
       resultKey = insertStmt.getGeneratedKeys();
@@ -79,135 +108,78 @@ public class MortalityRatesDao {
   }
 
 
-  public MortalityRates getMortalityRatesById(int mortalityRatesId) throws SQLException {
-    String selectMortalityRates =
-            "SELECT MortalityRatesKey,UserKey,RestaurantKey " +
-                    "FROM MortalityRates " +
-                    "WHERE MortalityRatesKey=?;";
-    Connection connection = null;
-    PreparedStatement selectStmt = null;
-    ResultSet results = null;
-    try {
-      connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectMortalityRates);
-      selectStmt.setInt(1, mortalityRatesId);
-      results = selectStmt.executeQuery();
+  public List<MortalityRates> getMortalityRatesByCounty(County county) throws SQLException {
+		List<MortalityRates> mortalityRatess = new ArrayList<MortalityRates>();
+	    String selectMortalityRates =
+	            "SELECT MortalityRatesKey,CountyFKey,Year,NeonatalDisordersMortalityRate,HIVAIDSandTBMortalityRate,"
+	            + "DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate,ChronicRespiratoryDiseasesMortalityRate,"
+	            + "LiverDiseaseMortalityRate,NutritionalDeficienciesMortalityRate,CardiovascularDiseasesMortalityRate"
+	            + " FROM MortalityRates WHERE CountyFKey=?;";
+	    Connection connection = null;
+	    PreparedStatement selectStmt = null;
+	    ResultSet results = null;
+	    try {
+	      connection = connectionManager.getConnection();
+	      selectStmt = connection.prepareStatement(selectMortalityRates);
+	      selectStmt.setInt(1, county.getCountyKey());
+	      results = selectStmt.executeQuery();
 
-      PopulationDao populationDao = PopulationDao.getInstance();
-      RestaurantDao restaurantDao = RestaurantDao.getInstance();
-      if (results.next()) {
-        int mortalityRatesKey = results.getInt("MortalityRatesKey");
-        String userName = results.getString("UserName");
-        int restaurantKey = results.getInt("RestaurantKey");
+	      while(results.next()) {
+	        int mortalityRatesKey = results.getInt("MortalityRatesKey");
+	        Date resyear = results.getDate("Year");
+	        Double resneo = results.getDouble("NeonatalDisordersMortalityRate");
+	        Double reshiv = results.getDouble("HIVAIDSandTBMortalityRate");
+	        Double resdiab = results.getDouble("DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate");
+	        Double resresp = results.getDouble("ChronicRespiratoryDiseasesMortalityRate");
+	        Double resliver = results.getDouble("LiverDiseaseMortalityRate");
+	        Double resnutr = results.getDouble("NutritionalDeficienciesMortalityRate");
+	        Double rescardio = results.getDouble("CardiovascularDiseasesMortalityRate");
 
-        CovidByDate covidByDate = populationDao.getUserByUserName(userName);
-        MortalityRates mortalityRates = restaurantDao.getRestaurantById(restaurantKey);
-        MortalityRates mortalityRates = new MortalityRates(mortalityRatesKey, covidByDate, mortalityRates);
-        return mortalityRates;
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-      throw e;
-    } finally {
-      if (connection != null) {
-        connection.close();
-      }
-      if (selectStmt != null) {
-        selectStmt.close();
-      }
-      if (results != null) {
-        results.close();
-      }
-    }
-    return null;
-  }
+	        MortalityRates mortalityRates = new MortalityRates(mortalityRatesKey, county, resyear, resneo,
+	        		reshiv,resdiab,resresp,resliver,resnutr,rescardio);
+	        mortalityRatess.add(mortalityRates);
+	      }
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	      throw e;
+	    } finally {
+	      if (connection != null) {
+	        connection.close();
+	      }
+	      if (selectStmt != null) {
+	        selectStmt.close();
+	      }
+	      if (results != null) {
+	        results.close();
+	      }
+	    }
+	    return mortalityRatess;
+	  }
 
-  public List<MortalityRates> getMortalityRatessByUserName(String userName) throws SQLException {
-    List<MortalityRates> mortalityRatess = new ArrayList<MortalityRates>();
-    String selectMortalityRates =
-            "SELECT MortalityRatesKey,UserKey,RestaurantKey " +
-                    "FROM MortalityRates " +
-                    "WHERE UserKey=?;";
-    Connection connection = null;
-    PreparedStatement selectStmt = null;
-    ResultSet results = null;
-    try {
-      connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectMortalityRates);
-      selectStmt.setString(1, userName);
-      results = selectStmt.executeQuery();
-
-      PopulationDao populationDao = PopulationDao.getInstance();
-      CovidByDate covidByDate = populationDao.getUserByUserName(userName);
-      RestaurantDao restaurantDao = RestaurantDao.getInstance();
-      while (results.next()) {
-        int mortalityRatesKey = results.getInt("MortalityRatesKey");
-        int restaurantKey = results.getInt("RestaurantKey");
-
-        // Re-using User that we found above to avoid duplicating work
-        MortalityRates mortalityRates = restaurantDao.getRestaurantById(restaurantKey);
-        MortalityRates mortalityRates = new MortalityRates(mortalityRatesKey, covidByDate, mortalityRates);
-        mortalityRatess.add(mortalityRates);
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-      throw e;
-    } finally {
-      if (connection != null) {
-        connection.close();
-      }
-      if (selectStmt != null) {
-        selectStmt.close();
-      }
-      if (results != null) {
-        results.close();
-      }
-    }
-    return mortalityRatess;
-  }
-
-  public List<MortalityRates> getMortalityRatessByRestaurantId(int restaurantId) throws SQLException {
-    List<MortalityRates> mortalityRatess = new ArrayList<MortalityRates>();
-    String selectMortalityRates =
-            "SELECT MortalityRatesKey,UserKey,RestaurantKey " +
-                    "FROM MortalityRates " +
-                    "WHERE RestaurantKey=?;";
-    Connection connection = null;
-    PreparedStatement selectStmt = null;
-    ResultSet results = null;
-    try {
-      connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectMortalityRates);
-      selectStmt.setInt(1, restaurantId);
-      results = selectStmt.executeQuery();
-
-      PopulationDao populationDao = PopulationDao.getInstance();
-      RestaurantDao restaurantDao = RestaurantDao.getInstance();
-      MortalityRates mortalityRates = restaurantDao.getRestaurantById(restaurantId);
-      while (results.next()) {
-        int mortalityRatesKey = results.getInt("MortalityRatesKey");
-        String userName = results.getString("UserName");
-
-        CovidByDate covidByDate = populationDao.getUserByUserName(userName);
-        MortalityRates mortalityRates = new MortalityRates(mortalityRatesKey, covidByDate, mortalityRates);
-        mortalityRatess.add(mortalityRates);
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-      throw e;
-    } finally {
-      if (connection != null) {
-        connection.close();
-      }
-      if (selectStmt != null) {
-        selectStmt.close();
-      }
-      if (results != null) {
-        results.close();
-      }
-    }
-    return mortalityRatess;
-  }
+  public MortalityRates updateMortalityRates(MortalityRates mortalityRates, County county) throws SQLException {
+		String updateMortalityRates = "UPDATE MortalityRates SET CountyFKey=? WHERE MortalityRatesKey=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try {
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updateMortalityRates);
+			updateStmt.setInt(1, county.getCountyKey());
+			updateStmt.setInt(2, mortalityRates.getMortalityRatesKey());
+			updateStmt.executeUpdate();
+			mortalityRates.setCounty(county);
+			return mortalityRates;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(updateStmt != null) {
+				updateStmt.close();
+			}
+		}
+	}
 
 
   public MortalityRates delete(MortalityRates mortalityRates) throws SQLException {
