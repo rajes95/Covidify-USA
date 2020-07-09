@@ -5,8 +5,6 @@
  */
 package covidify.model;
 
-import java.util.Date;
-
 /*
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateGovernor` (
   `StateGovernorKey` INT NOT NULL AUTO_INCREMENT,
@@ -22,71 +20,103 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateGovernor` (
     REFERENCES `CovidifyUSA`.`State` (`StateKey`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
+ENGINE = InnoDB;
  */
 
-public class StateGovernor  {
-  protected int stateGovernorKey;
-  protected State state;
-  protected Date year;
-  protected String governor;
-  protected GovernorPartyType governorParty;
+public class StateGovernor
+{
+	protected int stateGovernorKey;
+	protected State state;
+	protected Short year;
+	protected String governor;
+	protected GovernorPartyType governorParty;
 
-  public enum GovernorPartyType {
-    Democratic, Republican, Other
-  }
+	public enum GovernorPartyType
+	{
+		Democratic, Republican, Other
+	}
 
-  public StateGovernor(int stateGovernorKey, State state, Date year, String governor, GovernorPartyType governorParty) {
-    this.stateGovernorKey = stateGovernorKey;
-    this.state = state;
-    this.year = year;
-    this.governor = governor;
-    this.governorParty = governorParty;
-  }
+	public StateGovernor(int stateGovernorKey, State state, Short year, String governor,
+			GovernorPartyType governorParty)
+	{
+		this.stateGovernorKey = stateGovernorKey;
+		this.state = state;
+		this.year = year;
+		this.governor = governor;
+		this.governorParty = governorParty;
+	}
 
-  public StateGovernor(int stateGovernorKey) {
-    this.stateGovernorKey = stateGovernorKey;
-  }
+	public StateGovernor(int stateGovernorKey)
+	{
+		this.stateGovernorKey = stateGovernorKey;
+	}
 
-  public StateGovernor(State state, Date year, String governor, GovernorPartyType governorParty) {
-    this.state = state;
-    this.year = year;
-    this.governor = governor;
-    this.governorParty = governorParty;
-  }
+	public StateGovernor(State state, Short year, String governor,
+			GovernorPartyType governorParty)
+	{
+		this.state = state;
+		this.year = year;
+		this.governor = governor;
+		this.governorParty = governorParty;
+	}
 
-  public int getStateGovernorKey() {
-    return stateGovernorKey;
-  }
-  public void setStateGovernorKey(int stateGovernorKey) {
-    this.stateGovernorKey = stateGovernorKey;
-  }
+	public int getStateGovernorKey()
+	{
+		return stateGovernorKey;
+	}
 
-  public State getState() {
-    return state;
-  }
-  public void setState(State state) {
-    this.state = state;
-  }
+	public void setStateGovernorKey(int stateGovernorKey)
+	{
+		this.stateGovernorKey = stateGovernorKey;
+	}
 
-  public Date getYear() {
-    return year;
-  }
-  public void setYear(Date year) {
-    this.year = year;
-  }
+	public State getState()
+	{
+		return state;
+	}
 
-  public String getGovernor() {
-    return governor;
-  }
-  public void setGovernor(String governor) {
-    this.governor = governor;
-  }
+	public void setState(State state)
+	{
+		this.state = state;
+	}
 
-  public GovernorPartyType getGovernorParty() {
-    return governorParty;
-  }
-  public void setGovernorParty(GovernorPartyType governorParty) {
-    this.governorParty = getGovernorParty();
-  }
+	public Short getYear()
+	{
+		return year;
+	}
+
+	public void setYear(Short year)
+	{
+		this.year = year;
+	}
+
+	public String getGovernor()
+	{
+		return governor;
+	}
+
+	public void setGovernor(String governor)
+	{
+		this.governor = governor;
+	}
+
+	public GovernorPartyType getGovernorParty()
+	{
+		return governorParty;
+	}
+
+	public void setGovernorParty(GovernorPartyType governorParty)
+	{
+		this.governorParty = getGovernorParty();
+	}
+
+	public String toString()
+	{
+		String str = "StateGovernorKey:" + this.getStateGovernorKey() + ", StateName:"
+				+ this.getState().getStateName() + ", Year:" + this.getYear()
+				+ ", Governor:" + this.getGovernor() + ", GovernorParty:"
+				+ this.getGovernorParty();
+
+		return str;
+	}
 }

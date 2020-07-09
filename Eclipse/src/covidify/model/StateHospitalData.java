@@ -5,9 +5,7 @@
  */
 package covidify.model;
 
-import java.util.Date;
 /*
-
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateHospitalData` (
   `StateHospitalDataKey` INT NOT NULL AUTO_INCREMENT,
   `StateFKey` INT NOT NULL,
@@ -25,95 +23,96 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`StateHospitalData` (
 ENGINE = InnoDB;
  */
 
-public class StateHospitalData {
-  protected int stateHospitalDataKey;
-  protected int stateFKey;
-  protected Date year;
-  protected Long numberOfHospitals;
-  protected Long numberOfHospitalEmployees;
+public class StateHospitalData
+{
+	protected int stateHospitalDataKey;
+	protected State state;
+	protected Short year;
+	protected Long numberOfHospitals;
+	protected Long numberOfHospitalEmployees;
 
-  public StateHospitalData(int stateHospitalDataKey, int stateFKey, Date year, Long numberOfHospitals,
-                           Long numberOfHospitalEmployees) {
-    this.stateHospitalDataKey = stateHospitalDataKey;
-    this.stateFKey = stateFKey;
-    this.year = year;
-    this.numberOfHospitals = numberOfHospitals;
-    this.numberOfHospitalEmployees = numberOfHospitalEmployees;
-  }
+	public StateHospitalData(int stateHospitalDataKey, State state, Short year,
+			Long numberOfHospitals, Long numberOfHospitalEmployees)
+	{
+		this.stateHospitalDataKey = stateHospitalDataKey;
+		this.state = state;
+		this.year = year;
+		this.numberOfHospitals = numberOfHospitals;
+		this.numberOfHospitalEmployees = numberOfHospitalEmployees;
+	}
 
-  public StateHospitalData(int stateHospitalDataKey) {
-    this.stateHospitalDataKey = reservationKey;
-  }
+	public StateHospitalData(int stateHospitalDataKey)
+	{
+		this.stateHospitalDataKey = stateHospitalDataKey;
+	}
 
-  public StateHospitalData(int stateFKey, Date year, Long numberOfHospitals, Long numberOfHospitalEmployees) {
-    this.stateFKey = stateFKey;
-    this.year = year;
-    this.numberOfHospitals = numberOfHospitals;
-    this.numberOfHospitalEmployees = numberOfHospitalEmployees;
-  }
+	public StateHospitalData(State state, Short year, Long numberOfHospitals,
+			Long numberOfHospitalEmployees)
+	{
+		this.state = state;
+		this.year = year;
+		this.numberOfHospitals = numberOfHospitals;
+		this.numberOfHospitalEmployees = numberOfHospitalEmployees;
+	}
 
-  public int getStateHospitalDataKey() {
-    return stateHospitalDataKey;
-  }
+	public int getStateHospitalDataKey()
+	{
+		return stateHospitalDataKey;
+	}
 
-  public void setStateHospitalDataKey(int stateHospitalDataKey) {
-    this.stateHospitalDataKey = stateHospitalDataKey;
-  }
+	public void setStateHospitalDataKey(int stateHospitalDataKey)
+	{
+		this.stateHospitalDataKey = stateHospitalDataKey;
+	}
 
-  public int getStateFKey() {
-    return stateFKey;
-  }
+	public State getState()
+	{
+		return state;
+	}
 
-  public void setStateFKey(int stateFKey) {
-    this.stateFKey = stateFKey;
-  }
+	public void setState(State state)
+	{
+		this.state = state;
+	}
 
-  public Date getYear() {
-    return year;
-  }
+	public Short getYear()
+	{
+		return year;
+	}
 
-  public void setYear(Date year) {
-    this.year = year;
-  }
+	public void setYear(Short year)
+	{
+		this.year = year;
+	}
 
-  public Long getNumberOfHospitals() {
-    return numberOfHospitals;
-  }
+	public Long getNumberOfHospitals()
+	{
+		return numberOfHospitals;
+	}
 
-  public void setNumberOfHospitals(Long numberOfHospitals) {
-    this.numberOfHospitals = numberOfHospitals;
-  }
+	public void setNumberOfHospitals(Long numberOfHospitals)
+	{
+		this.numberOfHospitals = numberOfHospitals;
+	}
 
-  public Long getNumberOfHospitalEmployees() {
-    return numberOfHospitalEmployees;
-  }
+	public Long getNumberOfHospitalEmployees()
+	{
+		return numberOfHospitalEmployees;
+	}
 
-  public void setNumberOfHospitalEmployees(Long numberOfHospitalEmployees) {
-    this.numberOfHospitalEmployees = numberOfHospitalEmployees;
-  }
+	public void setNumberOfHospitalEmployees(Long numberOfHospitalEmployees)
+	{
+		this.numberOfHospitalEmployees = numberOfHospitalEmployees;
+	}
+
+	public String toString()
+	{
+		String str = "StateHospitalDataKey:" + this.getStateHospitalDataKey()
+				+ ", StateName:" + this.getState().getStateName() + ", Year:"
+				+ this.getYear() + ", NumberOfHospitals:" + this.getNumberOfHospitals()
+				+ ", NumberOfHospitalEmployees:" + this.getNumberOfHospitalEmployees();
+
+		return str;
+	}
+
 }
-
-/*
-
-CREATE TABLE IF NOT EXISTS `restdb`.`Reservation` (
-  `ReservationKey` INT NOT NULL AUTO_INCREMENT,
-  `UserName` VARCHAR(45) NOT NULL,
-  `SitDownRestaurantKey` INT NOT NULL,
-  `Start` TIMESTAMP NOT NULL,
-  `End` TIMESTAMP NULL,
-  `PartySize` INT NOT NULL,
-  INDEX `UserKey3_idx` (`UserName` ASC),
-  INDEX `SitDownRestaurantKey1_idx` (`SitDownRestaurantKey` ASC),
-  PRIMARY KEY (`ReservationKey`),
-  CONSTRAINT `UserKey3`
-    FOREIGN KEY (`UserName`)
-    REFERENCES `restdb`.`User` (`UserName`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `SitDownRestaurantKey1`
-    FOREIGN KEY (`SitDownRestaurantKey`)
-    REFERENCES `restdb`.`SitDownRestaurant` (`SitDownRestaurantKey`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
- */

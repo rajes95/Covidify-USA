@@ -79,17 +79,3 @@ public class CountyHospitalData {
         this.icuBeds = icuBeds;
     }
 }
-
-/*
- * CREATE TABLE IF NOT EXISTS `restdb`.`Review` ( `ReviewKey` INT NOT NULL
- * AUTO_INCREMENT, `UserName` VARCHAR(45) NULL, `RestaurantKey` INT NULL,
- * `CreatedWhen` TIMESTAMP NOT NULL DEFAULT NOW(), `WrittenContent` TEXT NULL,
- * `Rating` DECIMAL(2,1) NOT NULL, PRIMARY KEY (`ReviewKey`), INDEX
- * `UserKey1_idx` (`UserName` ASC), INDEX `RestaurantKey4_idx` (`RestaurantKey`
- * ASC), UNIQUE INDEX `RevUniq` (`UserName` ASC, `RestaurantKey` ASC),
- * CONSTRAINT `UserKey1` FOREIGN KEY (`UserName`) REFERENCES `restdb`.`User`
- * (`UserName`) ON DELETE SET NULL ON UPDATE SET NULL, CONSTRAINT
- * `RestaurantKey4` FOREIGN KEY (`RestaurantKey`) REFERENCES
- * `restdb`.`Restaurant` (`RestaurantKey`) ON DELETE SET NULL ON UPDATE SET
- * NULL) ENGINE = InnoDB;
- */
