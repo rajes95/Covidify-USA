@@ -33,7 +33,7 @@ ENGINE = InnoDB;
  */
 public class MortalityRates {
   protected int mortalityRatesKey;
-  protected int countyFKey;
+  protected County county;
   protected Date year;
   protected Double neonatalRate;
   protected Double hivRate;
@@ -44,11 +44,11 @@ public class MortalityRates {
   protected Double cardiovascularRate;
 
 
-  public MortalityRates(int mortalityRatesKey, int countyFKey, Date year, Double neonatalRate, Double hivRate,
+  public MortalityRates(int mortalityRatesKey, County county, Date year, Double neonatalRate, Double hivRate,
                         Double diabetesRate, Double chronicRespitoraryRate, Double liverDiseaseRate,
                         Double nutritionalDeficienciesRate, Double cardiovascularRate) {
     this.mortalityRatesKey = mortalityRatesKey;
-    this.countyFKey = countyFKey;
+    this.county = county;
     this.year = year;
     this.neonatalRate = neonatalRate;
     this.hivRate = hivRate;
@@ -63,10 +63,10 @@ public class MortalityRates {
     this.mortalityRatesKey = mortalityRatesKey;
   }
 
-  public MortalityRates(int countyFKey, Date year, Double neonatalRate, Double hivRate, Double diabetesRate,
+  public MortalityRates(County county, Date year, Double neonatalRate, Double hivRate, Double diabetesRate,
                         Double chronicRespitoraryRate, Double liverDiseaseRate, Double nutritionalDeficienciesRate,
                         Double cardiovascularRate) {
-    this.countyFKey = countyFKey;
+    this.county = county;
     this.year = year;
     this.neonatalRate = neonatalRate;
     this.hivRate = hivRate;
@@ -85,12 +85,12 @@ public class MortalityRates {
     this.mortalityRatesKey = mortalityRatesKey;
   }
 
-  public int getCountyFKey() {
-    return countyFKey;
+  public County getCounty() {
+    return county;
   }
 
-  public void setCountyFKey(int countyFKey) {
-    this.countyFKey = countyFKey;
+  public void setCounty(County county) {
+    this.county = county;
   }
 
   public Date getYear() {
