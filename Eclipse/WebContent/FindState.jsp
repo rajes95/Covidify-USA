@@ -8,14 +8,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Find a County</title>
+<title>Find a State</title>
 </head>
 <body>
-	<form action="findcounty" method="post">
-		<h1>Search for a County by County and State Name Pair</h1>
+	<form action="findstate" method="post">
+		<h1>Search for a State by State and State Name Pair</h1>
 		<p>
-			<label for="countyname">County Name</label>
-			<input id="countyname" name="countyname" value="${fn:escapeXml(param.countyname)}">
 			<label for="statename">State Name</label>
 			<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
 		</p>
@@ -26,21 +24,19 @@
 		</p>
 	</form>
 	<br/>
-	<div id="countyCreate"><a href="countycreate">Create County</a></div>
+	<div id="stateCreate"><a href="statecreate">Create State</a></div>
 	<br/>
-	<h1>Matching County</h1>
+	<h1>Matching State</h1>
         <table border="1">
             <tr>
-                <th>County Name</th>
-				<th>County FIPS</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
+                <th>State Name</th>
+                <th>State FIPS</th>
+                <th>Postal Code</th>
             </tr>
                 <tr>
-                    <td><c:out value="${county.getCountyName()}" /></td>
-					<td><c:out value="${county.getCountyFIPS()}" /></td>
-					<td><c:out value="${county.getLatitude()}" /></td>
-                    <td><c:out value="${county.getLongitude()}" /></td> 
+                    <td><c:out value="${state.getStateName()}" /></td>
+                    <td><c:out value="${state.getStateFIPS()}" /></td>
+                    <td><c:out value="${state.getPostalCode()}" /></td>
                 </tr>
 
        </table>

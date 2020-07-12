@@ -81,7 +81,7 @@ public class County
 		this.state = state;
 	}
 
-	public String getCountyFIPS()
+	public String c()
 	{
 		return countyFIPS;
 	}

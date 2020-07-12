@@ -48,7 +48,7 @@ public class CountyUpdate extends HttpServlet {
       try {
         County county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
         if (county == null) {
-          messages.put("success", "CountyName and StateName pair does not exist.");
+          messages.put("success", "County and State name pair does not exist.");
         }
         req.setAttribute("county", county);
       } catch (SQLException e) {
@@ -75,7 +75,7 @@ public class CountyUpdate extends HttpServlet {
       try {
         County county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
         if (county == null) {
-          messages.put("success", "CountyName and StateName pair does not exist. No update to perform.");
+          messages.put("success", "County and State name pair does not exist. No update to perform.");
         } else {
           String newCountyFIPS = req.getParameter("countyFIPS");
           String newLongitude = req.getParameter("longitude");
