@@ -40,7 +40,11 @@ public class Inserter
 
 		County santaClara = countyDao.getCountyByFIPS("06085");
 		System.out.println(santaClara);
-//
+		
+		County county;
+		county = countyDao.getCountyByCountyNameAndStateName("Crane County", "Texas");
+		System.out.println("\n Testing: " + county);
+		//
 //		Calendar cal1 = Calendar.getInstance();
 //		cal1.clear();
 //		cal1.set(2020, 7 - 1, 10);
