@@ -18,6 +18,8 @@ import java.util.List;
  */
 public class Inserter
 {
+	
+	//TODO one update,getby etc for each class
 
 	public static void main(String[] args) throws SQLException
 	{
