@@ -19,26 +19,22 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * FindCounty is the primary entry point into the application.
- *
+ * <p>
  * Note the logic for doGet() and doPost() are almost identical. However, there is a difference:
- * doGet() handles the http GET request. This method is called when you put in the /findcountys
- * URL in the browser.
- * doPost() handles the http POST request. This method is called after you click the submit button.
- *
- * To run:
- * 1. Run the SQL script to recreate your database schema: http://goo.gl/86a11H.
- * 2. Insert test data. You can do this by running blog.tools.Inserter (right click,
- *    Run As > JavaApplication.
- *    Notice that this is similar to Runner.java in our JDBC example.
- * 3. Run the Tomcat server at localhost.
- * 4. Point your browser to http://localhost:8080/BlogApplication/findcountys.
+ * doGet() handles the http GET request. This method is called when you put in the /findcountys URL
+ * in the browser. doPost() handles the http POST request. This method is called after you click the
+ * submit button.
+ * <p>
+ * To run: 1. Run the SQL script to recreate your database schema: http://goo.gl/86a11H. 2. Insert
+ * test data. You can do this by running blog.tools.Inserter (right click, Run As > JavaApplication.
+ * Notice that this is similar to Runner.java in our JDBC example. 3. Run the Tomcat server at
+ * localhost. 4. Point your browser to http://localhost:8080/BlogApplication/findcountys.
  */
 
 @WebServlet("/findcounty")
 public class FindCounty extends HttpServlet {
 
   protected CountyDao countyDao;
-  protected StateDao stateDao;
 
   @Override
   public void init() throws ServletException {
@@ -54,20 +50,11 @@ public class FindCounty extends HttpServlet {
     County county = null;
 
     // Retrieve and validate name.
-    // firstname is retrieved from the URL query string.
     String countyname = req.getParameter("countyname");
     String statename = req.getParameter("statename");
-    if (countyname == null || countyname.trim().isEmpty()) {
-      messages.put("success", "Please enter a valid County name."); 
-   
-    }
-      
-    if (statename == null || statename.trim().isEmpty()) {
-      messages.put("success", "Please enter a valid State name.");
-    } 
-
-    if (countyname != null && !countyname.trim().isEmpty() && statename != null && !statename.trim().isEmpty()) {
-    // Retrieve BlogCountys, and store as a message.
+    if (countyname == null || countyname.trim().isEmpty() || statename == null || statename.trim().isEmpty()) {
+      messages.put("success", "Please enter a valid County and State name pair.");
+    } else {
       try {
         county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
       } catch (SQLException e) {
@@ -99,12 +86,9 @@ public class FindCounty extends HttpServlet {
     // is populated by the URL query string (in FindCounty.jsp).
     String countyname = req.getParameter("countyname");
     String statename = req.getParameter("statename");
-    if (countyname == null || countyname.trim().isEmpty()) {
-      messages.put("success", "Please enter a valid name.");
-    } else if (statename == null || statename.trim().isEmpty()) {
-        messages.put("success", "Please enter a valid State name.");
+    if (countyname == null || countyname.trim().isEmpty() || statename == null || statename.trim().isEmpty()) {
+      messages.put("success", "Please enter a valid County and State name pair.");
     } else {
-      // Retrieve BlogCountys, and store as a message.
       try {
         county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
       } catch (SQLException e) {

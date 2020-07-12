@@ -8,11 +8,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Find a County</title>
+<title>Update a County</title>
 </head>
 <body>
-	<form action="findcounty" method="post">
-		<h1>Search for a County by County and State Name Pair</h1>
+	<h1>Update County</h1>
+	<form action="countyupdate" method="post">
 		<p>
 			<label for="countyname">County Name</label>
 			<input id="countyname" name="countyname" value="${fn:escapeXml(param.countyname)}">
@@ -20,27 +20,24 @@
 			<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
 		</p>
 		<p>
+			<label for="countyFIPS">New County FIPS</label>
+			<input id="countyFIPS" name="countyFIPS" value="">
+		</p>
+		<p>
+			<label for="longitude">New Longitude</label>
+			<input id="longitude" name="longitude" value="">
+		</p>
+		<p>
+			<label for="latitude">New Latitude</label>
+			<input id="latitude" name="latitude" value="">
+		</p>
+		<p>
 			<input type="submit">
-			<br/><br/><br/>
-			<span id="successMessage"><b>${messages.success}</b></span>
 		</p>
 	</form>
-	<br/>
-	<div id="countyCreate"><a href="countycreate">Create County</a></div>
-	<br/>
-	<h1>Matching County</h1>
-        <table border="1">
-            <tr>
-                <th>County Name</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
-            </tr>
-                <tr>
-                    <td><c:out value="${county.getCountyName()}" /></td>
-                    <td><c:out value="${county.getLatitude()}" /></td>
-                    <td><c:out value="${county.getLongitude()}" /></td> 
-                </tr>
-
-       </table>
+	<br/><br/>
+	<p>
+		<span id="successMessage"><b>${messages.success}</b></span>
+	</p>
 </body>
 </html>
