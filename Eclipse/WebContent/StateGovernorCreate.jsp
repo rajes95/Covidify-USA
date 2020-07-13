@@ -8,28 +8,30 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Update a COVID-19 Data Entry</title>
+<title>Create a State Governor Entry</title>
 </head>
 <body>
-	<h1>Update COVID-19 Data Entry</h1>
-	<form action="covidbydateupdate" method="post">
+	<h1>Create State Governor Entry</h1>
+	<form action="stategovernorcreate" method="post">
 		<p>
-			<label for="countyname">County Name</label>
-			<input id="countyname" name="countyname" value="${fn:escapeXml(param.countyname)}">
-			<label for="statename">State Name</label>
+			<label for="statename">State Name (Pre-existing)</label>
 			<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
 		</p>
 		<p>
-			<label for="date">Date (yyyy-mm-dd)</label>
-			<input id="date" name="date" value="${fn:escapeXml(param.date)}">
+			<label for="year">Year</label>
+			<input id="year" name="year" value="">
 		</p>
 		<p>
-			<label for="coviddeaths">New Number of COVID-19 Deaths</label>
-			<input id="coviddeaths" name="coviddeaths" value="">
+			<label for="governor">Governor</label>
+			<input id="governor" name="governor" value="">
 		</p>
 		<p>
-			<label for="covidcases">New Number of COVID-19 Cases</label>
-			<input id="covidcases" name="covidcases" value="">
+			<label for="governorParty">Governor Party</label>
+			<select id="governorParty" name="governorParty" >
+				<option>Democratic</option>
+				<option>Republican</option>
+				<option>Other</option>
+			</select>
 		</p>
 		<p>
 			<input type="submit">

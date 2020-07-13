@@ -107,7 +107,7 @@ public class StateGovernor
 
 	public void setGovernorParty(GovernorPartyType governorParty)
 	{
-		this.governorParty = getGovernorParty();
+		this.governorParty = governorParty;
 	}
 
 	public String toString()

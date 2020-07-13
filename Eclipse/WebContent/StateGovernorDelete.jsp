@@ -8,22 +8,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Delete a COVID-19 Data Entry</title>
+<title>Delete a List of State Governors</title>
 </head>
 <body>
 	<h1>${messages.title}</h1>
-	<form action="covidbydatedelete" method="post">
+	<form action="stategovernordelete" method="post">
 		<p>
 		<p>
 			<div <c:if test="${messages.disableSubmit}">style="display:none"</c:if>>
-				<label for="countyname">County Name</label>
-				<input id="countyname" name="countyname" value="${fn:escapeXml(param.countyname)}">
 				<label for="statename">State Name</label>
 				<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
 		</p>	
 		<p>
-				<label for="date">Date (yyyy-mm-dd)</label>
-				<input id="date" name="date" value="${fn:escapeXml(param.date)}">
+			<label for="year">Year</label>
+			<input id="year" name="year" value="${fn:escapeXml(param.year)}">
 		</p>
 			</div>
 		</p>

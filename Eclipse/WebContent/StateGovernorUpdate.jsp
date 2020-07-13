@@ -8,14 +8,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Update a COVID-19 Data Entry</title>
+<title>Update a List of State Governors</title>
 </head>
 <body>
-	<h1>Update COVID-19 Data Entry</h1>
-	<form action="covidbydateupdate" method="post">
+	<h1>Update List of State Governors</h1>
+	<form action="stategovernorupdate" method="post">
 		<p>
-			<label for="countyname">County Name</label>
-			<input id="countyname" name="countyname" value="${fn:escapeXml(param.countyname)}">
+			<label for="stategovernorname">County Name</label>
+			<input id="stategovernorname" name="stategovernorname" value="${fn:escapeXml(param.stategovernorname)}">
 			<label for="statename">State Name</label>
 			<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
 		</p>
