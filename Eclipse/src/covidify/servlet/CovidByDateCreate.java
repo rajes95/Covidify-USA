@@ -61,16 +61,18 @@ public class CovidByDateCreate extends HttpServlet {
       String covidCases = req.getParameter("covidcases");
       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
       String stringDate = req.getParameter("date");
-      Date date = new Date();
+      Date date;
+      java.sql.Date sqlDate;
       try {
         date = dateFormat.parse(stringDate);
+        sqlDate = new java.sql.Date(date.getTime());
       } catch (ParseException e) {
         e.printStackTrace();
         throw new IOException(e);
       }
       try {
         County county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
-        CovidByDate covidByDate = new CovidByDate(county, date, Integer.valueOf(covidDeaths), Integer.valueOf(covidCases));
+        CovidByDate covidByDate = new CovidByDate(county, sqlDate, Integer.valueOf(covidDeaths), Integer.valueOf(covidCases));
         covidByDate = covidByDateDao.create(covidByDate);
         messages.put("success", "Successfully created COVID-19 data entry for " + date.toString() + "in County: " + countyname + ", " + statename);
       } catch (SQLException e) {

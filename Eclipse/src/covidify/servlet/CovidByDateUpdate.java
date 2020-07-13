@@ -49,19 +49,21 @@ public class CovidByDateUpdate extends HttpServlet {
     if (countyname == null || countyname.trim().isEmpty() || statename == null || statename.trim().isEmpty() || stringDate == null) {
       messages.put("success", "Please enter a valid County and State name pair and valid Date.");
     } else {
-        	Date date;
-        	    try {
-        	      date = dateFormat.parse(stringDate);
-        	    } catch (ParseException e) {
-        	      e.printStackTrace();
-        	      throw new IOException(e);
-        	    }
+    	Date date;
+        java.sql.Date sqlDate;
+        try {
+          date = dateFormat.parse(stringDate);
+          sqlDate = new java.sql.Date(date.getTime());
+        } catch (ParseException e) {
+          e.printStackTrace();
+          throw new IOException(e);
+        }
       try {
         county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
         if (county == null) {
           messages.put("success", "County and State name pair does not exist. Could not locate CovidByDate entry.");
         } else {
-          covidbydate = covidByDateDao.getCovidByDateByCountyAndDate(county, date);
+          covidbydate = covidByDateDao.getCovidByDateByCountyAndDate(county, sqlDate);
           if (covidbydate == null) {
             messages.put("success", "CovidByDate entry does not exist.");
           }

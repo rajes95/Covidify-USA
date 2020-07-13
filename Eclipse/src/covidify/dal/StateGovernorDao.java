@@ -240,6 +240,66 @@ public class StateGovernorDao
 		return govs;
 	}
 
+	
+
+	public StateGovernor getStateGovernorsByStateKeyYearGovernorName(int stateKey,
+			Short year, String governorName) throws SQLException
+	{
+		StateGovernor gov;
+		String selectGovs = "SELECT * " + "FROM StateGovernor "
+				+ "WHERE StateFKey=? AND`Year`=? AND `Governor`\"?\";";
+		;
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		try
+		{
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectGovs);
+			selectStmt.setInt(1, stateKey);
+			selectStmt.setShort(2, year);
+			selectStmt.setString(3, governorName);
+			results = selectStmt.executeQuery();
+			StateDao stateDao = StateDao.getInstance();
+
+			if (results.next())
+			{
+				gov = new StateGovernor(results.getInt("StateGovernorKey"),
+						stateDao.getStateByKey(results.getInt("StateFKey")),
+						results.getShort("Year"), results.getString("Governor"),
+						StateGovernor.GovernorPartyType
+								.valueOf(results.getString("GovernorParty")));
+				return gov;
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				connection.close();
+			}
+			if (selectStmt != null)
+			{
+				selectStmt.close();
+			}
+			if (results != null)
+			{
+				results.close();
+			}
+		}
+		return null;
+	}
+
+	
+	
+	
+	
+	
 	public List<StateGovernor> getStateGovernorsByGovernorName(String govName)
 			throws SQLException
 	{

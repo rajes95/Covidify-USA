@@ -8,28 +8,36 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Update a List of State Governors</title>
+<title>Update a State Governor</title>
 </head>
 <body>
-	<h1>Update List of State Governors</h1>
+	<h1>Update State Governor</h1>
 	<form action="stategovernorupdate" method="post">
 		<p>
-			<label for="stategovernorname">County Name</label>
-			<input id="stategovernorname" name="stategovernorname" value="${fn:escapeXml(param.stategovernorname)}">
+			<label for="governorname">Governor Name</label>
+			<input id="governorname" name="stategovernorname" value="${fn:escapeXml(param.stategovernorname)}">
 			<label for="statename">State Name</label>
 			<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
 		</p>
 		<p>
-			<label for="date">Date (yyyy-mm-dd)</label>
-			<input id="date" name="date" value="${fn:escapeXml(param.date)}">
+			<label for="year">Year</label>
+			<input id="year" name="year" value="${fn:escapeXml(param.year)}">
 		</p>
 		<p>
-			<label for="coviddeaths">New Number of COVID-19 Deaths</label>
-			<input id="coviddeaths" name="coviddeaths" value="">
+			<label for="newname">New Governor Name</label>
+			<input id="newname" name="newname" value="">
 		</p>
 		<p>
-			<label for="covidcases">New Number of COVID-19 Cases</label>
-			<input id="covidcases" name="covidcases" value="">
+			<label for="newyear">New Year</label>
+			<input id="newyear" name="newyear" value="">
+		</p>
+		<p>
+			<label for="newparty">New Governor Party</label>
+			<select id="newparty" name="newparty" >
+				<option>Democratic</option>
+				<option>Republican</option>
+				<option>Other</option>
+			</select>
 		</p>
 		<p>
 			<input type="submit">

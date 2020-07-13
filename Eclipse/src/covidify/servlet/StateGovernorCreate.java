@@ -68,10 +68,10 @@ public class StateGovernorCreate extends HttpServlet {
           StateGovernor stateGovernor = new StateGovernor(state, Short.valueOf(year), governor, party);
           stateGovernor = stateGovernorDao.create(stateGovernor);
           if (stateGovernor == null) {
-            messages.put("success", "Failed to create State Governor entry for " + year + "in " + statename);
+            messages.put("success", "Failed to create State Governor entry for " + year + " in " + statename);
           }
         }
-        messages.put("success", "Successfully created State Governor entry for " + year + "in " + statename);
+        messages.put("success", "Successfully created State Governor entry for " + year + " in " + statename);
       }  catch (SQLException e) {
         e.printStackTrace();
         throw new IOException(e);

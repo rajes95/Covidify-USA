@@ -106,8 +106,10 @@ public class FindCovidByDate extends HttpServlet {
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     String stringDate = req.getParameter("date");
     Date date;
+    java.sql.Date sqlDate;
     try {
       date = dateFormat.parse(stringDate);
+      sqlDate = new java.sql.Date(date.getTime());
     } catch (ParseException e) {
       e.printStackTrace();
       throw new IOException(e);
@@ -117,7 +119,7 @@ public class FindCovidByDate extends HttpServlet {
     } else {
       try {
         county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
-        covidbydate = covidByDateDao.getCovidByDateByCountyAndDate(county, date);
+        covidbydate = covidByDateDao.getCovidByDateByCountyAndDate(county, sqlDate);
       } catch (SQLException e) {
         e.printStackTrace();
         throw new IOException(e);

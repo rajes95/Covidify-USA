@@ -57,8 +57,10 @@ public class CovidByDateDelete extends HttpServlet {
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     String stringDate = req.getParameter("date");
     Date date;
+    java.sql.Date sqlDate;
     try {
       date = dateFormat.parse(stringDate);
+      sqlDate = new java.sql.Date(date.getTime());
     } catch (ParseException e) {
       e.printStackTrace();
       throw new IOException(e);
@@ -72,7 +74,7 @@ public class CovidByDateDelete extends HttpServlet {
       try {
         //TODO not sure if this way of deletion is allowed, but i think it works and is fine?
         County county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
-        CovidByDate covidByDate = covidByDateDao.getCovidByDateByCountyAndDate(county, date);
+        CovidByDate covidByDate = covidByDateDao.getCovidByDateByCountyAndDate(county, sqlDate);
         covidByDate = covidByDateDao.delete(covidByDate);
         // Update the message.
         if (covidByDate == null) {

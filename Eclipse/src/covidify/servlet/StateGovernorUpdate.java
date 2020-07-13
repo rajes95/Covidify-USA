@@ -32,7 +32,7 @@ public class StateGovernorUpdate extends HttpServlet {
     stateGovernorDao = StateGovernorDao.getInstance();
     stateDao = StateDao.getInstance();
   }
-/*
+
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
           throws ServletException, IOException {
@@ -44,18 +44,20 @@ public class StateGovernorUpdate extends HttpServlet {
     // Retrieve state and validate.
 
     String statename = req.getParameter("statename");
-
-    if (statename == null || statename.trim().isEmpty() || statename == null || statename.trim().isEmpty() || stringDate == null) {
-      messages.put("success", "Please enter a valid State and State name pair and valid Date.");
+    String year = req.getParameter("year");
+    String governorname = req.getParameter("governorname");
+    
+    if (statename == null || statename.trim().isEmpty() || year == null || year.trim().isEmpty() || governorname == null || governorname.trim().isEmpty() ) {
+      messages.put("success", "Please enter a valid State name, Year, and Governor name.");
     } else {
       try {
-        state = stateDao.getStateByStateNameAndStateName(statename, statename);
+        state = stateDao.getStateByName(statename);
         if (state == null) {
-          messages.put("success", "State and State name pair does not exist. Could not locate StateGovernor entry.");
+          messages.put("success", "State does not exist. Could not locate State Governor entry.");
         } else {
-          stategovernor = stateGovernorDao.get(state, date);
+          stategovernor = stateGovernorDao.getStateGovernorsByStateKeyYearGovernorName(state.getStateKey(), Short.valueOf(year), governorname);
           if (stategovernor == null) {
-            messages.put("success", "StateGovernor entry does not exist.");
+            messages.put("success", "State Governor entry does not exist.");
           }
         }
         req.setAttribute("stategovernor", stategovernor);
@@ -77,41 +79,45 @@ public class StateGovernorUpdate extends HttpServlet {
     StateGovernor stategovernor = null;
     // Retrieve state and validate.
     String statename = req.getParameter("statename");
-    String statename = req.getParameter("statename");
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    String stringDate = req.getParameter("date");
-    Date date;
-    try {
-      date = dateFormat.parse(stringDate);
-    } catch (ParseException e) {
-      e.printStackTrace();
-      throw new IOException(e);
-    }
-    if (statename == null || statename.trim().isEmpty() || statename == null || statename.trim().isEmpty() || date == null) {
-      messages.put("success", "Please enter a valid State and State name pair and valid Date.");
+    String year = req.getParameter("year");
+    String governorname = req.getParameter("governorname");
+    
+    if (statename == null || statename.trim().isEmpty() || year == null || year.trim().isEmpty() || governorname == null || governorname.trim().isEmpty() ) {
+      messages.put("success", "Please enter a valid State name, Year, and Governor name.");
     } else {
       try {
-        state = stateDao.getStateByStateNameAndStateName(statename, statename);
+        state = stateDao.getStateByName(statename);
         if (state == null) {
-          messages.put("success", "State and State name pair does not exist. Could not locate StateGovernor entry.");
+          messages.put("success", "State does not exist. Could not locate State Governor entry.");
         } else {
-          stategovernor = stateGovernorDao.getStateGovernorByStateAndDate(state, date);
+          stategovernor = stateGovernorDao.getStateGovernorsByStateKeyYearGovernorName(state.getStateKey(), Short.valueOf(year), governorname);
           if (stategovernor == null) {
-            messages.put("success", "StateGovernor entry does not exist.");
+            messages.put("success", "State Governor entry does not exist.");
           }
         }
         if (state != null &&  stategovernor != null) {
-          String newCovidDeaths = req.getParameter("coviddeaths");
-          String newCovidCases = req.getParameter("covidcases");
-
-          if (newCovidDeaths != null && !newCovidDeaths.trim().isEmpty()) {
-            stategovernor = stateGovernorDao.updateCovidDeaths(stategovernor, Integer.valueOf(newCovidDeaths));
-            messages.put("success", "Successfully updated COVID-19 data entry for " + date.toString() + "in State: " + statename + ", " + statename);
+        	String newName = req.getParameter("newname");
+        	String newYear = req.getParameter("newyear");
+        	String newParty = req.getParameter("newparty");
+          if (newName != null && !newName.trim().isEmpty()) {
+            stategovernor = stateGovernorDao.updateGovernorName(stategovernor, newName);
+            messages.put("success", "Successfully updated State Governor data entry, "+ governorname + ", for " + year + " in State: " + statename);
           }
-          if (newCovidCases != null && !newCovidCases.trim().isEmpty()) {
-            stategovernor = stateGovernorDao.updateCovidDeaths(stategovernor, Integer.valueOf(newCovidCases));
-            messages.put("success", "Successfully updated COVID-19 data entry for " + date.toString() + "in State: " + statename + ", " + statename);
+          if (newYear != null && !newYear.trim().isEmpty()) {
+            stategovernor = stateGovernorDao.updateGovernorYear(stategovernor, Short.valueOf(newYear));
+            messages.put("success", "Successfully updated State Governor data entry, "+ governorname + ", for " + year + " in State: " + statename);
           }
+          if (newParty != null && !newParty.trim().isEmpty()) {
+        	  StateGovernor.GovernorPartyType newPartyEnum = null;
+              try{
+            	  newPartyEnum = StateGovernor.GovernorPartyType.valueOf(newParty);
+              } catch (IllegalArgumentException e){
+                e.printStackTrace();
+                throw new IOException(e);
+              }
+              stategovernor = stateGovernorDao.updateGovernorParty(stategovernor, newPartyEnum);
+              messages.put("success", "Successfully updated State Governor data entry, "+ governorname + ", for " + year + " in State: " + statename);
+            }
         }
         req.setAttribute("stategovernor", stategovernor);
       } catch (SQLException e) {
@@ -122,7 +128,6 @@ public class StateGovernorUpdate extends HttpServlet {
 
     req.getRequestDispatcher("/StateGovernorUpdate.jsp").forward(req, resp);
   }
-*/
 }
 
 
