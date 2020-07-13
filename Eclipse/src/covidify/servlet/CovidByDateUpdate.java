@@ -121,7 +121,7 @@ public class CovidByDateUpdate extends HttpServlet {
             messages.put("success", "Successfully updated COVID-19 data entry for " + date.toString() + " in County: " + countyname + ", " + statename);
           }
           if (newCovidCases != null && !newCovidCases.trim().isEmpty()) {
-            covidbydate = covidByDateDao.updateCovidDeaths(covidbydate, Integer.valueOf(newCovidCases));
+            covidbydate = covidByDateDao.updateCovidCases(covidbydate, Integer.valueOf(newCovidCases));
             messages.put("success", "Successfully updated COVID-19 data entry for " + date.toString() + " in County: " + countyname + ", " + statename);
           }
         }
