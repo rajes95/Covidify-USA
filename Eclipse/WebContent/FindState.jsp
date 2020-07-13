@@ -24,7 +24,10 @@
 		</p>
 	</form>
 	<br/>
-	<div id="stateCreate"><a href="statecreate">Create State</a></div>
+	<br/><br/>
+	<div id="statecreate"><a href="statecreate">Create State</a></div>
+	<div id="statedelete"><a href="statedelete">Delete State</a></div>
+	<div id="stateupdate"><a href="stateupdate">Update State</a></div>
 	<br/>
 	<h1>Matching State</h1>
         <table border="1">
@@ -40,5 +43,11 @@
                 </tr>
 
        </table>
+      
+	<br/><br/>
+       <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
+       <div id="findcounty"><a href="findcounty">Find County</a></div>
+       <div id="findstate"><a href="findstate">Find State</a></div>
+       <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
 </body>
 </html>

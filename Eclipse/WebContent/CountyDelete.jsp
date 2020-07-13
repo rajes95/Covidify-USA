@@ -28,6 +28,14 @@
 		</p>
 	</form>
 	<br/><br/>
+	<div id="countycreate"><a href="countycreate">Create County</a></div>
+	<div id="countydelete"><a href="countydelete">Delete County</a></div>
+	<div id="countyupdate"><a href="countyupdate">Update County</a></div>
+	<br/><br/>
+       <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
+       <div id="findcounty"><a href="findcounty">Find County</a></div>
+       <div id="findstate"><a href="findstate">Find State</a></div>
+       <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
 	
 </body>
 </html>

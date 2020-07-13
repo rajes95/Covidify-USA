@@ -28,7 +28,10 @@
 		</p>
 	</form>
 	<br/>
-	<div id="stategovernorcreate"><a href="stategovernorcreate">Create a State Governor Entry</a></div>
+	  <br/><br/>
+	<div id="stategovernorcreate"><a href="stategovernorcreate">Create State Governor Entry</a></div>
+	<div id="stategovernordelete"><a href="stategovernordelete">Delete State Governor List</a></div>
+	<div id="stategovernorupdate"><a href="stategovernorupdate">Update State Governor Entry</a></div>
 	<br/>
 	<h1>Matching List of State Governors</h1>
         <table border="1">
@@ -47,5 +50,10 @@
 			</tr>
 					</c:forEach>
        </table>
+	<br/><br/>
+       <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
+       <div id="findcounty"><a href="findcounty">Find County</a></div>
+       <div id="findstate"><a href="findstate">Find State</a></div>
+       <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
 </body>
 </html>
