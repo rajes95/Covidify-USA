@@ -73,10 +73,10 @@ public class StateGovernorDelete extends HttpServlet {
         }
         // Update the message.
         if (counter == listSize) {
-          messages.put("title", "Successfully deleted all State Governor entries for " + year + "in " + statename);
+          messages.put("title", "Successfully deleted all State Governor entries for " + year + " in " + statename);
           messages.put("disableSubmit", "true");
         } else {
-          messages.put("title", "Failed to delete all State Governor entries for " + year + "in " + statename);
+          messages.put("title", "Failed to delete all State Governor entries for " + year + " in " + statename);
           messages.put("disableSubmit", "false");
         }
       } catch (SQLException e) {

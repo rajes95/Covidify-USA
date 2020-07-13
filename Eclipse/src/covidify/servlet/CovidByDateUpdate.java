@@ -61,7 +61,7 @@ public class CovidByDateUpdate extends HttpServlet {
       try {
         county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
         if (county == null) {
-          messages.put("success", "County and State name pair does not exist. Could not locate CovidByDate entry.");
+          messages.put("success", "County and State name pair does not exist. Could not locate COVID-19 Data entry.");
         } else {
           covidbydate = covidByDateDao.getCovidByDateByCountyAndDate(county, sqlDate);
           if (covidbydate == null) {
@@ -90,22 +90,24 @@ public class CovidByDateUpdate extends HttpServlet {
     String statename = req.getParameter("statename");
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     String stringDate = req.getParameter("date");
-    Date date;
-    try {
-      date = dateFormat.parse(stringDate);
-    } catch (ParseException e) {
-      e.printStackTrace();
-      throw new IOException(e);
-    }
-    if (countyname == null || countyname.trim().isEmpty() || statename == null || statename.trim().isEmpty() || date == null) {
+    if (countyname == null || countyname.trim().isEmpty() || statename == null || statename.trim().isEmpty() || stringDate == null) {
       messages.put("success", "Please enter a valid County and State name pair and valid Date.");
     } else {
+    	Date date;
+        java.sql.Date sqlDate;
+        try {
+          date = dateFormat.parse(stringDate);
+          sqlDate = new java.sql.Date(date.getTime());
+        } catch (ParseException e) {
+          e.printStackTrace();
+          throw new IOException(e);
+        }
       try {
         county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
         if (county == null) {
-          messages.put("success", "County and State name pair does not exist. Could not locate CovidByDate entry.");
+          messages.put("success", "County and State name pair does not exist. Could not locate COVID-19 Data entry.");
         } else {
-          covidbydate = covidByDateDao.getCovidByDateByCountyAndDate(county, date);
+          covidbydate = covidByDateDao.getCovidByDateByCountyAndDate(county, sqlDate);
           if (covidbydate == null) {
             messages.put("success", "CovidByDate entry does not exist.");
           }
@@ -116,11 +118,11 @@ public class CovidByDateUpdate extends HttpServlet {
 
           if (newCovidDeaths != null && !newCovidDeaths.trim().isEmpty()) {
             covidbydate = covidByDateDao.updateCovidDeaths(covidbydate, Integer.valueOf(newCovidDeaths));
-            messages.put("success", "Successfully updated COVID-19 data entry for " + date.toString() + "in County: " + countyname + ", " + statename);
+            messages.put("success", "Successfully updated COVID-19 data entry for " + date.toString() + " in County: " + countyname + ", " + statename);
           }
           if (newCovidCases != null && !newCovidCases.trim().isEmpty()) {
             covidbydate = covidByDateDao.updateCovidDeaths(covidbydate, Integer.valueOf(newCovidCases));
-            messages.put("success", "Successfully updated COVID-19 data entry for " + date.toString() + "in County: " + countyname + ", " + statename);
+            messages.put("success", "Successfully updated COVID-19 data entry for " + date.toString() + " in County: " + countyname + ", " + statename);
           }
         }
         req.setAttribute("covidbydate", covidbydate);

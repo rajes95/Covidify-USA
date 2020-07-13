@@ -74,7 +74,7 @@ public class CovidByDateCreate extends HttpServlet {
         County county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
         CovidByDate covidByDate = new CovidByDate(county, sqlDate, Integer.valueOf(covidDeaths), Integer.valueOf(covidCases));
         covidByDate = covidByDateDao.create(covidByDate);
-        messages.put("success", "Successfully created COVID-19 data entry for " + date.toString() + "in County: " + countyname + ", " + statename);
+        messages.put("success", "Successfully created COVID-19 data entry for " + date.toString() + " in County: " + countyname + ", " + statename);
       } catch (SQLException e) {
         e.printStackTrace();
         throw new IOException(e);

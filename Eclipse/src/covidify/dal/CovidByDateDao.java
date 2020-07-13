@@ -284,9 +284,7 @@ public class CovidByDateDao
 
 	public CovidByDate getCovidByDateByCountyAndDate(County county, Date date) throws SQLException
 	{
-		String selectCov = "SELECT * FROM (SELECT * FROM CovidByDate WHERE CountyFKey=?) AS CovidCounty " +
-						"JOIN (SELECT * FROM CovidByDate WHERE Date=?) AS CovidDate " +
-						"ON `CovidCounty`.`CovidByDateKey` = `CovidDate`.`CovidByDateKey`;";
+		String selectCov = "SELECT * FROM CovidByDate WHERE CountyFKey=? AND Date=?;";
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
 		ResultSet results = null;

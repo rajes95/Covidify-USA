@@ -78,10 +78,10 @@ public class CovidByDateDelete extends HttpServlet {
         covidByDate = covidByDateDao.delete(covidByDate);
         // Update the message.
         if (covidByDate == null) {
-          messages.put("title", "Successfully deleted COVID-19 data entry for " + date.toString() + "in County: " + countyname + ", " + statename);
+          messages.put("title", "Successfully deleted COVID-19 data entry for " + date.toString() + " in County: " + countyname + ", " + statename);
           messages.put("disableSubmit", "true");
         } else {
-          messages.put("title", "Failed to delete COVID-19 data entry for " + date.toString() + "in County: " + countyname + ", " + statename);
+          messages.put("title", "Failed to delete COVID-19 data entry for " + date.toString() + " in County: " + countyname + ", " + statename);
           messages.put("disableSubmit", "false");
         }
       } catch (SQLException e) {
