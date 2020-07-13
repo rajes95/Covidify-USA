@@ -12,7 +12,7 @@
 </head>
 <body>
 	<form action="findstate" method="post">
-		<h1>Search for a State by State and State Name Pair</h1>
+		<h1>Search for a State</h1>
 		<p>
 			<label for="statename">State Name</label>
 			<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
