@@ -281,6 +281,58 @@ public class CovidByDateDao
 		return covs;
 	}
 
+
+	public CovidByDate getCovidByDateByCountyAndDate(County county, Date date) throws SQLException
+	{
+		String selectCov = "SELECT * FROM (SELECT * FROM CovidByDate WHERE CountyFKey=?) AS CovidCounty " +
+						"JOIN (SELECT * FROM CovidByDate WHERE Date=?) AS CovidDate " +
+						"ON `CovidCounty`.`CovidByDateKey` = `CovidDate`.`CovidByDateKey`;";
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		try
+		{
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectCov);
+			selectStmt.setInt(1, county.getCountyKey());
+			selectStmt.setDate(2, (java.sql.Date) date);
+			results = selectStmt.executeQuery();
+			CountyDao countyDao = CountyDao.getInstance();
+
+			if (results.next())
+			{
+				CovidByDate cov = new CovidByDate(results.getInt("CovidByDateKey"),
+								countyDao.getCountyByCountyKey(results.getInt("CountyFKey")),
+								results.getDate("Date"), results.getInt("CovidDeaths"),
+								results.getInt("CovidCases"));
+
+				return cov;
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				connection.close();
+			}
+			if (selectStmt != null)
+			{
+				selectStmt.close();
+			}
+			if (results != null)
+			{
+				results.close();
+			}
+		}
+		return null;
+	}
+
+
 	public CovidByDate updateDate(CovidByDate cov, Date date) throws SQLException
 	{
 		String updateCov = "UPDATE CovidByDate SET `Date`=? WHERE CovidByDateKey=?;";
