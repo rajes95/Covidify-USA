@@ -1,4 +1,5 @@
 USE `CovidifyUSA`;
+DROP TABLE IF EXISTS `CovidifyUSA`.`NasdaqStage`;
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`NasdaqStage` (
   `Date` DATE,
