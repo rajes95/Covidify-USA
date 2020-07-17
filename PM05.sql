@@ -21,8 +21,6 @@ FROM `CovidByDate` AS `Covid1` LEFT JOIN `CovidByDate` AS `Covid2`
 GROUP BY `Covid1`.`Date`
 ORDER BY `Covid1`.`Date`) newCases ON newCases.CovidDate=NasdaqStage.`Date`;
 
-# Should we include a line exporting this ^^ select ^^ statement to a CSV?
-
 #2
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`UnemploymentStage` (
   `State` VARCHAR(45),
@@ -37,8 +35,8 @@ LINES TERMINATED BY '\n' IGNORE 1 ROWS
 (@state,@marchRate,@aprilRate,@monthlyChange)
 SET `State`=@state,`March2020`=@marchRate,`April2020`=@aprilRate,`OverTheMonthChange`=@monthlyChange;
 
-# March vs April per state Unemployment and newCasesPer10000
-SELECT PostalCode, `month`, 
+# In April, Each State's New Cases Per 10000 VS Unemployment Rate
+SELECT PostalCode, `month`,
 	(CASE WHEN month = 3 THEN March2020 ELSE April2020 END) AS UnemploymentRate,
     ((SUM(NumOfNewCases)/StatePop) * 10000) AS newCasesPer10000 FROM 
     (SELECT MONTH(CovidDate) AS `month`, StateKey, PostalCode, StatePop, March2020, April2020, OverTheMonthChange, NumOfNewCases FROM 
@@ -56,12 +54,12 @@ SELECT PostalCode, `month`,
     JOIN `County` ON `Covid1`.`CountyFKey` = `County`.`CountyKey`
     GROUP BY `County`.StateFKey , `Covid1`.`Date`
     ORDER BY `County`.StateFKey , `Covid1`.`Date`) newStateCases ON PopulationUnemployment.StateFKey=newStateCases.StateKey
-WHERE MONTH(CovidDate) = 3 OR MONTH(CovidDate)=4
+WHERE MONTH(CovidDate)=4
 ORDER BY `month`, StateKey) marchAprilCovidUnemployment
 GROUP BY `month`, StateKey
 ORDER BY PostalCode, `month`;
 
-# increase in unemployment vs increase in CovidCasesPer10000 per state.
+#  Increase in CovidCasesPer10000 VS Increase in Unemployment per State between March and April.
 SELECT PostalCode, OverTheMonthChange AS IncreaseInUnemploymentMarchToApril, (SUM(newAprilCasesPer10000)-SUM(newMarchCasesPer10000)) AS increaseInCasesPer10000  FROM
 	(SELECT PostalCode, OverTheMonthChange,	(CASE WHEN month = 3 THEN newCasesPer10000 ELSE 0 END) AS newMarchCasesPer10000,
     (CASE WHEN month = 4 THEN newCasesPer10000 ELSE 0 END) AS newAprilCasesPer10000 FROM (SELECT PostalCode, `month`,
