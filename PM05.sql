@@ -1,5 +1,6 @@
 USE `CovidifyUSA`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`NasdaqStage`;
+DROP TABLE IF EXISTS `CovidifyUSA`.UnemploymentStage;
 
 #1
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`NasdaqStage` (
