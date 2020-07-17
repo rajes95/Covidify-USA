@@ -19,7 +19,11 @@ FROM `CovidByDate` AS `Covid1` LEFT JOIN `CovidByDate` AS `Covid2`
 		ON DATEDIFF(`Covid1`.`Date`, `Covid2`.`Date`) = 1 AND `Covid1`.`CountyFKey` = `Covid2`.`CountyFKey`
         JOIN `County` ON `Covid1`.`CountyFKey` = `County`.`CountyKey`
 GROUP BY `Covid1`.`Date`
-ORDER BY `Covid1`.`Date`) newCases ON newCases.CovidDate=NasdaqStage.`Date`;
+ORDER BY `Covid1`.`Date`) newCases ON newCases.CovidDate=NasdaqStage.`Date`
+INTO OUTFILE '/var/lib/mysql-files/Q1NasdaqVSCovidData.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'; 
 
 #2
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`UnemploymentStage` (
@@ -57,7 +61,11 @@ SELECT PostalCode, `month`,
 WHERE MONTH(CovidDate)=4
 ORDER BY `month`, StateKey) marchAprilCovidUnemployment
 GROUP BY `month`, StateKey
-ORDER BY PostalCode, `month`;
+ORDER BY PostalCode, `month`
+INTO OUTFILE '/var/lib/mysql-files/Q2-1_AprilNewCovidCasesVSUnemploymentData.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
 
 #  Increase in CovidCasesPer10000 VS Increase in Unemployment per State between March and April.
 SELECT PostalCode, OverTheMonthChange AS IncreaseInUnemploymentMarchToApril, (SUM(newAprilCasesPer10000)-SUM(newMarchCasesPer10000)) AS increaseInCasesPer10000  FROM
@@ -85,7 +93,11 @@ ORDER BY `month`, StateKey) marchAprilCovidUnemployment
 GROUP BY `month`, StateKey
 ORDER BY PostalCode, `month`) tbl0)tbl1
 GROUP BY PostalCode
-ORDER BY PostalCode;
+ORDER BY PostalCode
+INTO OUTFILE '/var/lib/mysql-files/Q2-2_MarchToAprilIncreaseNewCovidCasesVSUnemploymentData.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'; 
 
 
 -- DROP TABLE IF EXISTS `CovidifyUSA`.`NasdaqStage`;
