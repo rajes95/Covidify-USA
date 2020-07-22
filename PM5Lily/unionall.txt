@@ -1,0 +1,211 @@
+select `Date`,"World"CountryName, `World`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Afghanistan"CountryName, `Afghanistan`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Albania"CountryName, `Albania`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Algeria"CountryName, `Algeria`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Andorra"CountryName, `Andorra`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Angola"CountryName, `Angola`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Anguilla"CountryName, `Anguilla`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Antigua and Barbuda"CountryName, `Antigua and Barbuda`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Argentina"CountryName, `Argentina`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Armenia"CountryName, `Armenia`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Aruba"CountryName, `Aruba`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Australia"CountryName, `Australia`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Austria"CountryName, `Austria`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Azerbaijan"CountryName, `Azerbaijan`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Bahamas"CountryName, `Bahamas`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Bahrain"CountryName, `Bahrain`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Bangladesh"CountryName, `Bangladesh`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Barbados"CountryName, `Barbados`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Belarus"CountryName, `Belarus`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Belgium"CountryName, `Belgium`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Belize"CountryName, `Belize`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Benin"CountryName, `Benin`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Bermuda"CountryName, `Bermuda`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Bhutan"CountryName, `Bhutan`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Bolivia"CountryName, `Bolivia`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Bonaire Sint Eustatius and Saba"CountryName, `Bonaire Sint Eustatius and Saba`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Bosnia and Herzegovina"CountryName, `Bosnia and Herzegovina`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Botswana"CountryName, `Botswana`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Brazil"CountryName, `Brazil`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"British Virgin Islands"CountryName, `British Virgin Islands`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Brunei"CountryName, `Brunei`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Bulgaria"CountryName, `Bulgaria`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Burkina Faso"CountryName, `Burkina Faso`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Burundi"CountryName, `Burundi`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Cambodia"CountryName, `Cambodia`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Cameroon"CountryName, `Cameroon`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Canada"CountryName, `Canada`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Cape Verde"CountryName, `Cape Verde`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Cayman Islands"CountryName, `Cayman Islands`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Central African Republic"CountryName, `Central African Republic`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Chad"CountryName, `Chad`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Chile"CountryName, `Chile`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"China"CountryName, `China`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Colombia"CountryName, `Colombia`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Comoros"CountryName, `Comoros`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Congo"CountryName, `Congo`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Costa Rica"CountryName, `Costa Rica`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Cote d'Ivoire"CountryName, `Cote d'Ivoire`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Croatia"CountryName, `Croatia`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Cuba"CountryName, `Cuba`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Curacao"CountryName, `Curacao`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Cyprus"CountryName, `Cyprus`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Czech Republic"CountryName, `Czech Republic`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Democratic Republic of Congo"CountryName, `Democratic Republic of Congo`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Denmark"CountryName, `Denmark`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Djibouti"CountryName, `Djibouti`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Dominica"CountryName, `Dominica`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Dominican Republic"CountryName, `Dominican Republic`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Ecuador"CountryName, `Ecuador`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Egypt"CountryName, `Egypt`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"El Salvador"CountryName, `El Salvador`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Equatorial Guinea"CountryName, `Equatorial Guinea`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Eritrea"CountryName, `Eritrea`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Estonia"CountryName, `Estonia`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Ethiopia"CountryName, `Ethiopia`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Faeroe Islands"CountryName, `Faeroe Islands`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Falkland Islands"CountryName, `Falkland Islands`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Fiji"CountryName, `Fiji`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Finland"CountryName, `Finland`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"France"CountryName, `France`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"French Polynesia"CountryName, `French Polynesia`Cases  from InternationalCovidByDateStagingP1AF union all 
+select `Date`,"Gabon"CountryName, `Gabon`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Gambia"CountryName, `Gambia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Georgia"CountryName, `Georgia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Germany"CountryName, `Germany`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Ghana"CountryName, `Ghana`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Gibraltar"CountryName, `Gibraltar`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Greece"CountryName, `Greece`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Greenland"CountryName, `Greenland`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Grenada"CountryName, `Grenada`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Guam"CountryName, `Guam`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Guatemala"CountryName, `Guatemala`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Guernsey"CountryName, `Guernsey`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Guinea"CountryName, `Guinea`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Guinea-Bissau"CountryName, `Guinea-Bissau`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Guyana"CountryName, `Guyana`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Haiti"CountryName, `Haiti`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Honduras"CountryName, `Honduras`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Hungary"CountryName, `Hungary`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Iceland"CountryName, `Iceland`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"India"CountryName, `India`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Indonesia"CountryName, `Indonesia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"International"CountryName, `International`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Iran"CountryName, `Iran`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Iraq"CountryName, `Iraq`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Ireland"CountryName, `Ireland`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Isle of Man"CountryName, `Isle of Man`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Israel"CountryName, `Israel`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Italy"CountryName, `Italy`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Jamaica"CountryName, `Jamaica`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Japan"CountryName, `Japan`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Jersey"CountryName, `Jersey`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Jordan"CountryName, `Jordan`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Kazakhstan"CountryName, `Kazakhstan`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Kenya"CountryName, `Kenya`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Kosovo"CountryName, `Kosovo`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Kuwait"CountryName, `Kuwait`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Kyrgyzstan"CountryName, `Kyrgyzstan`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Laos"CountryName, `Laos`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Latvia"CountryName, `Latvia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Lebanon"CountryName, `Lebanon`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Lesotho"CountryName, `Lesotho`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Liberia"CountryName, `Liberia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Libya"CountryName, `Libya`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Liechtenstein"CountryName, `Liechtenstein`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Lithuania"CountryName, `Lithuania`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Luxembourg"CountryName, `Luxembourg`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Macedonia"CountryName, `Macedonia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Madagascar"CountryName, `Madagascar`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Malawi"CountryName, `Malawi`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Malaysia"CountryName, `Malaysia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Maldives"CountryName, `Maldives`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Mali"CountryName, `Mali`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Malta"CountryName, `Malta`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Mauritania"CountryName, `Mauritania`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Mauritius"CountryName, `Mauritius`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Mexico"CountryName, `Mexico`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Moldova"CountryName, `Moldova`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Monaco"CountryName, `Monaco`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Mongolia"CountryName, `Mongolia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Montenegro"CountryName, `Montenegro`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Montserrat"CountryName, `Montserrat`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Morocco"CountryName, `Morocco`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Mozambique"CountryName, `Mozambique`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Myanmar"CountryName, `Myanmar`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Namibia"CountryName, `Namibia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Nepal"CountryName, `Nepal`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Netherlands"CountryName, `Netherlands`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"New Caledonia"CountryName, `New Caledonia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"New Zealand"CountryName, `New Zealand`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Nicaragua"CountryName, `Nicaragua`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Niger"CountryName, `Niger`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Nigeria"CountryName, `Nigeria`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Northern Mariana Islands"CountryName, `Northern Mariana Islands`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Norway"CountryName, `Norway`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Oman"CountryName, `Oman`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Pakistan"CountryName, `Pakistan`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Palestine"CountryName, `Palestine`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Panama"CountryName, `Panama`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Papua New Guinea"CountryName, `Papua New Guinea`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Paraguay"CountryName, `Paraguay`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Peru"CountryName, `Peru`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Philippines"CountryName, `Philippines`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Poland"CountryName, `Poland`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Portugal"CountryName, `Portugal`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Puerto Rico"CountryName, `Puerto Rico`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Qatar"CountryName, `Qatar`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Romania"CountryName, `Romania`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Russia"CountryName, `Russia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Rwanda"CountryName, `Rwanda`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Saint Kitts and Nevis"CountryName, `Saint Kitts and Nevis`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Saint Lucia"CountryName, `Saint Lucia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Saint Vincent and the Grenadines"CountryName, `Saint Vincent and the Grenadines`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"San Marino"CountryName, `San Marino`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Sao Tome and Principe"CountryName, `Sao Tome and Principe`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Saudi Arabia"CountryName, `Saudi Arabia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Senegal"CountryName, `Senegal`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Serbia"CountryName, `Serbia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Seychelles"CountryName, `Seychelles`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Sierra Leone"CountryName, `Sierra Leone`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Singapore"CountryName, `Singapore`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Sint Maarten (Dutch part)"CountryName, `Sint Maarten (Dutch part)`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Slovakia"CountryName, `Slovakia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Slovenia"CountryName, `Slovenia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Somalia"CountryName, `Somalia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"South Africa"CountryName, `South Africa`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"South Korea"CountryName, `South Korea`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"South Sudan"CountryName, `South Sudan`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Spain"CountryName, `Spain`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Sri Lanka"CountryName, `Sri Lanka`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Sudan"CountryName, `Sudan`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Suriname"CountryName, `Suriname`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Swaziland"CountryName, `Swaziland`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Sweden"CountryName, `Sweden`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Switzerland"CountryName, `Switzerland`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Syria"CountryName, `Syria`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Taiwan"CountryName, `Taiwan`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Tajikistan"CountryName, `Tajikistan`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Tanzania"CountryName, `Tanzania`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Thailand"CountryName, `Thailand`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Timor"CountryName, `Timor`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Togo"CountryName, `Togo`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Trinidad and Tobago"CountryName, `Trinidad and Tobago`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Tunisia"CountryName, `Tunisia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Turkey"CountryName, `Turkey`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Turks and Caicos Islands"CountryName, `Turks and Caicos Islands`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Uganda"CountryName, `Uganda`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Ukraine"CountryName, `Ukraine`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"United Arab Emirates"CountryName, `United Arab Emirates`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"United Kingdom"CountryName, `United Kingdom`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"United States"CountryName, `United States`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"United States Virgin Islands"CountryName, `United States Virgin Islands`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Uruguay"CountryName, `Uruguay`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Uzbekistan"CountryName, `Uzbekistan`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Vatican"CountryName, `Vatican`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Venezuela"CountryName, `Venezuela`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Vietnam"CountryName, `Vietnam`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Western Sahara"CountryName, `Western Sahara`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Yemen"CountryName, `Yemen`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Zambia"CountryName, `Zambia`Cases  from InternationalCovidByDateStagingP2GZ union all 
+select `Date`,"Zimbabwe"CountryName, `Zimbabwe`Cases  from InternationalCovidByDateStagingP2GZ union all 
