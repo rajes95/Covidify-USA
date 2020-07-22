@@ -805,3 +805,18 @@ INTO OUTFILE './04BrazilCovid.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
+
+
+select * from (
+select * from State where StateName = "California") as cali 
+inner join 
+(select * from County ) as calicounty 
+ON calicovid.StateFKey =cali.StateKey;
+
+
+((select * from State where StateName = "California") as cali inner join (select * from County ) as calicounty ON calicovid.StateFKey =cali.StateKey) as calistate inner join (select * from CovidByDate ) as calicovid on calicovid.StateFKey =cali.StateKey;
+
+INTO OUTFILE './04CaliforniaCovid.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
