@@ -232,8 +232,6 @@ SET `Date`=@date,
 `Vatican`= NULLIF(@vatican,''),`Venezuela`= NULLIF(@venezuela,''),`Vietnam`= NULLIF(@vietnam,''),`Western Sahara`= NULLIF(@westernSahara,''),
 `Yemen`= NULLIF(@yemen,''),`Zambia`= NULLIF(@zambia,''),`Zimbabwe`= NULLIF(@zimbabwe,'');
 
-Select * from InternationalCovidByDateStagingP1AF;
-Select * from InternationalCovidByDateStagingP2GZ;
 
 Select 	`Date`, `CountryName`, `Cases` FROM (
 select `Date`,"World"CountryName, `World`Cases  from InternationalCovidByDateStagingP1AF union all 
@@ -448,7 +446,6 @@ select `Date`,"Yemen"CountryName, `Yemen`Cases  from InternationalCovidByDateSta
 select `Date`,"Zambia"CountryName, `Zambia`Cases  from InternationalCovidByDateStagingP2GZ union all 
 select `Date`,"Zimbabwe"CountryName, `Zimbabwe`Cases  from InternationalCovidByDateStagingP2GZ) PivottedTable;
 
-#--- final 
 
 INSERT INTO `CovidifyUSA`.`InternationalCovidByDateStaging` 
 (`Date`, `CountryName`,`CovidCases`)
@@ -666,22 +663,9 @@ select `Date`,"Zambia"CountryName, `Zambia`Cases  from InternationalCovidByDateS
 select `Date`,"Zimbabwe"CountryName, `Zimbabwe`Cases  from InternationalCovidByDateStagingP2GZ) as PivottedTable;
 
 
-SELECT * From InternationalCovidByDateStaging
-INTO OUTFILE './04InternationalCovidByDateStaging.csv'
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n';
-
-Select * from InternationalCovidByDateStaging;
-
-#TODO Select statements for most recent date and order by top 10 countries
-#TODO potentialltally make curves for the countries to compare plot to US curve
-
 INSERT INTO `CovidifyUSA`.`Country` 
 (`CountryName`)
 SELECT CountryName FROM InternationalCovidByDateStaging GROUP BY CountryName;
-
-Select * from Country;
 
 INSERT INTO `CovidifyUSA`.`InternationalCovidByDate` 
 (`Date`, `CountryFKey`,`CovidCases`)
@@ -690,54 +674,11 @@ Select Date, CountryKey,  CovidCases FROM
 Inner join
 (select * From Country) as s2 where s1.CountryName = s2.CountryName;
 
-Select * from InternationalCovidByDate;
-
 SELECT * From InternationalCovidByDate
 INTO OUTFILE './04InternationalCovidByDate.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
-
-
-Select s1.InternationalCovidByDateKey,s1.Date, s1.CountryFKey, s2.CountryName, s1.CovidCases FROM
-(Select InternationalCovidByDateKey,  Date, CountryFKey,CovidCases From InternationalCovidByDate ) as s1 
-Inner join
-(select CountryKey, CountryName From Country) as s2 where s1.CountryFKey = s2.CountryKey;
-
-Select s1.InternationalCovidByDateKey, s1.Date, s1.CountryFKey, s2.CountryName, s1.CovidCases FROM
-(Select  InternationalCovidByDateKey, Date, CountryFKey,CovidCases From InternationalCovidByDate ) as s1 
-Inner join
-(select CountryKey, CountryName From Country) as s2 where s1.CountryFKey = s2.CountryKey
-INTO OUTFILE './04InternationalCovidByDateCountryNames.csv'
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n';
-
-select MostRecent,CountryFKey,`COVID-19 Cases`, CountryName From
-(select CountryKey, CountryName from Country) as d2 
-inner join
-(Select MAX(Date) as MostRecent, CountryFKey, MAX(CovidCases) as `COVID-19 Cases`
-From InternationalCovidByDate 
-GROUP BY CountryFKey 
-Order by MAX(CovidCases) desc) as d1
-on d1.CountryFKey = d2.CountryKey 
-order by `COVID-19 Cases` desc
-INTO OUTFILE './04MostRecentDateCountryOrderByCovidCases.csv'
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n';
-
-(select CountryFKey,CountryName from (
-select MostRecent,CountryFKey,`COVID-19 Cases`, CountryName From
-(select CountryKey, CountryName from Country) as d2 
-inner join
-(Select MAX(Date) as MostRecent, CountryFKey, MAX(CovidCases) as `COVID-19 Cases`
-From InternationalCovidByDate 
-GROUP BY CountryFKey 
-Order by MAX(CovidCases) desc) as d1
-on d1.CountryFKey = d2.CountryKey 
-order by `COVID-19 Cases` desc
-Limit 11) as topcurrentcases);
 
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`HighestCasesInternational` (  
 `HighestCasesInternationalKey` INT NOT NULL AUTO_INCREMENT,  
@@ -780,8 +721,6 @@ Order by MAX(CovidCases) desc
 limit 51) as highestnational;
 
 
-
-
 select * from
 (select * from HighestCasesInternational ) as s1
 inner join (select * from HighestCasesNational ) as s2
@@ -791,21 +730,4 @@ FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 
-
-select * from
-(select * from country where CountryName = "United States") as usa inner join (select * from InternationalCovidByDate ) as usacovid;
- 
-select * from
-(select * from country where CountryName = "United States") as usa inner join (select * from InternationalCovidByDate ) as usacovid
-INTO OUTFILE './04USACovid.csv'
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n';
-
-select * from
-(select * from country where CountryName = "Brazil") as usa inner join (select * from InternationalCovidByDate ) as brazilcovid
-INTO OUTFILE './04BrazilCovid.csv'
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n';
 
