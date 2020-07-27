@@ -20,17 +20,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/statehospitaldatacreate")
-public class StateHospitalDataCreate extends HttpServlet {
+@WebServlet("/countyhospitalcreate")
+public class CountyHopsitalDataCreate extends HttpServlet {
 
-	protected StateHospitalDataDao stateHospitalDao;
-	protected StateDao stateDao;
-	
+	protected CountyHospitalDao countyHospitalDao;
+	protected CountyDao countyDao;
+
 	@Override
-	  public void init() throws ServletException {
-		stateHospitalDao = StateHospitalDataDao.getInstance();
-		stateDao = StateDao.getInstance();
-	  }
+	public void init() throws ServletException {
+	  countyHospitalDao = CountyHospitalDao.getInstance();
+	  countyDao = CountyDao.getInstance();
+	 }
 	
 	@Override
 	  public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -39,7 +39,7 @@ public class StateHospitalDataCreate extends HttpServlet {
 	    Map<String, String> messages = new HashMap<String, String>();
 	    req.setAttribute("messages", messages);
 	    //Just render the JSP.
-	    req.getRequestDispatcher("/StateHospitalDataCreate.jsp").forward(req, resp);
+	    req.getRequestDispatcher("/CountyHospitalCreate.jsp").forward(req, resp);
 	  }
 	
 	@Override
@@ -50,22 +50,22 @@ public class StateHospitalDataCreate extends HttpServlet {
 	    req.setAttribute("messages", messages);
 
 	    // Retrieve and validate name.
+	    String countyname = req.getParameter("countyname");
 	    String statename = req.getParameter("statename");
-	    if (statename == null || statename.trim().isEmpty()) {
-	      messages.put("success", "Please enter a valid State name.");
+	    if (countyname == null || countyname.trim().isEmpty() || statename == null || statename.trim().isEmpty()) {
+	      messages.put("success", "Please enter a valid County and State name pair.");
 	    } else {
 	      // Create the StateHospital.
-	      String year = req.getParameter("year");
-	      String numberOfHospitals = req.getParameter("numOfHospitals");
-	      String numberOfEmployees = req.getParameter("numOfEmployees");
+	    	String year = req.getParameter("year");
+		    String icuBeds = req.getParameter("icuBeds");
 	      try {
-	        State state = stateDao.getStateByName(statename);
-	        if (state == null) {
-	          messages.put("success", "State does not exist. Could not locate State Governor List.");
+	    	  County county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
+	        if (county == null) {
+	          messages.put("success", "County does not exist. Could not locate County.");
 	        }
 	        else {
-	        	StateHospitalData stateHospital = new StateHospitalData(state, Short.valueOf(year), Long.valueOf(numberOfHospitals), Long.valueOf(numberOfEmployees));
-	        	stateHospital = stateHospitalDao.create(stateHospital);
+	        	CountyHospitalData countyHospital = new CountyHospitalData(county, Short.valueOf(year), Integer.valueOf(icuBeds));
+	        	countyHospital = countyHospitalDao.create(countyHospital);
 	        	messages.put("success", "Successfully created");
 	        }
 	      } catch (SQLException e) {
@@ -74,6 +74,6 @@ public class StateHospitalDataCreate extends HttpServlet {
 	      }
 	    }
 
-	    req.getRequestDispatcher("/StateHospitalDataCreate.jsp").forward(req, resp);
+	    req.getRequestDispatcher("/CountyHospitalCreate.jsp").forward(req, resp);
 	  }
 }
