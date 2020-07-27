@@ -5,7 +5,6 @@
  */
 package covidify.model;
 
-import java.util.Date;
 
 /*
 
@@ -27,10 +26,10 @@ ENGINE = InnoDB;
 public class CountyHospitalData {
     protected int countyHospitalDataKey;
     protected County county;
-    protected Date year;
+    protected Short year;
     protected Integer icuBeds;
 
-    public CountyHospitalData(int countyHospitalDataKey, County county, Date year, Integer icuBeds) {
+    public CountyHospitalData(int countyHospitalDataKey, County county, Short year, Integer icuBeds) {
         this.countyHospitalDataKey = countyHospitalDataKey;
         this.county = county;
         this.year = year;
@@ -41,7 +40,7 @@ public class CountyHospitalData {
         this.countyHospitalDataKey = countyHospitalDataKey;
     }
 
-    public CountyHospitalData(County county, Date year, Integer icuBeds) {
+    public CountyHospitalData(County county, Short year, Integer icuBeds) {
         this.county = county;
         this.year = year;
         this.icuBeds = icuBeds;
@@ -63,11 +62,11 @@ public class CountyHospitalData {
         this.county = county;
     }
 
-    public Date getYear() {
+    public Short getYear() {
         return year;
     }
 
-    public void setYear(Date year) {
+    public void setYear(Short year) {
         this.year = year;
     }
 
