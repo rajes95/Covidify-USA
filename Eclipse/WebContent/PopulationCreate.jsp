@@ -8,12 +8,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Create a State Hospital Data Entry</title>
+<title>Create a Population Entry</title>
 </head>
 <body>
-	<h1>Create a State Hospital Data Entry</h1>
-	<form action="statehospitaldatacreate" method="post">
+	<h1>Create a Population Entry</h1>
+	<form action="populationcreate" method="post">
 		<p>
+			<label for="countyname">County Name (Pre-existing)</label>
+			<input id="countyname" name="countyname" value="${fn:escapeXml(param.countyname)}">
 			<label for="statename">State Name (Pre-existing)</label>
 			<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
 		</p>
@@ -22,12 +24,12 @@
 			<input id="year" name="year" value="">
 		</p>
 		<p>
-			<label for="numOfHospitals">Number Of Hospitals</label>
-			<input id="numOfHospitals" name="numOfHospitals" value="">
+			<label for="totalPopulation">Total Population</label>
+			<input id="totalPopulation" name="totalPopulation" value="">
 		</p>
 		<p>
-			<label for="numOfEmployees">Number Of Employees</label>
-			<input id="numOfEmployees" name="numOfEmployees" value="">
+			<label for="population60Plus">Population 60 Plus</label>
+			<input id="population60Plus" name="population60Plus" value="">
 		</p>
 		<p>
 			<input type="submit">
@@ -42,8 +44,8 @@
        <div id="findcounty"><a href="findcounty">Find County</a></div>
        <div id="findstate"><a href="findstate">Find State</a></div>
        <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
+       <div id="statehospitaldatacreate"><a href="statehospitaldatacreate">Create a State Hospital Data Entry</a></div>
        <div id="countyhospitalcreate"><a href="countyhospitalcreate">Create a State Hospital Data Entry</a></div>
-       <div id="populationcreate"><a href="populationcreate">Create a Population Entry</a></div>
        <div id="presidentialelectionpercentagecreate"><a href="presidentialelectionpercentagecreate">Create a Presidential Election Percentage Entry</a></div>
 </body>
 </html>

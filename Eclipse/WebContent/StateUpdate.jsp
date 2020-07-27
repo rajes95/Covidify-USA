@@ -42,5 +42,8 @@
        <div id="findcounty"><a href="findcounty">Find County</a></div>
        <div id="findstate"><a href="findstate">Find State</a></div>
        <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
+       <div id="countyhospitalcreate"><a href="countyhospitalcreate">Create a State Hospital Data Entry</a></div>
+       <div id="populationcreate"><a href="populationcreate">Create a Population Entry</a></div>
+       <div id="presidentialelectionpercentagecreate"><a href="presidentialelectionpercentagecreate">Create a Presidential Election Percentage Entry</a></div>
 </body>
 </html>
