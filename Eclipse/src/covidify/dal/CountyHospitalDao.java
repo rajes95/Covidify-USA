@@ -7,7 +7,6 @@ package covidify.dal;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,12 +41,19 @@ public class CountyHospitalDao {
     try {
       connection = connectionManager.getConnection();
       insertStmt = connection.prepareStatement(insertCountyHospitalData, Statement.RETURN_GENERATED_KEYS);
+      insertStmt.setInt(1,countyHospitalData.getCounty().getCountyKey());
+      if (countyHospitalData.getYear() == null) {
+			insertStmt.setNull(2, Types.DATE);
+		} else {
+			insertStmt.setShort(2, countyHospitalData.getYear());
+		}
       if (countyHospitalData.getIcuBeds() == null) {
-        insertStmt.setNull(1, Types.VARCHAR);
+        insertStmt.setNull(3, Types.VARCHAR);
       } else {
-        insertStmt.setInt(1, countyHospitalData.getIcuBeds());
+        insertStmt.setInt(3, countyHospitalData.getIcuBeds());
       }
 
+      insertStmt.executeUpdate();
       resultKey = insertStmt.getGeneratedKeys();
       int countyHospitalDataKey = -1;
       if (resultKey.next()) {
@@ -83,15 +89,15 @@ public class CountyHospitalDao {
     PreparedStatement selectStmt = null;
     ResultSet results = null;
     try {
-      connection = connectionManager.getConnection();
-      selectStmt = connection.prepareStatement(selectCountyHospitalData);
-      selectStmt.setInt(1, county.getCountyKey());
-      results = selectStmt.executeQuery();
+    	connection = connectionManager.getConnection();
+		selectStmt = connection.prepareStatement(selectCountyHospitalData);
+		selectStmt.setInt(1, county.getCountyKey());
+		results = selectStmt.executeQuery();
 
       while(results.next()) {
         int countyHospitalDataKey = results.getInt("CountyHospitalDataKey");
-        Date resyear = results.getDate("Year");
-        int resicu = results.getInt("ICUBeds");
+        Short resyear = results.getShort("Year");
+        Integer resicu = results.getInt("ICUBeds");
         
 
         CountyHospitalData countyHospitalData = new CountyHospitalData(countyHospitalDataKey, county, resyear, resicu);
