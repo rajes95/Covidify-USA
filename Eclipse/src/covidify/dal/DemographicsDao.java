@@ -6,10 +6,10 @@
 package covidify.dal;
 
 import java.sql.Connection;
-import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,13 +58,13 @@ public class DemographicsDao  {
   //TODO here onwards
   public Demographics create(Demographics demographics) throws SQLException {
     String insertDemographics = "INSERT INTO Demographics(CountyFKey,Year,White,AfricanAmerican,"
-            +"Latino,NativeAmerican,AsianAmerican,,OtherEthnicity,PovertyRate,MedianAge,MedianEarnings) "
+    		+ "Latino,NativeAmerican,AsianAmerican,OtherEthnicity,PovertyRate,MedianAge,MedianEarnings) "
             + "VALUES(?,?,?,?,?,?,?,?,?,?,?);";
     Connection connection = null;
     PreparedStatement insertStmt = null;
     try {
       connection = connectionManager.getConnection();
-      insertStmt = connection.prepareStatement(insertDemographics);
+      insertStmt = connection.prepareStatement(insertDemographics, Statement.RETURN_GENERATED_KEYS);
       ResultSet resultKey = null;
       if (demographics.getCounty() == null) {
         insertStmt.setNull(1, Types.INTEGER);
@@ -74,7 +74,7 @@ public class DemographicsDao  {
       if (demographics.getYear() == null) {
         insertStmt.setNull(2, Types.DATE);
       } else {
-        insertStmt.setDate(2, (java.sql.Date) demographics.getYear());
+        insertStmt.setShort(2, demographics.getYear());
       }
       if (demographics.getWhite() == null) {
         insertStmt.setNull(3, Types.DECIMAL);
@@ -161,7 +161,7 @@ public class DemographicsDao  {
 
       while(results.next()) {
         int demographicsKey = results.getInt("DemographicsKey");
-        Date resyear = results.getDate("Year");
+        Short resyear = results.getShort("Year");
         Double reswhite = results.getDouble("White");
         Double resaa = results.getDouble("AfricanAmerican");
         Double reslat = results.getDouble("Latino");

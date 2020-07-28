@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.sql.Types;
 
 import covidify.model.CovidByRace;
@@ -36,7 +37,7 @@ public class CovidByRaceDao {
   }
 
   public CovidByRace create(CovidByRace covidByRace) throws SQLException {
-    String insertCovidByRace = "INSERT INTO CovidByRace(StateFKey,Race,Postive,Negative,Death,Date) "
+    String insertCovidByRace = "INSERT INTO CovidByRace(StateFKey,Race,Positive,Negative,Death,Date) "
             + "VALUES(?,?,?,?,?,?);";
     Connection connection = null;
     PreparedStatement insertStmt = null;
@@ -44,22 +45,32 @@ public class CovidByRaceDao {
     try {
       connection = connectionManager.getConnection();
       insertStmt = connection.prepareStatement(insertCovidByRace, Statement.RETURN_GENERATED_KEYS);
+      insertStmt.setInt(1, covidByRace.getState().getStateKey());
+      insertStmt.setString(2, covidByRace.getRaceType().name());
       if (covidByRace.getPositive() == null) {
-        insertStmt.setNull(1, Types.VARCHAR);
+        insertStmt.setNull(3, Types.VARCHAR);
       } else {
-        insertStmt.setInt(1, covidByRace.getPositive());
+        insertStmt.setInt(3, covidByRace.getPositive());
       }
       if (covidByRace.getNegative() == null) {
-          insertStmt.setNull(1, Types.VARCHAR);
+          insertStmt.setNull(4, Types.VARCHAR);
         } else {
-          insertStmt.setInt(1, covidByRace.getNegative());
+          insertStmt.setInt(4, covidByRace.getNegative());
         }
       if (covidByRace.getDeath() == null) {
-          insertStmt.setNull(1, Types.VARCHAR);
+          insertStmt.setNull(5, Types.VARCHAR);
         } else {
-          insertStmt.setInt(1, covidByRace.getDeath());
+          insertStmt.setInt(5, covidByRace.getDeath());
         }
+      if (covidByRace.getDate() == null)
+		{
+			insertStmt.setNull(6, Types.TIMESTAMP);
+		} else {
+			insertStmt.setTimestamp(6,
+					new Timestamp(covidByRace.getDate().getTime()));
+		}
 
+      insertStmt.executeUpdate();
       resultKey = insertStmt.getGeneratedKeys();
       int covidByRaceKey = -1;
       if (resultKey.next()) {
@@ -89,7 +100,7 @@ public class CovidByRaceDao {
   public List<CovidByRace> getCovidByRaceByState(State state) throws SQLException {
 	List<CovidByRace> covidByRaces = new ArrayList<CovidByRace>();
     String selectCovidByRace =
-            "SELECT CovidByRaceKey,StateFKey,Race,Postive,Negative,Death,Date FROM CovidByRace " +
+            "SELECT CovidByRaceKey,StateFKey,Race,Positive,Negative,Death,Date FROM CovidByRace " +
                     "WHERE StateFKey=?;";
     Connection connection = null;
     PreparedStatement selectStmt = null;

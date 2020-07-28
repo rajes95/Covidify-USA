@@ -7,7 +7,6 @@ package covidify.dal;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,7 +33,7 @@ public class ClimateDao {
   }
 
   public Climate create(Climate climate) throws SQLException {
-    String insertClimate = "INSERT INTO Climate(ClimateFKey,Year,Elevation,WinterPrcp,"
+    String insertClimate = "INSERT INTO Climate(CountyFKey,Year,Elevation,WinterPrcp,"
     		+ "SummerPrcp,SprintPrcp,AutumnPrcp,WinterTavg,SummerTavg,SpringTavg,AutumnTavg) "
             + "VALUES(?,?,?,?,?,?,?,?,?,?,?);";
     Connection connection = null;
@@ -43,12 +42,59 @@ public class ClimateDao {
     try {
       connection = connectionManager.getConnection();
       insertStmt = connection.prepareStatement(insertClimate, Statement.RETURN_GENERATED_KEYS);
+      insertStmt.setInt(1,climate.getCounty().getCountyKey());
+      if (climate.getYear() == null) {
+			insertStmt.setNull(2, Types.DATE);
+		} else {
+			insertStmt.setShort(2, climate.getYear());
+		}
       if (climate.getElevation() == null) {
-        insertStmt.setNull(1, Types.VARCHAR);
+        insertStmt.setNull(3, Types.DECIMAL);
       } else {
-        insertStmt.setDouble(1, climate.getElevation());
+        insertStmt.setDouble(3, climate.getElevation());
       }
-
+      if (climate.getWinterPrcp() == null) {
+          insertStmt.setNull(4, Types.DECIMAL);
+        } else {
+          insertStmt.setDouble(4, climate.getWinterPrcp());
+        }
+      if (climate.getSummerPrcp() == null) {
+          insertStmt.setNull(5, Types.DECIMAL);
+        } else {
+          insertStmt.setDouble(5, climate.getSummerPrcp());
+        }
+      if (climate.getSpringPrcp() == null) {
+            insertStmt.setNull(6, Types.DECIMAL);
+        } else {
+            insertStmt.setDouble(6, climate.getSpringPrcp());
+        }
+      if (climate.getAutumnPrcp() == null) {
+          insertStmt.setNull(7, Types.DECIMAL);
+        } else {
+          insertStmt.setDouble(7, climate.getAutumnPrcp());
+        }
+      if (climate.getWinterTavg() == null) {
+            insertStmt.setNull(8, Types.DECIMAL);
+        } else {
+            insertStmt.setDouble(8, climate.getWinterTavg());
+        }
+      if (climate.getSummerTavg() == null) {
+          insertStmt.setNull(9, Types.DECIMAL);
+        } else {
+          insertStmt.setDouble(9, climate.getSummerTavg());
+        }
+      if (climate.getSpringTavg() == null) {
+            insertStmt.setNull(10, Types.DECIMAL);
+        } else {
+            insertStmt.setDouble(10, climate.getSpringTavg());
+        }
+      if (climate.getAutumnTavg() == null) {
+          insertStmt.setNull(11, Types.DECIMAL);
+        } else {
+          insertStmt.setDouble(11, climate.getAutumnTavg());
+        }
+      
+      insertStmt.executeUpdate();
       resultKey = insertStmt.getGeneratedKeys();
       int climateKey = -1;
       if (resultKey.next()) {
@@ -93,7 +139,7 @@ public class ClimateDao {
 
       while(results.next()) {
         int climateKey = results.getInt("ClimateKey");
-        Date resyear = results.getDate("Year");
+        Short resyear = results.getShort("Year");
         Double reselev = results.getDouble("Elevation");
         Double reswinterprcp = results.getDouble("WinterPrcp");
         Double ressumprcp = results.getDouble("SummerPrcp");
@@ -101,10 +147,9 @@ public class ClimateDao {
         Double resautprcp = results.getDouble("AutumnPrcp");
         Double reswintertemp = results.getDouble("WinterTavg");
         Double ressumtemp = results.getDouble("SummerTavg");
-        Double resspringtemp = results.getDouble("SpringTAvg");
-        Double resauttemp = results.getDouble("AutumnTAvg");
+        Double resspringtemp = results.getDouble("SpringTavg");
+        Double resauttemp = results.getDouble("AutumnTavg");
         
-
         Climate climate = new Climate(climateKey, county, resyear, reselev, reswinterprcp, ressumprcp,
         		resspringprcp, resautprcp, reswintertemp, ressumtemp, resspringtemp, resauttemp);
         climates.add(climate);

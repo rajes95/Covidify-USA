@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import covidify.model.*;
@@ -45,38 +44,44 @@ public class MortalityRatesDao {
     try {
       connection = connectionManager.getConnection();
       insertStmt = connection.prepareStatement(insertMortalityRates, Statement.RETURN_GENERATED_KEYS);
+      insertStmt.setInt(1,mortalityRates.getCounty().getCountyKey());
+      if (mortalityRates.getYear() == null) {
+			insertStmt.setNull(2, Types.DATE);
+	  } else {
+			insertStmt.setShort(2, mortalityRates.getYear());
+	  }
       if (mortalityRates.getNeonatalRate() == null) {
-        insertStmt.setNull(3, Types.VARCHAR);
+        insertStmt.setNull(3, Types.DECIMAL);
       } else {
         insertStmt.setDouble(3, mortalityRates.getNeonatalRate());
       }
       if (mortalityRates.getHivRate() == null) {
-        insertStmt.setNull(4, Types.INTEGER);
+        insertStmt.setNull(4, Types.DECIMAL);
       } else {
         insertStmt.setDouble(4, mortalityRates.getHivRate());
       }
       if (mortalityRates.getDiabetesRate() == null) {
-          insertStmt.setNull(5, Types.INTEGER);
+          insertStmt.setNull(5, Types.DECIMAL);
         } else {
           insertStmt.setDouble(5, mortalityRates.getDiabetesRate());
         }
       if (mortalityRates.getChronicRespitoraryRate() == null) {
-          insertStmt.setNull(6, Types.INTEGER);
+          insertStmt.setNull(6, Types.DECIMAL);
         } else {
           insertStmt.setDouble(6, mortalityRates.getChronicRespitoraryRate());
         }
       if (mortalityRates.getLiverDiseaseRate() == null) {
-          insertStmt.setNull(7, Types.INTEGER);
+          insertStmt.setNull(7, Types.DECIMAL);
         } else {
           insertStmt.setDouble(7, mortalityRates.getLiverDiseaseRate());
         }
       if (mortalityRates.getNutritionalDeficienciesRate() == null) {
-          insertStmt.setNull(8, Types.INTEGER);
+          insertStmt.setNull(8, Types.DECIMAL);
         } else {
           insertStmt.setDouble(8, mortalityRates.getNutritionalDeficienciesRate());
         }
       if (mortalityRates.getCardiovascularRate() == null) {
-          insertStmt.setNull(9, Types.INTEGER);
+          insertStmt.setNull(9, Types.DECIMAL);
         } else {
           insertStmt.setDouble(9, mortalityRates.getCardiovascularRate());
         }
@@ -126,7 +131,7 @@ public class MortalityRatesDao {
 
 	      while(results.next()) {
 	        int mortalityRatesKey = results.getInt("MortalityRatesKey");
-	        Date resyear = results.getDate("Year");
+	        Short resyear = results.getShort("Year");
 	        Double resneo = results.getDouble("NeonatalDisordersMortalityRate");
 	        Double reshiv = results.getDouble("HIVAIDSandTBMortalityRate");
 	        Double resdiab = results.getDouble("DiabetesUrogenitalBloodEndocrineDiseaseMortalityRate");
