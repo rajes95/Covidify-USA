@@ -66,7 +66,7 @@ public class CountyHopsitalDataCreate extends HttpServlet {
 	        else {
 	        	CountyHospitalData countyHospital = new CountyHospitalData(county, Short.valueOf(year), Integer.valueOf(icuBeds));
 	        	countyHospital = countyHospitalDao.create(countyHospital);
-	        	messages.put("success", "Successfully created");
+	        	messages.put("success", "Successfully created County Hospital entry for " + countyname + ", " + statename);
 	        }
 	      } catch (SQLException e) {
 	        e.printStackTrace();

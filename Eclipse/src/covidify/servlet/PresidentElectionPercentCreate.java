@@ -68,7 +68,7 @@ public class PresidentElectionPercentCreate extends HttpServlet {
 	        else {
 	        	PresidentialElectionVotePercentages pres = new PresidentialElectionVotePercentages(county, Short.valueOf(year), Double.valueOf(dempercent), Double.valueOf(reppercent), Double.valueOf(indpercent));
 	        	pres = presDao.create(pres);
-	        	messages.put("success", "Successfully created");
+	        	messages.put("success", "Successfully created Presidential Election Percentage entry for " + countyname + ", " + statename);
 	        }
 	      } catch (SQLException e) {
 	        e.printStackTrace();

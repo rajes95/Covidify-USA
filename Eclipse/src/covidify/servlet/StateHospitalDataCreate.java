@@ -66,7 +66,7 @@ public class StateHospitalDataCreate extends HttpServlet {
 	        else {
 	        	StateHospitalData stateHospital = new StateHospitalData(state, Short.valueOf(year), Long.valueOf(numberOfHospitals), Long.valueOf(numberOfEmployees));
 	        	stateHospital = stateHospitalDao.create(stateHospital);
-	        	messages.put("success", "Successfully created");
+	        	messages.put("success", "Successfully created State Hospital entry for " + statename);
 	        }
 	      } catch (SQLException e) {
 	        e.printStackTrace();
