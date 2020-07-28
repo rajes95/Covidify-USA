@@ -30,13 +30,11 @@ CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`Demographics` (
  */
 
 
-import java.util.Date;
-
 
 public class Demographics {
   protected int demographicsKey;
   protected County county;
-  protected Date year;
+  protected Short year;
   protected Double white;
   protected Double africanAmerican;
   protected Double latino;
@@ -47,7 +45,7 @@ public class Demographics {
   protected Double medianAge;
   protected Double medianEarnings;
 
-  public Demographics(int demographicsKey, County county, Date year, Double white,
+  public Demographics(int demographicsKey, County county, Short year, Double white,
                       Double africanAmerican, Double latino, Double nativeAmerican,
                       Double asianAmerican, Double otherEthnicity, Double povertyRate,
                       Double medianAge, Double medianEarnings) {
@@ -69,7 +67,7 @@ public class Demographics {
     this.demographicsKey = demographicsKey;
   }
 
-  public Demographics(County county, Date year, Double white,
+  public Demographics(County county, Short year, Double white,
                       Double africanAmerican, Double latino, Double nativeAmerican,
                       Double asianAmerican, Double otherEthnicity, Double povertyRate,
                       Double medianAge, Double medianEarnings) {
@@ -102,11 +100,11 @@ public class Demographics {
     this.county = county;
   }
 
-  public Date getYear() {
+  public Short getYear() {
     return year;
   }
 
-  public void setYear(Date year) {
+  public void setYear(Short year) {
     this.year = year;
   }
 

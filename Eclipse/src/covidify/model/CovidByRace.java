@@ -8,7 +8,7 @@ package covidify.model;
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`CovidByRace` (
   `CovidByRaceKey` INT NOT NULL AUTO_INCREMENT,
   `StateFKey` INT NOT NULL,
-  `Race` ENUM('White', 'Black', 'Hispanic', 'Asian', 'Multiracial', 'NHPI', 'Multi', 'Other', 'Unknown') NULL,
+  `Race` ENUM('White', 'Black', 'Hispanic', 'Asian', 'Multiracial', 'NHPI', 'Multi', 'Other', 'Unknown') NOT NULL,
   `Positive` INT NULL,
   `Negative` INT NULL,
   `Death` INT NULL,
@@ -80,11 +80,11 @@ public class CovidByRace {
     this.state = state;
   }
 
-  public RaceType getRace() {
+  public RaceType getRaceType() {
     return race;
   }
 
-  public void setRace(RaceType race) {
+  public void setRaceType(RaceType race) {
     this.race = race;
   }
 

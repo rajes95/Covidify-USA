@@ -6,8 +6,6 @@
 package covidify.model;
 //TODO here onwards
 
-import java.util.Date;
-
 /*
 CREATE TABLE IF NOT EXISTS `CovidifyUSA`.`MortalityRates` (
   `MortalityRatesKey` INT NOT NULL AUTO_INCREMENT,
@@ -34,7 +32,7 @@ ENGINE = InnoDB;
 public class MortalityRates {
   protected int mortalityRatesKey;
   protected County county;
-  protected Date year;
+  protected Short year;
   protected Double neonatalRate;
   protected Double hivRate;
   protected Double diabetesRate;
@@ -44,7 +42,7 @@ public class MortalityRates {
   protected Double cardiovascularRate;
 
 
-  public MortalityRates(int mortalityRatesKey, County county, Date year, Double neonatalRate, Double hivRate,
+  public MortalityRates(int mortalityRatesKey, County county, Short year, Double neonatalRate, Double hivRate,
                         Double diabetesRate, Double chronicRespitoraryRate, Double liverDiseaseRate,
                         Double nutritionalDeficienciesRate, Double cardiovascularRate) {
     this.mortalityRatesKey = mortalityRatesKey;
@@ -63,7 +61,7 @@ public class MortalityRates {
     this.mortalityRatesKey = mortalityRatesKey;
   }
 
-  public MortalityRates(County county, Date year, Double neonatalRate, Double hivRate, Double diabetesRate,
+  public MortalityRates(County county, Short year, Double neonatalRate, Double hivRate, Double diabetesRate,
                         Double chronicRespitoraryRate, Double liverDiseaseRate, Double nutritionalDeficienciesRate,
                         Double cardiovascularRate) {
     this.county = county;
@@ -93,11 +91,11 @@ public class MortalityRates {
     this.county = county;
   }
 
-  public Date getYear() {
+  public Short getYear() {
     return year;
   }
 
-  public void setYear(Date year) {
+  public void setYear(Short year) {
     this.year = year;
   }
 

@@ -32,12 +32,10 @@ ENGINE = InnoDB;
 
  */
 
-import java.util.Date;
-
 public class Climate {
   protected int climateKey;
   protected County county;
-  protected Date year;
+  protected Short year;
   protected Double elevation;
   protected Double winterPrcp;
   protected Double summerPrcp;
@@ -49,7 +47,7 @@ public class Climate {
   protected Double autumnTavg;
 
 
-  public Climate(int climateKey, County county, Date year, Double elevation, Double winterPrcp,
+  public Climate(int climateKey, County county, Short year, Double elevation, Double winterPrcp,
                  Double summerPrcp, Double springPrcp, Double autumnPrcp, Double winterTavg,
                  Double summerTavg, Double springTavg, Double autumnTavg) {
     this.climateKey = climateKey;
@@ -70,7 +68,7 @@ public class Climate {
     this.climateKey = climateKey;
   }
 
-  public Climate(County county, Date year, Double elevation, Double winterPrcp,
+  public Climate(County county, Short year, Double elevation, Double winterPrcp,
                  Double summerPrcp, Double springPrcp, Double autumnPrcp, Double winterTavg,
                  Double summerTavg, Double springTavg, Double autumnTavg) {
     this.county = county;
@@ -94,11 +92,11 @@ public class Climate {
     this.climateKey = climateKey;
   }
 
-  public Date getYear() {
+  public Short getYear() {
     return year;
   }
 
-  public void setYear(Date year) {
+  public void setYear(Short year) {
     this.year = year;
   }
 
