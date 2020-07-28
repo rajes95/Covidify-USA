@@ -34,7 +34,7 @@ public class ClimateDao {
 
   public Climate create(Climate climate) throws SQLException {
     String insertClimate = "INSERT INTO Climate(CountyFKey,Year,Elevation,WinterPrcp,"
-    		+ "SummerPrcp,SprintPrcp,AutumnPrcp,WinterTavg,SummerTavg,SpringTavg,AutumnTavg) "
+    		+ "SummerPrcp,SpringPrcp,AutumnPrcp,WinterTavg,SummerTavg,SpringTavg,AutumnTavg) "
             + "VALUES(?,?,?,?,?,?,?,?,?,?,?);";
     Connection connection = null;
     PreparedStatement insertStmt = null;
