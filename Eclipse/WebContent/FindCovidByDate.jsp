@@ -56,6 +56,7 @@
        <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
        <div id="findcounty"><a href="findcounty">Find County</a></div>
        <div id="findstate"><a href="findstate">Find State</a></div>
+       <div id="findclimate"><a href="findclimate">Find Climate</a></div>
        <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
        <div id="statehospitaldatacreate"><a href="statehospitaldatacreate">Create a State Hospital Data Entry</a></div>
        <div id="countyhospitalcreate"><a href="countyhospitalcreate">Create a State Hospital Data Entry</a></div>
