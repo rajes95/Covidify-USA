@@ -61,7 +61,7 @@ public class FindClimate extends HttpServlet {
     String countyname = req.getParameter("countyname");
     String statename = req.getParameter("statename");
     if (statename == null || statename.trim().isEmpty() || countyname == null || countyname.trim().isEmpty()) {
-      messages.put("success", "Please enter a valid State name and Year.");
+      messages.put("success", "Please enter a valid State name and County Name.");
     } else {
       try {
         county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
