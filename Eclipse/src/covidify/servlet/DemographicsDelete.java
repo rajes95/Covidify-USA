@@ -12,21 +12,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import covidify.dal.DemographicsDao;
 import covidify.dal.CountyDao;
-import covidify.dal.ClimateDao;
+import covidify.model.Demographics;
 import covidify.model.County;
-import covidify.model.Climate;
 
 
-@WebServlet("/climatedelete")
-public class ClimateDelete extends HttpServlet {
+@WebServlet("/demographicdelete")
+public class DemographicsDelete extends HttpServlet {
 
-  protected ClimateDao climateDao;
+  protected DemographicsDao demographicDao;
   protected CountyDao countyDao;
 
   @Override
   public void init() throws ServletException {
-    climateDao = ClimateDao.getInstance();
+    demographicDao = DemographicsDao.getInstance();
     countyDao = CountyDao.getInstance();
   }
 
@@ -37,8 +37,8 @@ public class ClimateDelete extends HttpServlet {
     Map<String, String> messages = new HashMap<String, String>();
     req.setAttribute("messages", messages);
     // Provide a title and render the JSP.
-    messages.put("title", "Delete a Climate Data Entry");
-    req.getRequestDispatcher("/ClimateDelete.jsp").forward(req, resp);
+    messages.put("title", "Delete a Demographics Data Entry");
+    req.getRequestDispatcher("/DemographicsDelete.jsp").forward(req, resp);
   }
 
   @Override
@@ -55,24 +55,24 @@ public class ClimateDelete extends HttpServlet {
             || statename == null || statename.trim().isEmpty()) {
       messages.put("success", "Please enter a valid County and State name pair.");
     }  else {
-      // Delete the Climate.
+      // Delete the Demographics.
       try {
         County county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
-        List<Climate> climateList = climateDao.getClimateByCounty(county);
-        int listSize = climateList.size();
+        List<Demographics> demographicList = demographicDao.getDemographicsByCounty(county);
+        int listSize = demographicList.size();
         int counter = 0;
-        for (Climate climate : climateList) {
-          climate = climateDao.delete(climate);
-          if (climate == null) {
+        for (Demographics demographic : demographicList) {
+          demographic = demographicDao.delete(demographic);
+          if (demographic == null) {
             counter++;
           }
         }
         // Update the message.
         if (counter == listSize) {
-          messages.put("title", "Successfully deleted Climate data entry for County: " + countyname + ", " + statename);
+          messages.put("title", "Successfully deleted Demographics data entry for County: " + countyname + ", " + statename);
           messages.put("disableSubmit", "true");
         } else {
-          messages.put("title", "Failed to delete Climate data entry for County: " + countyname + ", " + statename);
+          messages.put("title", "Failed to delete Demographics data entry for County: " + countyname + ", " + statename);
           messages.put("disableSubmit", "false");
         }
       } catch (SQLException e) {
@@ -81,6 +81,6 @@ public class ClimateDelete extends HttpServlet {
       }
     }
 
-    req.getRequestDispatcher("/ClimateDelete.jsp").forward(req, resp);
+    req.getRequestDispatcher("/DemographicsDelete.jsp").forward(req, resp);
   }
 }
