@@ -2,10 +2,6 @@ package covidify.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,21 +13,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import covidify.dal.CountyDao;
-import covidify.dal.CountyHospitalDao;
+import covidify.dal.ClimateDao;
 import covidify.model.County;
-import covidify.model.CountyHospitalData;
-import covidify.model.StateGovernor;
+import covidify.model.Climate;
 
 
 @WebServlet("/countyhospitaldelete")
-public class CountyHospitalDataDelete extends HttpServlet {
+public class ClimateDelete extends HttpServlet {
 
-  protected CountyHospitalDao countyHospitalDataDao;
+  protected ClimateDao climateDao;
   protected CountyDao countyDao;
 
   @Override
   public void init() throws ServletException {
-    countyHospitalDataDao = CountyHospitalDao.getInstance();
+    climateDao = ClimateDao.getInstance();
     countyDao = CountyDao.getInstance();
   }
 
@@ -42,8 +37,8 @@ public class CountyHospitalDataDelete extends HttpServlet {
     Map<String, String> messages = new HashMap<String, String>();
     req.setAttribute("messages", messages);
     // Provide a title and render the JSP.
-    messages.put("title", "Delete County Hospital Data Entry");
-    req.getRequestDispatcher("/CountyHospitalDelete.jsp").forward(req, resp);
+    messages.put("title", "Delete a Climate Data Entry");
+    req.getRequestDispatcher("/ClimateDelete.jsp").forward(req, resp);
   }
 
   @Override
@@ -60,24 +55,24 @@ public class CountyHospitalDataDelete extends HttpServlet {
             || statename == null || statename.trim().isEmpty()) {
       messages.put("success", "Please enter a valid County and State name pair.");
     }  else {
-      // Delete the CountyHospitalData.
+      // Delete the Climate.
       try {
         County county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
-        List<CountyHospitalData> countyHospitalDataList = countyHospitalDataDao.getCountyHospitalDataByCounty(county);
-        int listSize = countyHospitalDataList.size();
+        List<Climate> climateList = climateDao.getClimateByCounty(county);
+        int listSize = climateList.size();
         int counter = 0;
-        for (CountyHospitalData countyHospitalData : countyHospitalDataList) {
-          countyHospitalData = countyHospitalDataDao.delete(countyHospitalData);
-          if (countyHospitalData == null) {
+        for (Climate climate : climateList) {
+          climate = climateDao.delete(climate);
+          if (climate == null) {
             counter++;
           }
         }
         // Update the message.
         if (counter == listSize) {
-          messages.put("title", "Successfully deleted County Hospital data entry for County: " + countyname + ", " + statename);
+          messages.put("title", "Successfully deleted Climate data entry for County: " + countyname + ", " + statename);
           messages.put("disableSubmit", "true");
         } else {
-          messages.put("title", "Failed to delete County Hospital data entry for County: " + countyname + ", " + statename);
+          messages.put("title", "Failed to delete Climate data entry for County: " + countyname + ", " + statename);
           messages.put("disableSubmit", "false");
         }
       } catch (SQLException e) {
@@ -86,6 +81,6 @@ public class CountyHospitalDataDelete extends HttpServlet {
       }
     }
 
-    req.getRequestDispatcher("/CountyHospitalDelete.jsp").forward(req, resp);
+    req.getRequestDispatcher("/ClimateDelete.jsp").forward(req, resp);
   }
 }

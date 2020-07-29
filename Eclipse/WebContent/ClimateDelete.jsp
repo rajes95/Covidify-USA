@@ -8,11 +8,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Delete Hospital Data for a County</title>
+<title>Delete Climate Data for a County</title>
 </head>
 <body>
 	<h1>${messages.title}</h1>
-	<form action="countyhospitaldelete" method="post">
+	<form action="climatedelete" method="post">
 		<p>
 		<p>
 			<div <c:if test="${messages.disableSubmit}">style="display:none"</c:if>>
@@ -29,8 +29,8 @@
 		</p>
 	</form>
 	<br/><br/>
-	<div id="countyhospitalcreate"><a href="countyhospitalcreate">Create County Hospital Entry</a></div>
-	<div id="countyhospitaldelete"><a href="countyhospitaldelete">Delete County Hospital List</a></div>
+	<div id="climatecreate"><a href="climatecreate">Create Climate Data Entry</a></div>
+	<div id="climatedelete"><a href="climatedelete">Delete Climate Data</a></div>
 	<br/><br/>
        <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
        <div id="findcounty"><a href="findcounty">Find County</a></div>
