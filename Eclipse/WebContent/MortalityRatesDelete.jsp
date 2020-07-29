@@ -21,6 +21,7 @@
 				<label for="statename">State Name</label>
 				<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
 		</p>
+		</div>
 		</p>
 		<p>
 			<span id="submitButton" <c:if test="${messages.disableSubmit}">style="display:none"</c:if>>

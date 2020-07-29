@@ -219,7 +219,7 @@ public class PresidentialElectionVotePercentagesDao
 			connection = connectionManager.getConnection();
 			selectStmt = connection.prepareStatement(selectPevps);
 			selectStmt.setShort(1, year);
-			selectStmt.setInt(1, county.getCountyKey());
+			selectStmt.setInt(2, county.getCountyKey());
 			results = selectStmt.executeQuery();
 			CountyDao countyDao = CountyDao.getInstance();
 

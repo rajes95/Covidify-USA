@@ -8,18 +8,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Delete Population Data for a County</title>
+<title>Delete State Hospital Data Entry</title>
 </head>
 <body>
 	<h1>${messages.title}</h1>
-	<form action="populationdelete" method="post">
+	<form action="statehospitaldatadelete" method="post">
 		<p>
 		<p>
-			<div <c:if test="${messages.disableSubmit}">style="display:none"</c:if>>
-				<label for="countyname">County Name</label>
-				<input id="countyname" name="countyname" value="${fn:escapeXml(param.countyname)}">
-				<label for="statename">State Name</label>
-				<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
+		<div <c:if test="${messages.disableSubmit}">style="display:none"</c:if>>
+			<label for="statename">State Name</label>
+			<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
+		</p>
+		<p>
+			<label for="year">Year</label>
+			<input id="year" name="year" value="${fn:escapeXml(param.year)}">
 		</p>
 		</div>
 		</p>
@@ -30,16 +32,13 @@
 		</p>
 	</form>
 	<br/><br/>
-	<div id="populationcreate"><a href="populationcreate">Create Population Data Entry</a></div>
-	<div id="populationdelete"><a href="populationdelete">Delete Population Data</a></div>
+	<div id="statehospitaldatacreate"><a href="statehospitaldatacreate">Create State Hospital Data Entry</a></div>
+	<div id="statehospitaldatadelete"><a href="statehospitaldatadelete">Delete State Hospital Data</a></div>
 	<br/><br/>
        <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
        <div id="findcounty"><a href="findcounty">Find County</a></div>
        <div id="findstate"><a href="findstate">Find State</a></div>
        <div id="findcountyhospital"><a href="findcountyhospital">Find State Governor List</a></div>
-       <div id="statehospitaldatacreate"><a href="statehospitaldatacreate">Create a State Hospital Data Entry</a></div>
-       <div id="countyhospitalcreate"><a href="countyhospitalcreate">Create a State Hospital Data Entry</a></div>
-       <div id="populationcreate"><a href="populationcreate">Create a Population Entry</a></div>
-       <div id="presidentialelectionpercentagecreate"><a href="presidentialelectionpercentagecreate">Create a Presidential Election Percentage Entry</a></div>
+
 </body>
 </html>

@@ -187,6 +187,60 @@ public class StateHospitalDataDao
 		return null;
 	}
 
+	// There is no unique constraint that this would necessarily ensure that this produces a unique entry,
+// so we output a List to control for this possibility that there are multiple entries for a given year and state pair.
+	public List<StateHospitalData> getStateHospitalDataByYearAndState(short year,  State state)
+					throws SQLException
+	{
+		List<StateHospitalData> shds = new ArrayList<StateHospitalData>();
+		String selectShd = "SELECT * " + "FROM StateHospitalData "
+						+ "WHERE `Year`=? AND StateFKey=?;";
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		try
+		{
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectShd);
+			selectStmt.setShort(1, year);
+			selectStmt.setInt(2, state.getStateKey());
+			results = selectStmt.executeQuery();
+			StateDao stateDao = StateDao.getInstance();
+
+			while (results.next())
+			{
+				StateHospitalData shd = new StateHospitalData(
+								results.getInt("StateHospitalDataKey"),
+								stateDao.getStateByKey(results.getInt("StateFKey")),
+								results.getShort("Year"),
+								Long.parseLong(results.getString("NumberOfHospitals")),
+								Long.parseLong(results.getString("NumberOfHospitalEmployees")));
+				shds.add(shd);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				connection.close();
+			}
+			if (selectStmt != null)
+			{
+				selectStmt.close();
+			}
+			if (results != null)
+			{
+				results.close();
+			}
+		}
+		return shds;
+	}
+
 	public List<StateHospitalData> getStateHospitalDataByStateKey(int stateKey)
 			throws SQLException
 	{
