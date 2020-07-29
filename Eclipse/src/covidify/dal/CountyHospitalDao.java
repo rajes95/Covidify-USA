@@ -80,6 +80,8 @@ public class CountyHospitalDao {
   }
 
 
+
+
   public List<CountyHospitalData> getCountyHospitalDataByCounty(County county) throws SQLException {
 	List<CountyHospitalData> countyHospitalDatas = new ArrayList<CountyHospitalData>();
     String selectCountyHospitalData =
