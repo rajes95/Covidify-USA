@@ -11,7 +11,6 @@ DROP TABLE IF EXISTS `CovidifyUSA`.`CountyHospitalStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`CovidStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`CovidRaceStage`;
 DROP TABLE IF EXISTS `CovidifyUSA`.`MortalityStage`;
-Error Code: 1062. Duplicate entry '10' for key 'state.StateFIPS_UNIQUE'
 
 # /var/lib/mysql-files/...
 LOAD DATA INFILE '/Users/lilybessette/eclipse-workspace/Covidify-USA/DATA/state_fips.csv' 

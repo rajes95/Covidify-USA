@@ -96,6 +96,49 @@ public class CovidByRaceDao {
     }
   }
 
+  public List<CovidByRace> getCovidByRaceByStateAndDate(State state, java.sql.Date date) throws SQLException {
+    List<CovidByRace> covidByRaces = new ArrayList<CovidByRace>();
+    String selectCovidByRace =
+	            "SELECT CovidByRaceKey,StateFKey,Race,Postive,Negative,Death,Date FROM CovidByRace " +
+	                    "WHERE StateFKey=? AND Date=?;";
+	    Connection connection = null;
+	    PreparedStatement selectStmt = null;
+	    ResultSet results = null;
+	    try {
+	      connection = connectionManager.getConnection();
+	      selectStmt = connection.prepareStatement(selectCovidByRace);
+	      selectStmt.setInt(1, state.getStateKey());
+	      selectStmt.setDate(2, (java.sql.Date) date);
+	      results = selectStmt.executeQuery();
+
+        while(results.next()) {
+	        int covidByRaceKey = results.getInt("CovidByRaceKey");
+	        String resrace = results.getString("Race");
+	        int respos = results.getInt("Positive");
+	        int resneg = results.getInt("Negative");
+	        int resdeath = results.getInt("Death");
+
+	        CovidByRace.RaceType resultrace = CovidByRace.RaceType.valueOf(resrace);
+	        CovidByRace covidByRace = new CovidByRace(covidByRaceKey, state, resultrace, respos, resneg, resdeath, date);
+          covidByRaces.add(covidByRace);
+	      }
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	      throw e;
+	    } finally {
+	      if (connection != null) {
+	        connection.close();
+	      }
+	      if (selectStmt != null) {
+	        selectStmt.close();
+	      }
+	      if (results != null) {
+	        results.close();
+	      }
+	    }
+    return covidByRaces;
+	  }
+
 
   public List<CovidByRace> getCovidByRaceByState(State state) throws SQLException {
 	List<CovidByRace> covidByRaces = new ArrayList<CovidByRace>();

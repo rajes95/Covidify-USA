@@ -115,7 +115,7 @@ public class FindClimate extends HttpServlet {
       }
       messages.put("success", "Displaying results for " + countyname + ", " + statename);
     }
-    req.setAttribute("climatess", climates);
+    req.setAttribute("climates", climates);
 
     req.getRequestDispatcher("/FindClimate.jsp").forward(req, resp);
   }
