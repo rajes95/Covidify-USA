@@ -12,10 +12,14 @@
 </head>
 <body>
 	<form action="findclimate" method="post">
-		<h1>Search for a Climate by County Name </h1>
+		<h1>Search for a Climate by County Name and State Name</h1>
 		<p>
 			<label for="countyname">County Name</label>
 			<input id="countyname" name="countyname" value="${fn:escapeXml(param.countyname)}">
+		</p>
+		<p>
+			<label for="statename">State Name</label>
+			<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
 		</p>
 		<p>
 			<input type="submit">
@@ -25,9 +29,9 @@
 	</form>
 	<br/>
 	  <br/><br/>
-	<div id="climatecreate"><a href="climatecreate">Create State Governor Entry</a></div>
-	<div id="climatedelete"><a href="climatedelete">Delete State Governor List</a></div>
-	<div id="climateupdate"><a href="climateupdate">Update State Governor Entry</a></div>
+	<div id="climatecreate"><a href="climatecreate">Create Climate Entry</a></div>
+	<div id="climatedelete"><a href="climatedelete">Delete Climate List</a></div>
+	<div id="climateupdate"><a href="climateupdate">Update Climate Entry</a></div>
 	<br/>
 	<h1>Matching List of Climates</h1>
         <table border="1">
@@ -66,7 +70,7 @@
        <div id="findstate"><a href="findstate">Find State</a></div>
        <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
        <div id="statehospitaldatacreate"><a href="statehospitaldatacreate">Create a State Hospital Data Entry</a></div>
-       <div id="countyhospitalcreate"><a href="countyhospitalcreate">Create a State Hospital Data Entry</a></div>
+       <div id="statehospitalcreate"><a href="statehospitalcreate">Create a State Hospital Data Entry</a></div>
        <div id="populationcreate"><a href="populationcreate">Create a Population Entry</a></div>
        <div id="presidentialelectionpercentagecreate"><a href="presidentialelectionpercentagecreate">Create a Presidential Election Percentage Entry</a></div>
 </body>
