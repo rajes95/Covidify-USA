@@ -202,6 +202,62 @@ public class PresidentialElectionVotePercentagesDao
 		return null;
 	}
 
+// There is no unique constraint that this would necessarily ensure that this produces a unique entry,
+// so we output a List to control for this possibility that there are multiple entries for a given year and county pair.
+	public List<PresidentialElectionVotePercentages> getPresidentialElectionVotePercentagesByYearAndCounty(
+					Short year, County county) throws SQLException
+	{
+		List<PresidentialElectionVotePercentages> pevps = new ArrayList<PresidentialElectionVotePercentages>();
+		String selectPevps = "SELECT * " + "FROM PresidentialElectionVotePercentages "
+						+ "WHERE `Year`=? AND `CountyFKey`=?;";
+		;
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		try
+		{
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectPevps);
+			selectStmt.setShort(1, year);
+			selectStmt.setInt(1, county.getCountyKey());
+			results = selectStmt.executeQuery();
+			CountyDao countyDao = CountyDao.getInstance();
+
+			while (results.next())
+			{
+				PresidentialElectionVotePercentages pevp = new PresidentialElectionVotePercentages(
+								results.getInt("PresidentialElectionVotePercentagesKey"),
+								countyDao.getCountyByCountyKey(results.getInt("CountyFKey")),
+								results.getShort("Year"), results.getDouble("DemocratsPercent"),
+								results.getDouble("RepublicansPercent"),
+								results.getDouble("OtherPercent"));
+				pevps.add(pevp);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if (connection != null)
+			{
+				connection.close();
+			}
+			if (selectStmt != null)
+			{
+				selectStmt.close();
+			}
+			if (results != null)
+			{
+				results.close();
+			}
+		}
+		return pevps;
+	}
+
+
 	public List<PresidentialElectionVotePercentages> getPresidentialElectionVotePercentagesByYear(
 			Short year) throws SQLException
 	{
