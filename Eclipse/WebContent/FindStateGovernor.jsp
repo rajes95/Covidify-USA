@@ -22,9 +22,8 @@
 				value="${fn:escapeXml(param.year)}">
 		</p>
 		<p>
-			<input type="submit"> <br />
-			<br />
-			<br /> <span id="successMessage"><b>${messages.success}</b></span>
+			<input type="submit"> <br /> <br /> <br /> <span
+				id="successMessage"><b>${messages.success}</b></span>
 		</p>
 	</form>
 	<br />

@@ -24,13 +24,10 @@
 	</form>
 	<br />
 	<div id="populationcreate">
-		<a href="populationcreate">Create COVID-19 Data Entry</a>
+		<a href="populationcreate">Create Population Data Entry</a>
 	</div>
 	<div id="populationdelete">
-		<a href="populationdelete">Delete COVID-19 Data Entry</a>
-	</div>
-	<div id="populationupdate">
-		<a href="populationupdate">Update COVID-19 Data Entry</a>
+		<a href="populationdelete">Delete Population Data Entry</a>
 	</div>
 	<br />
 	<h1>Matching Population Data Entry</h1>
