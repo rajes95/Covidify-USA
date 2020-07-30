@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
  * localhost. 4. Point your browser to http://localhost:8080/BlogApplication/findcountys.
  */
 
-@WebServlet("/findcovidbydate")
+@WebServlet("/findpopulation")
 public class FindPopulation extends HttpServlet {
   protected PopulationDao populationDao;
   protected CountyDao countyDao;
