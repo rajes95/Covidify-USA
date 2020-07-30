@@ -12,10 +12,12 @@
 </head>
 <body>
 	<form action="findpopulation" method="post">
-		<h1>Search for a Population Entry by Year</h1>
+		<h1>Search for a Population Entry by County</h1>
 		<p>
-			<label for="year">Year (yyyy)</label>
-			<input id="year" name="year" value="${fn:escapeXml(param.year)}">
+		<label for="countyname">County Name</label>
+				<input id="countyname" name="countyname" value="${fn:escapeXml(param.countyname)}">
+				<label for="statename">State Name</label>
+				<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
 		</p>
 		<p>
 			<input type="submit"> <br /> <br /> <br /> <span

@@ -46,6 +46,7 @@ public class FindPopulation extends HttpServlet
 	public void init() throws ServletException
 	{
 		populationDao = PopulationDao.getInstance();
+		 countyDao = CountyDao.getInstance();
 	}
 
 	@Override
@@ -57,26 +58,27 @@ public class FindPopulation extends HttpServlet
 		req.setAttribute("messages", messages);
 		List<Population> population = null;
 		// Retrieve and validate name.
-		String shortYear = req.getParameter("year");
-		if (shortYear == null || shortYear.trim().isEmpty())
-		{
-			messages.put("success", "Please enter a valid year (yyyy).");
-		}
-		else
-		{
-			try
-			{
-				population = populationDao.getPopulationByYear(Short.valueOf(shortYear));
+		 // Retrieve and validate name.
+	    String countyname = req.getParameter("countyname");
+	    String statename = req.getParameter("statename");
+	    if (countyname == null || countyname.trim().isEmpty()
+	            || statename == null || statename.trim().isEmpty()) {
+	      messages.put("success", "Please enter a valid County and State name pair.");
+	    }  else {
+	        try {
+	          County county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
+	          population = populationDao.getPopulationByCountyKey(county.getCountyKey());
 			}
 			catch (SQLException e)
 			{
 				e.printStackTrace();
 				throw new IOException(e);
 			}
-			messages.put("success", "Displaying results for " + shortYear);
+			messages.put("success", "Displaying results for Population data entry for County: " + countyname + ", " + statename);
 			// Save the previous search term, so it can be used as the default
 			// in the input box when rendering FindPopulation.jsp.
-			messages.put("previousDate", shortYear);
+			messages.put("previousCounty", countyname);
+			messages.put("previousState", statename);
 		}
 		req.setAttribute("population", population);
 
@@ -97,26 +99,28 @@ public class FindPopulation extends HttpServlet
 		// default, it
 		// is populated by the URL query string (in FindPopulation.jsp).
 		// Retrieve and validate name.
-		String shortYear = req.getParameter("year");
-
-		if (shortYear == null || shortYear.trim().isEmpty())
-		{
-			messages.put("success", "Please enter a valid Year (yyyy).");
-		}
-		else
-		{
-			try
-			{
-				population = populationDao.getPopulationByYear(Short.valueOf(shortYear));
+		 String countyname = req.getParameter("countyname");
+		 String statename = req.getParameter("statename");
+		    if (countyname == null || countyname.trim().isEmpty()
+		            || statename == null || statename.trim().isEmpty()) {
+		      messages.put("success", "Please enter a valid County and State name pair.");
+		    }  else {
+		    	// Delete the Population.
+		        try {
+		          County county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
+		          population = populationDao.getPopulationByCountyKey(county.getCountyKey());
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+					throw new IOException(e);
+				}
+				messages.put("success", "Displaying results for Population data entry for County: " + countyname + ", " + statename);
+				// Save the previous search term, so it can be used as the default
+				// in the input box when rendering FindPopulation.jsp.
+		
 			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-				throw new IOException(e);
-			}
-			messages.put("success", "Displaying results for " + shortYear);
-		}
-		req.setAttribute("population", population);
+			req.setAttribute("population", population);
 
 		req.getRequestDispatcher("/FindPopulation.jsp").forward(req, resp);
 	}
