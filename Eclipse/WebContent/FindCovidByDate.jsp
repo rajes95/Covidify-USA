@@ -61,17 +61,7 @@
        <div id="findstatehospitaldata"><a href="findstatehospitaldata">Find a State Hospital Data Entry</a></div>
        <div id="findcountyhospital"><a href="findcountyhospital">Find a State Hospital Data Entry</a></div>
        <div id="findpopulation"><a href="findpopulation">Find a Population Entry</a></div>
-       <div id="findpresidentialelectionpercentage"><a href="findpresidentialelectionpercentage">Find a Presidential Election Percentage Entry</a></div>
-
-
-	   <div id="mortalityratesdelete"><a href="mortalityratesdelete">Delete Mortality Rates Data</a></div>
-	   <div id="demographicdelete"><a href="demographicdelete">Delete a Demographics Entry</a></div>
-	   <div id="covidbyracedelete"><a href="covidbyracedelete">Delete a COVID-19 Race Data Entry</a></div>
-       <div id="statehospitaldatadelete"><a href="statehospitaldatadelete">Delete a State Hospital Data Entry</a></div>
-       <div id="countyhospitaldelete"><a href="countyhospitaldelete">Delete a County Hospital Data Entry</a></div>
-	   <div id="populationdelete"><a href="populationdelete">Delete a Population Entry</a></div>
-       <div id="presidentialelectionpercentdelete"><a href="presidentialelectionpercentdelete">Delete a Presidential Election Percentage Entry</a></div>
-       
+       <div id="findpresidentialelectionpercent"><a href="findpresidentialelectionpercent">Find a Presidential Election Percentage Entry</a></div>
        
 </body>
 </html>

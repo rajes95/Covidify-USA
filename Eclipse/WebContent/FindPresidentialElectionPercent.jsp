@@ -11,7 +11,7 @@
 <title>Find a Presidential Election Percent Data Entry</title>
 </head>
 <body>
-	<form action="findpresidentialElectionPercent" method="post">
+	<form action="findpresidentelectionpercent" method="post">
 		<h1>Search for a PresidentialElectionPercent Entry by Year</h1>
 		<p>
 			<label for="year">Date (yyyy)</label> <input id="date" name="date"
@@ -24,16 +24,12 @@
 		</p>
 	</form>
 	<br />
-	<div id="presidentialElectionPercentcreate">
-		<a href="presidentialElectionPercentcreate">Create Election
+	<div id="presidentialelectionpercentcreate">
+		<a href="presidentialelectionpercentcreate">Create Election
 			Percentage Entry</a>
 	</div>
-	<div id="presidentialElectionPercentdelete">
-		<a href="presidentialElectionPercentdelete">Delete Election
-			Percentage Data Entry</a>
-	</div>
-	<div id="presidentialElectionPercentupdate">
-		<a href="presidentialElectionPercentupdate">Update Election
+	<div id="presidentialelectionpercentdelete">
+		<a href="presidentialelectionpercentdelete">Delete Election
 			Percentage Data Entry</a>
 	</div>
 	<br />
@@ -63,37 +59,15 @@
 	</table>
 	<br />
 	<br />
-	<div id="findcovidbydate">
-		<a href="findcovidbydate">Find COVID-19 Data Entry</a>
-	</div>
-	<div id="findpresidentialElectionPercent">
-		<a href="findpresidentialElectionPercent">Find
-			presidentialElectionPercent Data Entry</a>
-	</div>
-	<div id="findcounty">
-		<a href="findcounty">Find County</a>
-	</div>
-	<div id="findstate">
-		<a href="findstate">Find State</a>
-	</div>
-	<div id="findstategovernor">
-		<a href="findstategovernor">Find State Governor List</a>
-	</div>
-	<div id="statehospitaldatacreate">
-		<a href="statehospitaldatacreate">Create a State Hospital Data
-			Entry</a>
-	</div>
-	<div id="countyhospitalcreate">
-		<a href="countyhospitalcreate">Create a State Hospital Data Entry</a>
-	</div>
-	<div id="presidentialElectionPercentcreate">
-		<a href="presidentialElectionPercentcreate">Create a
-			PresidentialElectionPercent Entry</a>
-	</div>
-	<div id="presidentialelectionpercentagecreate">
-		<a href="presidentialelectionpercentagecreate">Create a
-			Presidential Election Percentage Entry</a>
-	</div>
+	  <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
+       <div id="findcounty"><a href="findcounty">Find County</a></div>
+       <div id="findstate"><a href="findstate">Find State</a></div>
+       <div id="findclimate"><a href="findclimate">Find Climate</a></div>
+       <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
+       <div id="findstatehospitaldata"><a href="findstatehospitaldata">Find a State Hospital Data Entry</a></div>
+       <div id="findcountyhospital"><a href="findcountyhospital">Find a State Hospital Data Entry</a></div>
+       <div id="findpopulation"><a href="findpopulation">Find a Population Entry</a></div>
+       <div id="findpresidentialelectionpercent"><a href="findpresidentialelectionpercent">Find a Presidential Election Percentage Entry</a></div>
 
 </body>
 </html>

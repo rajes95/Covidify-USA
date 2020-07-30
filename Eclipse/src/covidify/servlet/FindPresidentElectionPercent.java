@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
  * http://localhost:8080/BlogApplication/findcountys.
  */
 
-@WebServlet("/findpresidentelectionpercent")
+@WebServlet("/findpresidentialelectionpercent")
 public class FindPresidentElectionPercent extends HttpServlet
 {
 	protected PresidentialElectionVotePercentagesDao presidentElectionPercentDao;
@@ -82,7 +82,7 @@ public class FindPresidentElectionPercent extends HttpServlet
 		}
 		req.setAttribute("presidentElectionPercent", presidentElectionPercent);
 
-		req.getRequestDispatcher("/FindPresidentElectionPercent.jsp").forward(req, resp);
+		req.getRequestDispatcher("/FindPresidentialElectionPercent.jsp").forward(req, resp);
 	}
 
 	@Override
@@ -122,6 +122,6 @@ public class FindPresidentElectionPercent extends HttpServlet
 		}
 		req.setAttribute("presidentElectionPercent", presidentElectionPercent);
 
-		req.getRequestDispatcher("/FindPresidentElectionPercent.jsp").forward(req, resp);
+		req.getRequestDispatcher("/FindPresidentialElectionPercent.jsp").forward(req, resp);
 	}
 }
