@@ -618,12 +618,22 @@ SELECT
 
 SELECT * FROM CovidByDate;
 
-SELECT * FROM (SELECT * FROM County) AS CovidCounty 
-		JOIN (SELECT * FROM CovidByDate) AS CovidDate 
-        ON `CovidCounty`.`CountyKey` = `CovidDate`.`CountyFKey`;
+SELECT * FROM (SELECT * FROM County) AS c1 
+		JOIN (SELECT * FROM Climate) AS c2 
+        ON c1.`CountyKey` = c2.`CountyFKey`;
+        
+     # Baldwin County
         
 SELECT * FROM (SELECT * FROM County WHERE `CountyName`="Autauga County") AS CovidCounty 
 		JOIN (SELECT * FROM CovidByDate WHERE `Date`="2020-04-23") AS CovidDate 
         ON `CovidCounty`.`CountyKey` = `CovidDate`.`CountyFKey`;	
+        
+Select * from County;
 
+
+select * from PresidentialElectionVotePercentages;
+
+SELECT *  FROM PresidentialElectionVotePercentages WHERE `Year`=2008 AND `CountyFKey`=3;
+
+SELECT * FROM Climate;
 

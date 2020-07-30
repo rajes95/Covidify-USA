@@ -14,8 +14,8 @@
 	<form action="findpopulation" method="post">
 		<h1>Search for a Population Entry by Year</h1>
 		<p>
-			<label for="year">Date (yyyy)</label> <input id="date" name="date"
-				value="${fn:escapeXml(param.date)}">
+			<label for="year">Year (yyyy)</label>
+			<input id="year" name="year" value="${fn:escapeXml(param.year)}">
 		</p>
 		<p>
 			<input type="submit"> <br /> <br /> <br /> <span

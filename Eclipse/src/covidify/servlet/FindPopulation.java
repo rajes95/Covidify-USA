@@ -60,7 +60,7 @@ public class FindPopulation extends HttpServlet
 		String shortYear = req.getParameter("year");
 		if (shortYear == null || shortYear.trim().isEmpty())
 		{
-			messages.put("success", "Please enter a valid year (yyyy) Date.");
+			messages.put("success", "Please enter a valid year (yyyy).");
 		}
 		else
 		{
