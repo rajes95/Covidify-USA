@@ -52,15 +52,14 @@ public class FindPopulation extends HttpServlet {
     // Map for storing messages.
     Map<String, String> messages = new HashMap<String, String>();
     req.setAttribute("messages", messages);
-    Population population = null;
+    List<Population> population = null;
     // Retrieve and validate name.
     String shortYear = req.getParameter("year");
     if (shortYear == null) {
       messages.put("success", "Please enter a valid year (yyyy) Date.");
     } else {
       try {
-    	Short shortInput = new shortYear;
-        population = populationDao.getPopulationByYear(shortYear);
+        population = populationDao.getPopulationByYear(Short.valueOf(shortYear));
       } catch (SQLException e) {
         e.printStackTrace();
         throw new IOException(e);
@@ -82,7 +81,7 @@ public class FindPopulation extends HttpServlet {
     Map<String, String> messages = new HashMap<String, String>();
     req.setAttribute("messages", messages);
 
-    Population population = null;
+    List<Population> population = null;
     // Retrieve and validate name.
     // countyname and statename is retrieved from the form POST submission. By default, it
     // is populated by the URL query string (in FindPopulation.jsp).
@@ -93,8 +92,7 @@ public class FindPopulation extends HttpServlet {
       messages.put("success", "Please enter a valid Year (yyyy).");
     } else {
       try {
-    	  Short shortInput = new shortYear;
-          population = populationDao.getPopulationByYear(shortYear);
+          population = populationDao.getPopulationByYear(Short.valueOf(shortYear));
       } catch (SQLException e) {
         e.printStackTrace();
         throw new IOException(e);
