@@ -43,7 +43,7 @@
 			<tr>
 				<td><c:out value="${countyhospital.getCounty().getCountyName()}" /></td>
 				<td><c:out value="${countyhospital.getYear()}" /></td>
-				<td><c:out value="${countyhospital.getICUBeds()}" /></td>
+				<td><c:out value="${countyhospital.getIcuBeds()}" /></td>
 			</tr>
 					</c:forEach>
        </table>
