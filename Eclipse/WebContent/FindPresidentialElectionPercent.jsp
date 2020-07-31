@@ -11,11 +11,19 @@
 <title>Find a Presidential Election Percent Data Entry</title>
 </head>
 <body>
-	<form action="findpresidentelectionpercent" method="post">
+	<form action="findpresidentialelectionpercent" method="post">
 		<h1>Search for a PresidentialElectionPercent Entry by Year</h1>
 		<p>
-			<label for="year">Year (yyyy)</label> <input id="date" name="date"
-				value="${fn:escapeXml(param.date)}">
+			<label for="state">State Name</label> <input id="state" name="state"
+				value="${fn:escapeXml(param.state)}">
+		</p>
+		<p>
+			<label for="county">County Name</label> <input id="county" name="county"
+				value="${fn:escapeXml(param.county)}">
+		</p>
+		<p>
+			<label for="year">Year (yyyy)</label> <input id="year" name="year"
+				value="${fn:escapeXml(param.year)}">
 		</p>
 		<p>
 			<input type="submit"> <br />
@@ -42,18 +50,18 @@
 			<th>Republicans</th>
 			<th>Other</th>
 		</tr>
-		<c:forEach items="${presidentialElectionPercent}"
-			var="presidentialElectionPercent">
+		<c:forEach items="${presidentElectionPercent}"
+			var="presidentElectionPercent">
 			<tr>
 				<td><c:out
-						value="${presidentialElectionPercent.getCounty().getCountyName()}" /></td>
-				<td><c:out value="${presidentialElectionPercent.getYear()}" /></td>
+						value="${presidentElectionPercent.getCounty().getCountyName()}" /></td>
+				<td><c:out value="${presidentElectionPercent.getYear()}" /></td>
 				<td><c:out
-						value="${presidentialElectionPercent.getDemocratsPercent}" /></td>
+						value="${presidentElectionPercent.getDemocratsPercent()}" /></td>
 				<td><c:out
-						value="${presidentialElectionPercent.getRepublicansPercent()}" /></td>
+						value="${presidentElectionPercent.getRepublicansPercent()}" /></td>
 				<td><c:out
-						value="${presidentialElectionPercent.getOtherPercent()}" /></td>
+						value="${presidentElectionPercent.getOtherPercent()}" /></td>
 			</tr>
 		</c:forEach>
 	</table>

@@ -40,12 +40,14 @@ import javax.servlet.http.HttpServletResponse;
 public class FindPresidentElectionPercent extends HttpServlet
 {
 	protected PresidentialElectionVotePercentagesDao presidentElectionPercentDao;
+	protected CountyDao countyDao;
 
 	@Override
 	public void init() throws ServletException
 	{
 		presidentElectionPercentDao = PresidentialElectionVotePercentagesDao
 				.getInstance();
+		countyDao = CountyDao.getInstance();
 	}
 
 	@Override
@@ -82,7 +84,8 @@ public class FindPresidentElectionPercent extends HttpServlet
 		}
 		req.setAttribute("presidentElectionPercent", presidentElectionPercent);
 
-		req.getRequestDispatcher("/FindPresidentialElectionPercent.jsp").forward(req, resp);
+		req.getRequestDispatcher("/FindPresidentialElectionPercent.jsp").forward(req,
+				resp);
 	}
 
 	@Override
@@ -100,6 +103,9 @@ public class FindPresidentElectionPercent extends HttpServlet
 		// is populated by the URL query string (in FindPresidentElectionPercent.jsp).
 		// Retrieve and validate name.
 		String shortYear = req.getParameter("year");
+		String countyStr = req.getParameter("county");
+		String stateStr = req.getParameter("state");
+		County county;
 
 		if (shortYear == null)
 		{
@@ -109,9 +115,10 @@ public class FindPresidentElectionPercent extends HttpServlet
 		{
 			try
 			{
+				county = countyDao.getCountyByCountyNameAndStateName(countyStr, stateStr);
 				presidentElectionPercent = presidentElectionPercentDao
-						.getPresidentialElectionVotePercentagesByYear(
-								Short.valueOf(shortYear));
+						.getPresidentialElectionVotePercentagesByYearAndCounty(
+								Short.valueOf(shortYear), county);
 			}
 			catch (SQLException e)
 			{
@@ -122,6 +129,7 @@ public class FindPresidentElectionPercent extends HttpServlet
 		}
 		req.setAttribute("presidentElectionPercent", presidentElectionPercent);
 
-		req.getRequestDispatcher("/FindPresidentialElectionPercent.jsp").forward(req, resp);
+		req.getRequestDispatcher("/FindPresidentialElectionPercent.jsp").forward(req,
+				resp);
 	}
 }
