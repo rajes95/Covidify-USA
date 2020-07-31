@@ -40,11 +40,14 @@ import javax.servlet.http.HttpServletResponse;
 public class FindStateHospital extends HttpServlet
 {
 	protected StateHospitalDataDao stateHospitalDao;
+	protected StateDao stateDao;
 
 	@Override
 	public void init() throws ServletException
 	{
 		stateHospitalDao = StateHospitalDataDao.getInstance();
+		stateDao = StateDao.getInstance();
+
 	}
 
 	@Override
@@ -57,16 +60,21 @@ public class FindStateHospital extends HttpServlet
 		List<StateHospitalData> stateHospital = null;
 		// Retrieve and validate name.
 		String shortYear = req.getParameter("year");
-		if (shortYear == null)
+		String stateStr = req.getParameter("state");
+		State state;
+
+		if (shortYear == null || stateStr == null)
 		{
-			messages.put("success", "Please enter a valid Year (yyyy).");
+			messages.put("success", "Please enter a valid Year (yyyy) and State Name.");
 		}
 		else
 		{
 			try
 			{
-				stateHospital = stateHospitalDao
-						.getStateHospitalDataByYear(Short.valueOf(shortYear));
+				state = stateDao.getStateByName(stateStr);
+				stateHospital = stateHospitalDao.getStateHospitalDataByYearAndState(
+						Short.valueOf(shortYear), state);
+
 			}
 			catch (SQLException e)
 			{
@@ -98,17 +106,22 @@ public class FindStateHospital extends HttpServlet
 		// is populated by the URL query string (in FindStateHospital.jsp).
 		// Retrieve and validate name.
 		String shortYear = req.getParameter("year");
-
-		if (shortYear == null)
+		String stateStr = req.getParameter("state");
+		System.out.println(shortYear);
+		State state;
+		
+		if (shortYear == null || stateStr == null)
 		{
-			messages.put("success", "Please enter a valid Year (yyyy).");
+			messages.put("success", "Please enter a valid Year (yyyy) and State Name.");
 		}
 		else
 		{
 			try
 			{
-				stateHospital = stateHospitalDao
-						.getStateHospitalDataByYear(Short.valueOf(shortYear));
+				state = stateDao.getStateByName(stateStr);
+				System.out.println(state);
+				stateHospital = stateHospitalDao.getStateHospitalDataByYearAndState(
+						Short.valueOf(shortYear), state);
 			}
 			catch (SQLException e)
 			{
@@ -118,6 +131,7 @@ public class FindStateHospital extends HttpServlet
 			messages.put("success", "Displaying results for " + shortYear);
 		}
 		req.setAttribute("stateHospital", stateHospital);
+//		System.out.println(stateHospital);
 
 		req.getRequestDispatcher("/FindStateHospital.jsp").forward(req, resp);
 	}

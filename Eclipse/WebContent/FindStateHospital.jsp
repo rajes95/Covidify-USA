@@ -14,8 +14,12 @@
 	<form action="findstatehospitaldata" method="post">
 		<h1>Search for a State Hospital Entry by Year</h1>
 		<p>
-			<label for="year">Date (yyyy)</label> <input id="date" name="date"
-				value="${fn:escapeXml(param.date)}">
+			<label for="state">State Name</label> <input id="state" name="state"
+				value="${fn:escapeXml(param.state)}">
+		</p>
+		<p>
+			<label for="year">Date (yyyy)</label> <input id="year" name="year"
+				value="${fn:escapeXml(param.year)}">
 		</p>
 		<p>
 			<input type="submit"> <br /> <br /> <br /> <span
@@ -23,11 +27,11 @@
 		</p>
 	</form>
 	<br />
-	<div id="statehospitalcreate">
-		<a href="statehospitalcreate">Create State Hospital Data Entry</a>
+	<div id="statehospitaldatacreate">
+		<a href="statehospitaldatacreate">Create State Hospital Data Entry</a>
 	</div>
-	<div id="statehospitaldelete">
-		<a href="statehospitaldelete">Delete State Hospital Data Entry</a>
+	<div id="statehospitaldatadelete">
+		<a href="statehospitaldatadelete">Delete State Hospital Data Entry</a>
 	</div>
 	<br />
 	<h1>Matching State Hospital Data Entry</h1>
@@ -42,7 +46,7 @@
 			<tr>
 				<td><c:out value="${stateHospital.getState().getStateName()}" /></td>
 				<td><c:out value="${stateHospital.getYear()}" /></td>
-				<td><c:out value="${stateHospital.getNumberOfHospitals}" /></td>
+				<td><c:out value="${stateHospital.getNumberOfHospitals()}" /></td>
 				<td><c:out
 						value="${stateHospital.getNumberOfHospitalEmployees()}" /></td>
 			</tr>

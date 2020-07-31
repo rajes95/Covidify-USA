@@ -46,6 +46,10 @@ public class Inserter
 		County county;
 		county = countyDao.getCountyByCountyNameAndStateName("Crane County", "Texas");
 		System.out.println("Testing: " + county);
+		
+		
+		System.out.println(shdDao.getStateHospitalDataByYearAndState((short)2019, cali));
+		
 		//
 //		Calendar cal1 = Calendar.getInstance();
 //		cal1.clear();
