@@ -107,7 +107,6 @@ public class FindStateHospital extends HttpServlet
 		// Retrieve and validate name.
 		String shortYear = req.getParameter("year");
 		String stateStr = req.getParameter("state");
-		System.out.println(shortYear);
 		State state;
 		
 		if (shortYear == null || stateStr == null)
@@ -119,7 +118,6 @@ public class FindStateHospital extends HttpServlet
 			try
 			{
 				state = stateDao.getStateByName(stateStr);
-				System.out.println(state);
 				stateHospital = stateHospitalDao.getStateHospitalDataByYearAndState(
 						Short.valueOf(shortYear), state);
 			}
@@ -131,7 +129,6 @@ public class FindStateHospital extends HttpServlet
 			messages.put("success", "Displaying results for " + shortYear);
 		}
 		req.setAttribute("stateHospital", stateHospital);
-//		System.out.println(stateHospital);
 
 		req.getRequestDispatcher("/FindStateHospital.jsp").forward(req, resp);
 	}
