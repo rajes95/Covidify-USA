@@ -8,11 +8,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Find a MortalityRate</title>
+<title>Find a Mortality Rate</title>
 </head>
 <body>
-	<form action="findmortalityRate" method="post">
-		<h1>Search for a MortalityRate by County Name and State Name</h1>
+	<form action="findmortalityrate" method="post">
+		<h1>Search for a Mortality Rate by County Name and State Name</h1>
 		<p>
 			<label for="countyname">County Name</label>
 			<input id="countyname" name="countyname" value="${fn:escapeXml(param.countyname)}">
@@ -29,9 +29,9 @@
 	</form>
 	<br/>
 	  <br/><br/>
-	<div id="mortalityRatecreate"><a href="mortalityRatecreate">Create MortalityRate Entry</a></div>
-	<div id="mortalityRatedelete"><a href="mortalityRatedelete">Delete MortalityRate List</a></div>
-	<div id="mortalityRateupdate"><a href="mortalityRateupdate">Update MortalityRate Entry</a></div>
+	<div id="mortalityratecreate"><a href="mortalityratecreate">Create Mortality Rate Entry</a></div>
+	<div id="mortalityratedelete"><a href="mortalityratedelete">Delete Mortality Rate List</a></div>
+	
 	<br/>
 	<h1>Matching List of MortalityRates</h1>
         <table border="1">
@@ -69,7 +69,7 @@
        <div id="findclimate"><a href="findclimate">Find Climate</a></div>
        <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
        <div id="findstatehospitaldata"><a href="findstatehospitaldata">Find a State Hospital Data Entry</a></div>
-       <div id="findcountyhospital"><a href="findcountyhospital">Find a State Hospital Data Entry</a></div>
+       <div id="findcountyhospital"><a href="findcountyhospital">Find a County Hospital Data Entry</a></div>
        <div id="findpopulation"><a href="findpopulation">Find a Population Entry</a></div>
        <div id="findpresidentialelectionpercent"><a href="findpresidentialelectionpercent">Find a Presidential Election Percentage Entry</a></div>
 </body>

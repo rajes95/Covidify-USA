@@ -11,7 +11,7 @@
 <title>Find a County Hospital</title>
 </head>
 <body>
-	<form action="findclimate" method="post">
+	<form action="findcountyhospital" method="post">
 		<h1>Search for a County Hospital by County Name and State Name</h1>
 		<p>
 			<label for="countyname">County Name</label>
@@ -31,7 +31,6 @@
 	  <br/><br/>
 	<div id="countyhospitalcreate"><a href="countyhospitalcreate">Create County Hospital Entry</a></div>
 	<div id="countyhospitaldelete"><a href="countyhospitaldelete">Delete County Hospital List</a></div>
-	<div id="countyhospitalupdate"><a href="countyhospitalupdate">Update County Hospital Entry</a></div>
 	<br/>
 	<h1>Matching List of County Hospital Entries</h1>
         <table border="1">
@@ -40,7 +39,7 @@
                 <th>Year</th>
 				<th>ICUBeds</th>
             </tr>
-					<c:forEach items="${countyhospitals}" var="climate" >
+					<c:forEach items="${countyhospitals}" var="countyhospital" >
 			<tr>
 				<td><c:out value="${countyhospital.getCounty().getCountyName()}" /></td>
 				<td><c:out value="${countyhospital.getYear()}" /></td>
@@ -56,7 +55,7 @@
        <div id="findclimate"><a href="findclimate">Find Climate</a></div>
        <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
        <div id="findstatehospitaldata"><a href="findstatehospitaldata">Find a State Hospital Data Entry</a></div>
-       <div id="findcountyhospital"><a href="findcountyhospital">Find a State Hospital Data Entry</a></div>
+       <div id="findcountyhospital"><a href="findcountyhospital">Find a County Hospital Data Entry</a></div>
        <div id="findpopulation"><a href="findpopulation">Find a Population Entry</a></div>
        <div id="findpresidentialelectionpercent"><a href="findpresidentialelectionpercent">Find a Presidential Election Percentage Entry</a></div>
 </body>

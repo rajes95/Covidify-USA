@@ -14,7 +14,7 @@
 	<form action="findpresidentelectionpercent" method="post">
 		<h1>Search for a PresidentialElectionPercent Entry by Year</h1>
 		<p>
-			<label for="year">Date (yyyy)</label> <input id="date" name="date"
+			<label for="year">Year (yyyy)</label> <input id="date" name="date"
 				value="${fn:escapeXml(param.date)}">
 		</p>
 		<p>
@@ -65,7 +65,7 @@
        <div id="findclimate"><a href="findclimate">Find Climate</a></div>
        <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
        <div id="findstatehospitaldata"><a href="findstatehospitaldata">Find a State Hospital Data Entry</a></div>
-       <div id="findcountyhospital"><a href="findcountyhospital">Find a State Hospital Data Entry</a></div>
+       <div id="findcountyhospital"><a href="findcountyhospital">Find a County Hospital Data Entry</a></div>
        <div id="findpopulation"><a href="findpopulation">Find a Population Entry</a></div>
        <div id="findpresidentialelectionpercent"><a href="findpresidentialelectionpercent">Find a Presidential Election Percentage Entry</a></div>
 

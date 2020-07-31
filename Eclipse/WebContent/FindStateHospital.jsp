@@ -11,7 +11,7 @@
 <title>Find a State Hospital Data Entry</title>
 </head>
 <body>
-	<form action="findstateHospital" method="post">
+	<form action="findstatehospitaldata" method="post">
 		<h1>Search for a State Hospital Entry by Year</h1>
 		<p>
 			<label for="year">Date (yyyy)</label> <input id="date" name="date"
@@ -23,14 +23,11 @@
 		</p>
 	</form>
 	<br />
-	<div id="stateHospitalcreate">
-		<a href="stateHospitalcreate">Create COVID-19 Data Entry</a>
+	<div id="statehospitalcreate">
+		<a href="statehospitalcreate">Create State Hospital Data Entry</a>
 	</div>
-	<div id="stateHospitaldelete">
-		<a href="stateHospitaldelete">Delete COVID-19 Data Entry</a>
-	</div>
-	<div id="stateHospitalupdate">
-		<a href="stateHospitalupdate">Update COVID-19 Data Entry</a>
+	<div id="statehospitaldelete">
+		<a href="statehospitaldelete">Delete State Hospital Data Entry</a>
 	</div>
 	<br />
 	<h1>Matching State Hospital Data Entry</h1>
@@ -60,7 +57,7 @@
        <div id="findclimate"><a href="findclimate">Find Climate</a></div>
        <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
        <div id="findstatehospitaldata"><a href="findstatehospitaldata">Find a State Hospital Data Entry</a></div>
-       <div id="findcountyhospital"><a href="findcountyhospital">Find a State Hospital Data Entry</a></div>
+       <div id="findcountyhospital"><a href="findcountyhospital">Find a County Hospital Data Entry</a></div>
        <div id="findpopulation"><a href="findpopulation">Find a Population Entry</a></div>
        <div id="findpresidentialelectionpercent"><a href="findpresidentialelectionpercent">Find a Presidential Election Percentage Entry</a></div>
 

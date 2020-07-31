@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
  * http://localhost:8080/BlogApplication/findcountys.
  */
 
-@WebServlet("/findstateHospital")
+@WebServlet("/findstatehospitaldata")
 public class FindStateHospital extends HttpServlet
 {
 	protected StateHospitalDataDao stateHospitalDao;
@@ -59,7 +59,7 @@ public class FindStateHospital extends HttpServlet
 		String shortYear = req.getParameter("year");
 		if (shortYear == null)
 		{
-			messages.put("success", "Please enter a valid year (yyyy) Date.");
+			messages.put("success", "Please enter a valid Year (yyyy).");
 		}
 		else
 		{

@@ -60,6 +60,9 @@
 		<span id="successMessage"><b>${messages.success}</b></span>
 	</p>
 	<br/><br/>
+	<div id="mortalityratescreate"><a href="mortalityratescreate">Create Mortality Rates Data Entry</a></div>
+	<div id="mortalityratesdelete"><a href="mortalityratesdelete">Delete Mortality Rates Data</a></div>
+	<br/><br/>
   
        <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
        <div id="findcounty"><a href="findcounty">Find County</a></div>
@@ -67,7 +70,7 @@
        <div id="findclimate"><a href="findclimate">Find Climate</a></div>
        <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
        <div id="findstatehospitaldata"><a href="findstatehospitaldata">Find a State Hospital Data Entry</a></div>
-       <div id="findcountyhospital"><a href="findcountyhospital">Find a State Hospital Data Entry</a></div>
+       <div id="findcountyhospital"><a href="findcountyhospital">Find a County Hospital Data Entry</a></div>
        <div id="findpopulation"><a href="findpopulation">Find a Population Entry</a></div>
        <div id="findpresidentialelectionpercent"><a href="findpresidentialelectionpercent">Find a Presidential Election Percentage Entry</a></div>
 </body>

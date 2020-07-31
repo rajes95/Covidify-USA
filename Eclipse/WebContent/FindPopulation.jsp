@@ -14,7 +14,7 @@
 	<form action="findpopulation" method="post">
 		<h1>Search for a Population Entry by County</h1>
 		<p>
-		<label for="countyname">County Name</label>
+				<label for="countyname">County Name</label>
 				<input id="countyname" name="countyname" value="${fn:escapeXml(param.countyname)}">
 				<label for="statename">State Name</label>
 				<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
@@ -57,7 +57,7 @@
        <div id="findclimate"><a href="findclimate">Find Climate</a></div>
        <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
        <div id="findstatehospitaldata"><a href="findstatehospitaldata">Find a State Hospital Data Entry</a></div>
-       <div id="findcountyhospital"><a href="findcountyhospital">Find a State Hospital Data Entry</a></div>
+       <div id="findcountyhospital"><a href="findcountyhospital">Find a County Hospital Data Entry</a></div>
        <div id="findpopulation"><a href="findpopulation">Find a Population Entry</a></div>
        <div id="findpresidentialelectionpercent"><a href="findpresidentialelectionpercent">Find a Presidential Election Percentage Entry</a></div>
        

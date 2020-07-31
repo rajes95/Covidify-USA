@@ -30,8 +30,7 @@
 	<br/>
 	  <br/><br/>
 	<div id="climatecreate"><a href="climatecreate">Create Climate Entry</a></div>
-	<div id="climatedelete"><a href="climatedelete">Delete Climate List</a></div>
-	<div id="climateupdate"><a href="climateupdate">Update Climate Entry</a></div>
+	<div id="climatedelete"><a href="climatedelete">Delete Climate Data</a></div>
 	<br/>
 	<h1>Matching List of Climates</h1>
         <table border="1">
@@ -71,7 +70,7 @@
        <div id="findclimate"><a href="findclimate">Find Climate</a></div>
        <div id="findstategovernor"><a href="findstategovernor">Find State Governor List</a></div>
        <div id="findstatehospitaldata"><a href="findstatehospitaldata">Find a State Hospital Data Entry</a></div>
-       <div id="findcountyhospital"><a href="findcountyhospital">Find a State Hospital Data Entry</a></div>
+       <div id="findcountyhospital"><a href="findcountyhospital">Find a County Hospital Data Entry</a></div>
        <div id="findpopulation"><a href="findpopulation">Find a Population Entry</a></div>
        <div id="findpresidentialelectionpercent"><a href="findpresidentialelectionpercent">Find a Presidential Election Percentage Entry</a></div>
 </body>

@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
  * localhost. 4. Point your browser to http://localhost:8080/BlogApplication/findstates.
  */
 
-@WebServlet("/findcountyHospital")
+@WebServlet("/findcountyhospital")
 public class FindCountyHospital extends HttpServlet {
   protected CountyHospitalDao countyHospitalDao;
   protected CountyDao countyDao;
@@ -61,7 +61,7 @@ public class FindCountyHospital extends HttpServlet {
     String countyname = req.getParameter("countyname");
     String statename = req.getParameter("statename");
     if (statename == null || statename.trim().isEmpty() || countyname == null || countyname.trim().isEmpty()) {
-      messages.put("success", "Please enter a valid State name and County.");
+      messages.put("success", "Please enter a valid State and County name.");
     } else {
       try {
         county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
@@ -76,7 +76,7 @@ public class FindCountyHospital extends HttpServlet {
       messages.put("previousStateName", statename);
       messages.put("previousCountyName", countyname);
     }
-    req.setAttribute("countyHospitals", countyHospitals);
+    req.setAttribute("countyhospitals", countyHospitals);
 
     req.getRequestDispatcher("/FindCountyHospital.jsp").forward(req, resp);
   }
@@ -97,12 +97,12 @@ public class FindCountyHospital extends HttpServlet {
     String countyname = req.getParameter("countyname");
     String statename = req.getParameter("statename");
     if (statename == null || statename.trim().isEmpty() || countyname == null || countyname.trim().isEmpty()) {
-      messages.put("success", "Please enter a valid State name and County name.");
+      messages.put("success", "Please enter a valid State and County name.");
     } else {
       try {
         county = countyDao.getCountyByCountyNameAndStateName(countyname, statename);
         if (county == null) {
-          messages.put("success", "County does not exist. Could not locate CountyHospital List.");
+          messages.put("success", "County does not exist. Could not locate County Hospital List.");
         } else {
           countyHospitals = countyHospitalDao.getCountyHospitalDataByCounty(county);
           if (countyHospitals == null) {
@@ -110,12 +110,12 @@ public class FindCountyHospital extends HttpServlet {
           }
         }
       } catch (SQLException e) {
-        e.printStackTrace();
+        e.printStackTrace();s
         throw new IOException(e);
       }
       messages.put("success", "Displaying results for " + countyname + ", " + statename);
     }
-    req.setAttribute("countyHospitalss", countyHospitals);
+    req.setAttribute("countyhospitals", countyHospitals);
 
     req.getRequestDispatcher("/FindCountyHospital.jsp").forward(req, resp);
   }

@@ -60,7 +60,7 @@ public class FindPresidentElectionPercent extends HttpServlet
 		String shortYear = req.getParameter("year");
 		if (shortYear == null)
 		{
-			messages.put("success", "Please enter a valid year (yyyy) Date.");
+			messages.put("success", "Please enter a valid year (yyyy).");
 		}
 		else
 		{
