@@ -52,7 +52,9 @@
 	<div id="stategovernordelete"><a href="stategovernordelete">Delete State Governor List</a></div>
 	<div id="stategovernorupdate"><a href="stategovernorupdate">Update State Governor Entry</a></div>
 	<br/><br/>
-     <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
+       <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
+       <div id="findcovidbyrace"><a href="findcovidbyrace">Find COVID-19 By Race Data Entry</a></div>
+       <div id="findmortalityrate"><a href="findmortalityrate">Find Mortality Rate Data</a></div>
        <div id="findcounty"><a href="findcounty">Find County</a></div>
        <div id="findstate"><a href="findstate">Find State</a></div>
        <div id="findclimate"><a href="findclimate">Find Climate</a></div>
@@ -61,5 +63,7 @@
        <div id="findcountyhospital"><a href="findcountyhospital">Find a County Hospital Data Entry</a></div>
        <div id="findpopulation"><a href="findpopulation">Find a Population Entry</a></div>
        <div id="findpresidentialelectionpercent"><a href="findpresidentialelectionpercent">Find a Presidential Election Percentage Entry</a></div>
+       <div id="finddemogrpahic"><a href="finddemographic">Find Demographics Data</a></div>
+       
 </body>
 </html>
