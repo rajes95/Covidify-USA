@@ -17,6 +17,10 @@
 			<label for="statename">State Name</label>
 			<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
 		</p>
+			<p>
+				<label for="date">Date (yyyy-mm-dd)</label>
+				<input id="date" name="date" value="${fn:escapeXml(param.date)}">
+			</p>
 		<p>
 			<input type="submit">
 			<br/><br/><br/>
@@ -26,7 +30,6 @@
 	<br/>
 	<div id="covidbyracecreate"><a href="covidbyracecreate">Create COVID-19 Data by Race Entry</a></div>
 	<div id="covidbyracedelete"><a href="covidbyracedelete">Delete COVID-19 Data by Race Entry</a></div>
-	<div id="covidbyraceupdate"><a href="covidbyraceupdate">Update COVID-19 Data by Race Entry</a></div>
 	<br/>
 	<h1>Matching COVID-19 Data by Race Entry</h1>
         <table border="1">
@@ -38,14 +41,16 @@
 				<th>Negative cases</th>
 				<th>Deaths</th>
             </tr>
+            		<c:forEach items="${covidbyrace}" var="covidbyrace" >
                 <tr>
 					<td><c:out value="${covidbyrace.getState().getStateName()}" /></td>
 					<td><c:out value="${covidbyrace.getRaceType()}" /></td>
-					<td><fmt:formatDate value="${covidbyrace.getDate()}" pattern="MM-dd-yyyy hh:mm:sa"/></td>
+					<td><fmt:formatDate value="${covidbyrace.getDate()}" pattern="MM-dd-yyyy"/></td>
 					<td><c:out value="${covidbyrace.getPositive()}" /></td>
 					<td><c:out value="${covidbyrace.getNegative()}" /></td>
 					<td><c:out value="${covidbyrace.getDeath()}" /></td>
                 </tr>
+	                </c:forEach>
 
        </table>
 		<br/><br/>

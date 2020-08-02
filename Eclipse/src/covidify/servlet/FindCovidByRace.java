@@ -58,12 +58,25 @@ public class FindCovidByRace extends HttpServlet {
     // Retrieve and validate name.
     String statename = req.getParameter("statename");
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    if (statename == null || statename.trim().isEmpty()) {
-      messages.put("success", "Please enter a valid County and State name pair and valid Date.");
-    } else {
+    String stringDate = req.getParameter("date");
+
+    if (statename == null || statename.trim().isEmpty()
+            || statename == null || statename.trim().isEmpty()
+            || stringDate == null) {
+      messages.put("success", "Please enter a valid Date and State name.");
+    }  else {
       try {
+    	  Date date;
+    	  java.sql.Date sqlDate;
+  	    try {
+  	      date = dateFormat.parse(stringDate);
+  	    sqlDate = new java.sql.Date(date.getTime());
+  	    } catch (ParseException e) {
+  	      e.printStackTrace();
+  	      throw new IOException(e);
+  	    }
         state = stateDao.getStateByName(statename);
-        covidbyrace = covidByRaceDao.getCovidByRaceByState(state);
+        covidbyrace = covidByRaceDao.getCovidByRaceByStateAndDate(state, sqlDate);
       } catch (SQLException e) {
         e.printStackTrace();
         throw new IOException(e);
@@ -91,12 +104,25 @@ public class FindCovidByRace extends HttpServlet {
     // countyname and statename is retrieved from the form POST submission. By default, it
     // is populated by the URL query string (in FindCovidByDate.jsp).
     String statename = req.getParameter("statename");
-    if (statename == null || statename.trim().isEmpty()) {
-      messages.put("success", "Please enter a valid State name");
-    } else {
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String stringDate = req.getParameter("date");
+    Date date;
+    java.sql.Date sqlDate;
+    try {
+      date = dateFormat.parse(stringDate);
+      sqlDate = new java.sql.Date(date.getTime());
+    } catch (ParseException e) {
+      e.printStackTrace();
+      throw new IOException(e);
+    }
+    if (statename == null || statename.trim().isEmpty()
+            || statename == null || statename.trim().isEmpty()
+            || date == null) {
+      messages.put("success", "Please enter a valid Date and State name.");
+    }  else {
       try {
         state = stateDao.getStateByName(statename);
-        covidbyrace = covidByRaceDao.getCovidByRaceByState(state);
+        covidbyrace = covidByRaceDao.getCovidByRaceByStateAndDate(state, sqlDate);
       } catch (SQLException e) {
         e.printStackTrace();
         throw new IOException(e);

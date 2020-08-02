@@ -12,7 +12,7 @@
 </head>
 <body>
 	<form action="findpresidentialelectionpercent" method="post">
-		<h1>Search for a PresidentialElectionPercent Entry by Year</h1>
+		<h1>Search for a Presidential Election Percent Entry by Year</h1>
 		<p>
 			<label for="state">State Name</label> <input id="state" name="state"
 				value="${fn:escapeXml(param.state)}">

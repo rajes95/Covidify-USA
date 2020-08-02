@@ -99,7 +99,7 @@ public class CovidByRaceDao {
   public List<CovidByRace> getCovidByRaceByStateAndDate(State state, java.sql.Date date) throws SQLException {
     List<CovidByRace> covidByRaces = new ArrayList<CovidByRace>();
     String selectCovidByRace =
-	            "SELECT CovidByRaceKey,StateFKey,Race,Postive,Negative,Death,Date FROM CovidByRace " +
+	            "SELECT CovidByRaceKey,StateFKey,Race,Positive,Negative,Death,Date FROM CovidByRace " +
 	                    "WHERE StateFKey=? AND Date=?;";
 	    Connection connection = null;
 	    PreparedStatement selectStmt = null;

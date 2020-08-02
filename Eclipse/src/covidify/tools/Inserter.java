@@ -33,6 +33,7 @@ public class Inserter
 		PopulationDao popDao = PopulationDao.getInstance();
 
 		CovidByDateDao covDao = CovidByDateDao.getInstance();
+		CovidByRaceDao covRaceDao = CovidByRaceDao.getInstance();
 
 		// INSERT rows into CovidifyUSA database.
 
@@ -47,7 +48,10 @@ public class Inserter
 		county = countyDao.getCountyByCountyNameAndStateName("Crane County", "Texas");
 		System.out.println("Testing: " + county);
 		
+		System.out.println(shdDao.getStateHospitalDataByYearAndState((short)2019, cali));
 		
+		
+		List<CovidByRace>
 		System.out.println(shdDao.getStateHospitalDataByYearAndState((short)2019, cali));
 		
 		//
