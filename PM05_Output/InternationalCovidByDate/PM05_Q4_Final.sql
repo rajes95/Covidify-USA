@@ -720,6 +720,17 @@ GROUP BY StateFKey
 Order by MAX(CovidCases) desc
 limit 51) as highestnational;
 
+SELECT MostRecent, `# COVID-19 Cases`,  `# COVID-19 Deaths`, StateName as `State Name` FROM (
+Select  MAX(Date) as MostRecent, MAX(CovidCases) as `# COVID-19 Cases`, CovidDeaths as `# COVID-19 Deaths`, StateName, StateFKey
+From (select * from 
+(Select * from
+(select * From CovidByDate) as coviddate inner join
+(select * from County) as county on coviddate.CountyFKey = county.CountyKey) as countycovid
+inner join (select * from State) as state on state.StateKey = countycovid.StateFKey) as statecovid
+GROUP BY StateFKey 
+Order by MAX(CovidCases) desc
+limit 51) as highestnational;
+
 
 select * from
 (select * from HighestCasesInternational ) as s1
