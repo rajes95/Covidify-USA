@@ -18,7 +18,7 @@
 				value="${fn:escapeXml(param.state)}">
 		</p>
 		<p>
-			<label for="year">Date (yyyy)</label> <input id="year" name="year"
+			<label for="year">Year (yyyy)</label> <input id="year" name="year"
 				value="${fn:escapeXml(param.year)}">
 		</p>
 		<p>

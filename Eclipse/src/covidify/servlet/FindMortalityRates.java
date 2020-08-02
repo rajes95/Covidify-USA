@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
  * localhost. 4. Point your browser to http://localhost:8080/BlogApplication/findstates.
  */
 
-@WebServlet("/findmortalityRates")
+@WebServlet("/findmortalityrate")
 public class FindMortalityRates extends HttpServlet {
   protected MortalityRatesDao mortalityRatesDao;
   protected CountyDao countyDao;

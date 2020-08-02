@@ -29,8 +29,8 @@
 	</form>
 	<br/>
 	  <br/><br/>
-	<div id="mortalityratecreate"><a href="mortalityratecreate">Create Mortality Rate Entry</a></div>
-	<div id="mortalityratedelete"><a href="mortalityratedelete">Delete Mortality Rate List</a></div>
+	<div id="mortalityratescreate"><a href="mortalityratescreate">Create Mortality Rate Entry</a></div>
+	<div id="mortalityratesdelete"><a href="mortalityratesdelete">Delete Mortality Rate List</a></div>
 	
 	<br/>
 	<h1>Matching List of MortalityRates</h1>

@@ -30,8 +30,8 @@
 		</p>
 	</form>
 	<br/><br/>
-	<div id="demographiccreate"><a href="demographiccreate">Create Demographics Data Entry</a></div>
-	<div id="demographicdelete"><a href="demographicdelete">Delete Demographics Data</a></div>
+	<div id="demographiccreate"><a href="demographiccreate">Create Demographic Entry</a></div>
+	<div id="demographicdelete"><a href="demographicdelete">Delete Demographic List</a></div>
 	<br/><br/>
       
             <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>

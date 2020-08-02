@@ -40,7 +40,7 @@ public class DemographicsCreate extends HttpServlet {
 	    Map<String, String> messages = new HashMap<String, String>();
 	    req.setAttribute("messages", messages);
 	    //Just render the JSP.
-	    req.getRequestDispatcher("/CountyCreate.jsp").forward(req, resp);
+	    req.getRequestDispatcher("/DemographicsCreate.jsp").forward(req, resp);
 	  }
 	
 	@Override

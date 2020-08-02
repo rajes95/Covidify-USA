@@ -40,6 +40,10 @@
 		<span id="successMessage"><b>${messages.success}</b></span>
 	</p>
 	<br/><br/>
+		<div id="countycreate"><a href="countycreate">Create County</a></div>
+	<div id="countydelete"><a href="countydelete">Delete County</a></div>
+	<div id="countyupdate"><a href="countyupdate">Update County</a></div>
+	<br/><br/>
 	
              <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
        <div id="findcovidbyrace"><a href="findcovidbyrace">Find COVID-19 By Race Data Entry</a></div>

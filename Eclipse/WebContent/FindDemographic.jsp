@@ -31,7 +31,6 @@
 	  <br/><br/>
 	<div id="demographiccreate"><a href="demographiccreate">Create Demographic Entry</a></div>
 	<div id="demographicdelete"><a href="demographicdelete">Delete Demographic List</a></div>
-	<div id="demographicupdate"><a href="demographicupdate">Update Demographic Entry</a></div>
 	<br/>
 	<h1>Matching List of Demographics</h1>
         <table border="1">
