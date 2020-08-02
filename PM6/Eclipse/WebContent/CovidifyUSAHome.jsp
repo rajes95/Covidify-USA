@@ -8,58 +8,42 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Create a Covid By Race Entry</title>
+<title>Covidify USA</title>
 </head>
 <body>
-	<h1>Create Covid By Race Entry</h1>
-	<form action="covidbyracecreate" method="post">
-		<p>
-			<label for="statename">State Name (Pre-existing)</label>
-			<input id="statename" name="statename" value="${fn:escapeXml(param.statename)}">
-		</p>
-		<p>
-			<label for="racetype">Race</label>
-			<select id="racetype" name="racetype" >
-				<option>White</option>
-				<option>Black</option>
-				<option>Hispanic</option>
-				<option>Asian</option>
-				<option>Multiracial</option>
-				<option>NHPI</option>
-				<option>Other</option>
-				<option>Unknown</option>
-			</select>
-		</p>
-		<p>
-			<label for="positive">Positive</label>
-			<input id="positive" name="positive" value="">
-		</p>
-		<p>
-			<label for="negative">Negative</label>
-			<input id="negative" name="negative" value="">
-		</p>
-		<p>
-			<label for="death">Deaths</label>
-			<input id="death" name="death" value="">
-		</p>
-		<p>
-			<label for="date">Date (yyyy-mm-dd)</label>
-			<input id="date" name="date" value="${fn:escapeXml(param.date)}">
-		</p>
-		<p>
+	<form action="covidifyhome" method="post">
+		<h1>Welcome to Covidify USA</h1>
+		
+		<h5>Press to Load Table</h5>
 			<input type="submit">
-		</p>
+	
+		<br/>
+			<span id="successMessage"><b>${messages.success}</b></span>
 	</form>
-	<br/><br/>
-	<p>
-		<span id="successMessage"><b>${messages.success}</b></span>
-	</p>
-	<br/><br/>
-	<div id="covidbyracecreate"><a href="covidbyracecreate">Create COVID-19 Race Data Entry</a></div>
- 	<div id="covidbyracedelete"><a href="covidbyracedelete">Delete COVID-19 Race Data Entry</a></div>
-	<br/><br/>
-       
- 	   <div id="covidifyhome"><a href="covidifyhome">Covidify USA Home</a></div>
+	<br/>
+	<h2>States Ordered by # COVID-19 Cases</h2>
+        <table border="1">
+            <tr>      
+            	<th>Date</th>
+                
+				<th>Number of COVID-19 Cases</th>
+                
+				<th>State Name</th>
+          
+            </tr>
+                	<c:forEach items="${topcases}" var="topcases" >
+				<tr>
+					<td><fmt:formatDate value="${topcases.getDate()}" pattern="MM-dd-yyyy hh:mm:sa"/></td>
+					<td><c:out value="${topcases.getCovidCases()}" /></td>
+					<td><c:out value="${topcases.getState().getStateName()}" /></td>
+					
+                </tr>
+                
+					</c:forEach>
+		
+       </table>
+		<br/><br/>
+  	   <div id="covidifyhome"><a href="covidifyhome">Covidify USA Home</a></div>
        <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
        <div id="findcovidbyrace"><a href="findcovidbyrace">Find COVID-19 By Race Data Entry</a></div>
        <div id="findmortalityrate"><a href="findmortalityrate">Find Mortality Rate Data</a></div>

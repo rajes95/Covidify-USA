@@ -39,7 +39,8 @@
 	<div id="covidbydateupdate"><a href="covidbydateupdate">Update COVID-19 Data Entry</a></div>
 	<br/><br/>
       
-            <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
+  	   <div id="covidifyhome"><a href="covidifyhome">Covidify USA Home</a></div>
+       <div id="findcovidbydate"><a href="findcovidbydate">Find COVID-19 Data Entry</a></div>
        <div id="findcovidbyrace"><a href="findcovidbyrace">Find COVID-19 By Race Data Entry</a></div>
        <div id="findmortalityrate"><a href="findmortalityrate">Find Mortality Rate Data</a></div>
        <div id="findcounty"><a href="findcounty">Find County</a></div>
